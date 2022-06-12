@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
-Auth::routes();
+// Auth::routes();
 Route::get('/clear', function(){
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
@@ -30,6 +30,12 @@ Route::middleware(['middleware' => 'auth:web'])
 /////////////////////// Frontend ////////////////////////
 
 /////////////////////////////////////////////////////////
+
+
+Route::resource('transaction', 'Frontend\TransactionController');
+Route::resource('withdraw', 'Frontend\WithdrawController');
+Route::resource('referal', 'Frontend\ReferalController');
+
 Route::get('/', 'Frontend\UserController@login')->name('login');
 Route::post('/user-login', 'Frontend\UserController@loginuser')->name('user-login');
 Route::get('/register', 'Frontend\UserController@create')->name('register');
@@ -95,6 +101,7 @@ Route::prefix('admin')->namespace('Backend')->group(function (){
 
         Route::resource('manage-account-types', 'AccountTypeController');
         Route::resource('manage-payment-methods', 'PaymentMethodController');
+        Route::resource('manage-withdraw', 'WithdrawController');
 
         Route::get('dashboard', 'DashboardController@dashboard')->name('adminDashboard');
         Route::post('filterCountry', 'DashboardController@filterCountry')->name('filterCountryDashboard');

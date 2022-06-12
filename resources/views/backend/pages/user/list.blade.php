@@ -53,10 +53,12 @@
 									<th>{{__('ID')}}</th>
 									<th>{{__('Name')}}</th>
 									<th>{{__('Email')}}</th>
-									<th>{{__('Role')}}</th>
-									<th>{{__('Bussiness-Name')}}</th>
-									<th>{{__('Bussiness-type')}}</th>
-									<th>{{__('status')}}</th>
+									<th>{{__('Country')}}</th>
+									<th>{{__('City')}}</th>
+									<th>{{__('Date Of Birth')}}</th>
+									<th>{{__('Gender')}}</th>
+									<th>{{__('Cnic')}}</th>
+									<th>{{__('Sponser_id')}}</th>
 									<th>{{__('Actions')}}</th>
 								</tr>
 							</thead>
@@ -67,32 +69,32 @@
 										<td>{{$user->first_name.' '.$user->last_name}}</td>
 										<td>{{$user->email}}</td>
 										<td>
-											@if($user->roles->first()->id == 2) 
-											Employer 
-											@elseif($user->roles->first()->id == 3) 
-											Employee 
-											@elseif($user->roles->first()->id == 1 ) 
-											 Admin  
+											{{ $user->country }}
+										</td>
+										<td>
+											{{ $user->city }}
+										</td>
+										<td>
+											{{ $user->date_of_birth }}
+										</td>
+										<td>
+											@if($user->gender == 'male') 
+											Male 
+											@elseif($user->gender == 'female') 
+											Female 	
 											@endif
 										</td>
 										<td>
-											{{ $user->comp_name ?? 'N/A' }}
+											{{ $user->cnic }}
 										</td>
 										<td>
-											 N/A
+											{{ $user->sponser_id }}
 										</td>
 										<td>
-											@if($user->status == 0) 
-											InActive 
-											@elseif($user->status == 1) 
-											Active
-											@endif
-										</td>
-										<td>
-                                            @if($userRole->id == 1)
+                                            {{--  @if($userRole->id == 1)
                                                 <a href="{{route('viewUser', $user->id)}}"><i class="la la-eye text-success mr-5"></i></a>
                                             
-                                            @endif
+                                            @endif  --}}
 
                                             @if($userRole->id == 1)
                                                 <a href="{{route('editUser', $user->id)}}"><i class="la la-pencil-alt text-success mr-5"></i></a>

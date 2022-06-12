@@ -27,20 +27,9 @@ use App\Models\TrendingFilter;
 class DashboardController extends Controller
 {
     public function index(request $request){
-        $trends = TrendingFilter::orderBy('count' ,'DESC')
-        ->paginate(10);
+        
 
-        $jobs = Job::with('user')
-        ->where('job_approval', 1)
-        ->orderBy('id','DESC')
-        ->get();
-
-        $bussinesscategories = EmployeeBussinessCategory::where('status', 1)
-        ->paginate(20);
-
-        $timeCheck = Carbon::now();
-
-        return view('frontend.pages.index',compact('jobs','timeCheck','bussinesscategories','trends'));
+        return view('frontend.pages.index');
     }
 
     // Employee Details 
@@ -64,15 +53,17 @@ class DashboardController extends Controller
             $user_data = [
                 'first_name'        => $data['first_name'],
                 'last_name'         => $data['last_name'],
-                'phone_number'      => $data['phone_number'], 
-                'zip_code'          => $data['zip_code'], 
-                'street_address'    => $data['street_address'],
-                'profile_image'     => $image ?? user()->profile_image,
+                'phone_number'         => $data['phone_number'],
+                'email'      => $data['email'], 
+                'state'          => $data['state'], 
+                'address'    => $data['address'],
+                'city'    => $data['city'],
+               
             ];
 
             User::find(user()->id)->update($user_data);
 
-            return redirect()->route('dashboard')->with('success', 'Employee Details Updated Successfully!');
+            return redirect()->route('dashboard')->with('success', 'Profile Updated Successfully!');
         }
     
         return view('frontend.pages.userprofile.profile');

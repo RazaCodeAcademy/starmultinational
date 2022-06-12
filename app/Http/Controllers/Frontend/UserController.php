@@ -11,33 +11,62 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 use App\Models\User;
+use App\Models\ModelHasRole;
+use App\Models\Role;
 use Carbon\Carbon;
+use App\Models\PaymentMethod;
 class UserController extends Controller
 {
     public function create()
     {
-       return view('frontend.pages.register');
+        $payment_methods = PaymentMethod::all();
+       return view('frontend.pages.register',compact('payment_methods'));
     }
 
     public function store(Request $request){
-        $rules = array(
-            'first_name'=> 'required',
-            'last_name'=> 'required',
-            'dob'=> 'required',
-            'phone_number'=> 'required',
-            'zip_code'=> 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'street_address' => 'required',
-            'terms_and_conditions'=> 'required',
-        );
+        
+        
+        $rules = [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'username' => 'required|max:255',
+            'email' => 'required|unique:users,email',
+            'date_of_birth' => 'required',
+            'gender' => 'required',
+            'placement' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'zip_code' => 'required',
+            'address' => 'required',
+            'phone_number' => 'required',
+            'cnic' => 'required',
+            'payment_process' => 'required',
+            'sponser_id' => 'required',
+            'mother_name' => 'required',
+            'favourite_pet' => 'required',
+                'password' => [
+                'required',
+                'string',
+                'min:6',    
+                'confirmed',         
+                'confirmed',         
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+            ],
+        ];
 
-      $validator = Validator::make($request->all() , $rules);
+        $messages = [
+            'password.regex' => 'Password must be one capital one small, one special character and one number'
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
 
         if ($validator->fails())
         {
-            return \redirect()->route('register')->withErrors($validator)->withInput();
-        }  
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         $userCount = User::where('email', $request->email)->count();
         if ($userCount > 0){
@@ -48,22 +77,38 @@ class UserController extends Controller
             return redirect()->back()->with($notification);
         }
         else{
-        $user=new User();
-        $user->first_name = $request->first_name;
-        $user->last_name = $request->last_name;
-        $user->phone_number = $request->phone_number;
-        $user->zip_code = $request->zip_code;
-        $user->dob = $request->dob;
-        $user->street_address = $request->street_address;
-        $user->email=$request->email;
-        $user->password=Hash::make($request->password);
-        $user->save();
+            $data =[
+                'first_name' => $request->first_name,
+                'last_name' => $request->last_name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'date_of_birth' => $request->date_of_birth,
+                'gender' => $request->gender,
+                'placement' => $request->placement,
+                'city' => $request->city,
+                'country' => $request->country,
+                'state' => $request->state,
+                'zip_code' => $request->zip_code,
+                'address' => $request->address,
+                'phone_number' => $request->phone_number,
+                'cnic' => $request->cnic,
+                'payment_process' => $request->payment_process,
+                'sponser_id' => $request->sponser_id,
+                'mother_name' => $request->mother_name,
+                'favourite_pet' => $request->favourite_pet,
+                'password' => bcrypt($request->password),
+            ];
+
+            $user= User::create($data);
+
+
         }
         $notification = array(
         'success' => 'User Register Successfully!', 
         );
-        $data = array('role_id' => '3', "model_type" => 'App\Models\User', "model_id" => $user->id);
-        DB::table('model_has_roles')->insert($data);
+          $data1=array('role_id'=>'2',"model_type"=>'App\Models\User',"model_id"=>$user->id);
+        ModelHasRole::insert($data1);
+
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
 
@@ -86,7 +131,7 @@ class UserController extends Controller
             {
                return redirect()->route('employerDashboard');
             }
-            elseif (Auth::user()->hasRole('employee'))
+            elseif (Auth::user()->hasRole('customer'))
             {
                 return redirect()->route('dashboard');
             }
@@ -130,7 +175,7 @@ class UserController extends Controller
                         
                         return redirect()->route('employerDashboard')->with($notification);
                     }
-                    elseif (Auth::user()->hasRole('employee'))
+                    elseif (Auth::user()->hasRole('customer'))
                     {   
                         $notification = array(
                             'success' => 'Login Successfully!', 
@@ -150,8 +195,8 @@ class UserController extends Controller
 
     public function logout()
     {
-        Auth::user()->last_login = Carbon::now()->toDateTimeString();
-        Auth::user()->update();
+        // Auth::user()->last_login = Carbon::now()->toDateTimeString();
+        // Auth::user()->update();
         Auth::logout();
         $notification = array(
             'success' => 'logout Successfully!', 
