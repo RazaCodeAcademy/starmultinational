@@ -185,7 +185,7 @@ p {
 }
 
 .welcome {
-    background-image: linear-gradient(to left, rgba(10, 77, 163, 0.75), rgba(52, 147, 213, 0.4)), url("../img/hero-cover.jpg");
+    background-image: linear-gradient(to left, rgba(10, 77, 163, 0.75), rgba(52, 147, 213, 0.4));
     background-size: cover;
     background-position: center;
     min-height: 100vh;

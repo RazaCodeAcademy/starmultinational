@@ -18,24 +18,6 @@
 			</div>
 		</div>
 
-        {{--  @php $user_role_id = DB::table('model_has_roles')->where('model_id', Auth::user()->id)->first();
-                     $user = DB::table('roles')->where('id', $user_role_id->role_id)->first();
-        @endphp  --}}
-
-        {{--  @if ($user->id == 1)
-            <div class="form-group row">
-                <label class="col-form-label text-right col-lg-4 col-sm-12">{{__('Filter by country')}}</label>
-                <div class="col-lg-4 col-md-9 col-sm-12">
-                    <select class="form-control selectpicker" name="country" id="country" data-size="7" data-live-search="true">
-                        <option value="0">{{__('All')}}</option>
-                        <option data-divider="true" label="Label"></option>
-                        @foreach($countries as $country)
-                        <option value="{{$country->id}}">{{$country->name}}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        @endif  --}}
 
 
         <div class="d-flex flex-column-fluid">
@@ -60,9 +42,9 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block" id="live-jobs">
-                                    {{-- {{$liveJobs}} --}}
+                                    {{-- {{$liveJobs}} --}}0
                                 </span>
-                                <span class="font-weight-bold text-muted font-size-sm">{{__('Total Active Job(s)')}}</span>
+                                <span class="font-weight-bold text-muted font-size-sm">{{__('Wallet Amount')}} </span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -85,9 +67,9 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block" id="live-candidate-applied-jobs">
-                                    {{-- {{$liveAppliedEmployeeJobs}} --}}
+                                        {{ count($users)}}
                                 </span>
-                                <span class="font-weight-bold text-white font-size-sm">{{__('Total candidates active to live jobs')}}</span>
+                                <span class="font-weight-bold text-white font-size-sm">{{__('Total Members')}}</span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -112,9 +94,9 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 d-block" id="total-candidates">
-                                    {{-- {{count($employees)}} --}}
+                                    {{count($accounts)}}
                                 </span>
-                                <span class="font-weight-bold text-white font-size-sm">{{__('Total Employee(s)')}}</span>
+                                <span class="font-weight-bold text-white font-size-sm">{{__('Total Account Types')}}</span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -137,9 +119,9 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="card-title font-weight-bolder text-white font-size-h2 mb-0 mt-6 text-hover-primary d-block" id="total-employers">
-                                    {{-- {{count($employers)}} --}}
+                                    {{count($payments)}}
                                 </span>
-                                <span class="font-weight-bold text-white font-size-sm">{{__('Total Employer(s)')}}</span>
+                                <span class="font-weight-bold text-white font-size-sm">{{__('Total Payment Method')}}</span>
                             </div>
                             <!--end::Body-->
                         </div>
@@ -152,7 +134,7 @@
         </div>
         <!--end::Entry-->
 
-        <div class="container">
+        {{--  <div class="container">
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
@@ -181,7 +163,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div>  --}}
 	</div>
 @endsection
 

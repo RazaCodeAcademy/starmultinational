@@ -15,7 +15,7 @@ class Frontend
      */
     public function handle($request, Closure $next)
     {
-        if (Auth::user() &&  Auth::user()->hasRole('employee')) {
+        if (Auth::user() &&  Auth::user()->hasRole('customer')) {
             return $next($request);
         }else{
 

@@ -1,185 +1,306 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-		<!-- Font Awesome Css -->
-		<link rel="stylesheet" href="{{ asset('/public/frontend/css/font-awesome/css/all.css') }}" />
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="{{ asset('/public/frontend/css/bootstrap.min.css') }}" />
-		<!-- Custom CSS -->
-		<link rel="stylesheet" href="{{ asset('/public/frontend/css/main.css') }}" />
-
-		{{-- Toaster --}}
-		<link href="{{asset('public/toast/toastr1.css')}}" rel="stylesheet">
-    	<link href="{{asset('public/toast/toastr2.css')}}" rel="styleshee">
-		<title>register</title>
-		<link rel="shortcut icon" href="{{ asset('/public/frontend/img/logo-color.png') }}">
-		<style>
-			.hidden{
-				display: none;
-			}
-		</style>
-	</head>
-	<body>
-		<section class="welcome">
-			<a href="#" class="welcome-logo">
-				<img src="{{ asset('/public/frontend/img/logo-white.png') }}" alt="main-logo" />
-			</a>
-
-			<div class="register-wrapper">
-				<main class="main register">
-					<div class="main-header register-header">
-						<a href="{{ route('login') }}" onclick="back()"><i class="fas fa-chevron-left"></i></a>
-						<p>Register to joblot</p>
-					</div>
-					<div class="main-content">
-						<form class="main-form" action="{{ route('user-register') }}" method="post">
-							@csrf
-							<div class="main-form-control" id="f_name">
-								<input type="text" name="first_name" value="{{old('first_name') }}"  placeholder="First name"  />
-								@if ($errors->has('first_name'))
-									<div> <span  class="text-danger" id="first_nameError">{{ $errors->first('first_name') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control"  id="l_name">
-								<input type="text" name="last_name"  value="{{old('last_name') }}"   placeholder="Last name" />
-								@if ($errors->has('last_name'))
-									<div> <span  class="text-danger"id="last_nameError">{{ $errors->first('last_name') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control" id="dob">
-								<input type="date" name="dob"  value="{{old('dob') }}"  placeholder="Birth date"  />
-								@if ($errors->has('dob'))
-									<div> <span  class="text-danger" id="dobError">{{ $errors->first('dob') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control" id="phone"> 
-								<input type="text" name="phone_number" value="{{old('phone_number') }}" placeholder="Phone number"  />
-								@if ($errors->has('phone_number'))
-									<div> <span  class="text-danger" id="phone_numberError">{{ $errors->first('phone_number') }}</span></div>
-								@endif
-							</div>
-                            <div class="main-form-control hidden" id="email">
-								<input type="email" name="email" value="{{old('email') }}"  placeholder="Email"  />
-								<small>Your email will be used as your username</small>
-								@if ($errors->has('email'))
-									<div> <span  class="text-danger" id="emailError">{{ $errors->first('email') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control hidden" id="password" >
-								<input type="password" name="password" value="{{old('password') }}"  placeholder="Password" />
-								<small>Must be atleast 8 characters</small>
-								@if ($errors->has('password'))
-									<div> <span  class="text-danger" id="passwordError">{{ $errors->first('password') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control hidden"  id="zip">
-								<input type="text" name="zip_code" value="{{old('zip_code') }}"  placeholder="Zipcode" />
-								@if ($errors->has('zip_code'))
-									<div> <span  class="text-danger" id="zip_codeError">{{ $errors->first('zip_code') }}</span></div>
-								@endif
-							</div>
-							<div class="main-form-control hidden"  id="address">
-								<input type="text" name="street_address"  value="{{old('street_address') }}" placeholder="Street Address"  />
-								@if ($errors->has('street_address'))
-									<div> <span  class="text-danger" id="street_addressError">{{ $errors->first('street_address') }}</span></div>
-								@endif
-							</div>
-                            
-							<div class="div hidden " id="terms">
-								<div class="main-form-control main-form-terms hidden">
-									<input type="radio" name="terms_and_conditions"  />
-									@if ($errors->has('terms_and_conditions'))
-										<div> <span  class="text-danger" id="terms_and_conditionsError">{{ $errors->first('terms_and_conditions') }}</span></div>
-									@endif
-									<p>
-										By checking this. I acknowledge, i have read, and understand, and agree to
-										Joblot's
-										<a href="#">Terms of Uses and Privacy Policy</a>
-									</p>
-								</div>
-								<div class="main-form-control main-form-terms hidden ">
-									<input type="radio"/>
-									<p>
-										Yes, i want to receive email job alerts from Joblot that are personalized based on
-										my interests.
-									</p>
-								</div>
-							</div>  
-                            <button class="mt-5" type="button" onclick="fields_show()" id="continue">Continue <i class="fas fa-chevron-right ml-2"></i></button>
-						   <div class="form-navigation">
-                               {{-- <button type="button" class="previous btn">Next <i class="fas fa-chevron-right ml-2"></i></button> --}}
-                               {{-- <button type="button" class="previous btn">Previous <i class="fas fa-chevron-right ml-2"></i></button> --}}
-                               <button type="submit" class="previous btn hidden" id="submit">Submit <i class="fas fa-chevron-right ml-2"></i></button>
-                           </div>
-						</form>
-					</div>
-				</main>
-			</div>
-		</section>
-
-            <script>
-			function fields_show(){
-				$('#f_name').addClass("hidden");
-				$('#l_name').addClass("hidden");
-				$('#dob').addClass("hidden");
-				$('#phone').addClass("hidden");
-				$('#continue').addClass("hidden");
-			    // remove class
-				$('#email').removeClass("hidden");
-				$('#password').removeClass("hidden");
-				$('#zip').removeClass("hidden");
-				$('#address').removeClass("hidden");
-				$('#terms').removeClass("hidden");
-				$('#submit').removeClass("hidden");
-			}
-			// Bcak function
-			function back(){
-				$('#f_name').removeClass("hidden");
-				$('#l_name').removeClass("hidden");
-				$('#dob').removeClass("hidden");
-				$('#phone').removeClass("hidden");
-				$('#continue').removeClass("hidden");
-		       
-				$('#email').addClass("hidden");
-				$('#password').addClass("hidden");
-				$('#zip').addClass("hidden");
-				$('#address').addClass("hidden");
-				$('#terms').addClass("hidden");
-				$('#submit').addClass("hidden");
-				
-
-
-
-				
-
-			}
+@extends('frontend.new_layouts.master')
+@section('title')
+Register
+@endsection
+@section('content')
+<div class="d-flex flex-column-fluid welcome">
+  <div class="container">
+      <div class="card card-custom">
+          <div class="card-header">
+              <h3 class="card-title">{{ __('REGISTER HERE ') }}</h3>
+              <div class="card-toolbar">
+                  <div class="example-tools justify-content-center">
+                      <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                      <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
+                  </div>
                 
-            </script>
-		<!-- Optional JavaScript -->
-		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-		<script src="{{ asset('/public/frontend/js/jquery.js') }}"></script>
-		<script src="{{ asset('/public/frontend/js/popper.js') }}"></script>
-		<script src="{{ asset('/public/frontend/js/bootstrap.min.js') }}"></script>
+              </div>
+          </div>
 
-		<!-- Custom JS -->
-		<script src="{{ asset('/public/frontend/js/main.js') }}"></script>
-			<script src="{{asset('public/toast/toastr.js')}}"></script>
-		<script src="{{asset('public/toast/toastr.min.js')}}"></script>
-		@if(Session::has('success'))
-			<script>
-				toastr.options.positionClass = 'toast-top-right';
-				toastr.success('{{  Session::get('success') }}')
-			</script>
-		@endif
+          <form method="POST" action="{{ route('user-register') }}" enctype="multipart/form-data">
+              @csrf
+              <div class="card-body">
+                  <div class="row">
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('First_name') }} <span class="text-danger">*</span></label>
+                              <input type="text" name="first_name" class="form-control"
+                                  placeholder="Enter First Name" value="{{ old('Username') }}" required>
 
-		@if(Session::has('error'))
-			<script>
-				toastr.options.positionClass = 'toast-top-right';
-				toastr.error('{{  Session::get('error') }}')
-			</script>
-		@endif
-	</body>
-</html>
+                              @error('first_name')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Last_Name') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter last Name"
+                                  name="last_name" value="{{ old('last_name') }}" required />
+                              @error('last_name')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Username') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter Username"
+                                  name="username" value="{{ old('Username') }}" required />
+                              @error('username')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Email') }} <span class="text-danger">*</span></label>
+                              <input type="email" class="form-control" placeholder="Enter Email" name="email"
+                                  value="{{ old('email') }}" required />
+                              @error('email')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Date of Birth') }} <span class="text-danger">*</span></label>
+                              <input type="date" class="form-control" name="date_of_birth"
+                                  value="{{ old('date_of_birth') }}" required />
+                              @error('date_of_birth')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Gender') }} <span class="text-danger">*</span></label>
+                              <select name="gender" class="form-control" required>
+                                  <option selected="selected" disabled="disabled" value="">
+                                      {{ __('Select Gender') }}</option>
+                                  <option value='male'>Male</option>
+                                  <option value='female'>Female</option>
+                              </select>
+                              @error('gender')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Placement') }} <span class="text-danger">*</span></label>
+                              <select name="placement" class="form-control" required>
+                                  <option selected="selected" disabled="disabled" value="">
+                                      {{ __('Select Placement') }}</option>
+                                  <option value='1'>Left</option>
+                                  <option value='2'>Right</option>
+                              </select>
+                              @error('placement')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Country') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter Country" name="country"
+                                  value="{{ old('country') }}" required />
+                              @error('country')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('City') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter City" name="city"
+                                  value="{{ old('city') }}" required />
+                              @error('city')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('State') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter State" name="state"
+                                  value="{{ old('state') }}" required />
+                              @error('state')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Zip Code') }} <span class="text-danger">*</span></label>
+                              <input type="number" class="form-control" placeholder="Enter Zipcode"
+                                  name="zip_code" value="{{ old('Username') }}" required />
+                              @error('State')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Address') }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter Address" name="address"
+                                  value="{{ old('address') }}" required />
+                              @error('address')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Phone Number') }} <span class="text-danger">*</span></label>
+                              <input type="number" class="form-control" placeholder="Enter Name"
+                                  name="phone_number" value="{{ old('phone_number') }}" required />
+                              @error('phone_number')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Cnic Number') }} <span class="text-danger">*</span></label>
+                              <input type="number" class="form-control" placeholder="Enter Cnic Number" name="cnic"
+                                  value="{{ old('cnic') }}" required />
+                              @error('cnic')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Payment Process') }} <span class="text-danger">*</span></label>
+                              <select name="payment_process" class="form-control" required>
+                                  <option selected="selected" disabled="disabled" value="">
+                                      {{ __('Select Payment Process') }}</option>
+            @foreach ($payment_methods as $method)
+              <option value="{{ $method->id }}">{{ $method->name }}</option>
+              
+            @endforeach
+                              </select>
+                              @error('payment_process')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __("Sponser I'd") }} <span class="text-danger">*</span></label>
+                              <input type="number" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id"
+                                  value="{{ old('sponser_id') }}" required />
+                              @error('sponser_id')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __("Mother Name") }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter Mother Name" name="mother_name"
+                                  value="{{ old('mother_name') }}" required />
+                              @error('mother_name')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __("Favaourite Pet") }} <span class="text-danger">*</span></label>
+                              <input type="text" class="form-control" placeholder="Enter Favaourite Pet" name="favourite_pet"
+                                  value="{{ old('favourite_pet') }}" required />
+                              @error('favourite_pet')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Password') }}<span class="text-danger">*</span></label>
+                              <input type="password" class="form-control" placeholder="Enter Password"
+                                  name="password" value="{{ old('password') }}" required />
+                              @error('password')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+
+                      <div class="col-6">
+                          <div class="form-group">
+                              <label>{{ __('Confirm Password') }} <span
+                                      class="text-danger">*</span></label>
+                              <input type="password" class="form-control" placeholder="Confirm Password"
+                                  name="password_confirmation"
+                                  value="{{ old('password_confirmation') }}" required />
+                              @error('password_confirmation')
+                                  <span class="invalid-feedback" role="alert">
+                                      {{ $message }}
+                                  </span>
+                              @enderror
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="card-footer" style="text-align: start">
+                  <p> Already have Account? </p>
+                  <a href="{{ route('login') }}" class="btn btn-primary mr-2">{{ __('Login') }}</a>
+                  
+              </div>
+              <div class="card-footer" style="text-align: end">
+                  <button type="submit" class="btn btn-primary mr-2">{{ __('Register') }}</button>
+                  <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
+@endsection
+

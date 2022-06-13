@@ -1,209 +1,314 @@
 @extends('backend.layouts.master')
 
 @section('title')
-	Update User
+    Create Users
 @endsection
 
 @section('css')
 @endsection
 
 @section('main-content')
-	<div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
 
-		<div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-			<div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-				<div class="d-flex align-items-center flex-wrap mr-1">
-					<div class="d-flex align-items-baseline flex-wrap mr-5">
-						<h5 class="text-dark font-weight-bold my-1 mr-5">{{__('Users')}}</h5>
-						<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-							<li class="breadcrumb-item">
-                                @php $user_role_id = DB::table('model_has_roles')->where('model_id', Auth::user()->id)->first();
-                                      $userRole = DB::table('roles')->where('id', $user_role_id->role_id)->first();
-                                @endphp
-
-                                @if($userRole->id == 1)
-								<a href="{{route('editUser', $user->id)}}" class="text-muted">{{__('Update User')}}</a>
-                                @elseif($userRole->id == 4)
-                                    <a href="{{route('subAdminEditUser', $user->id)}}" class="text-muted">{{__('Update User')}}</a>
-                                @endif
+        <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
+            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+                <div class="d-flex align-items-center flex-wrap mr-1">
+                    <div class="d-flex align-items-baseline flex-wrap mr-5">
+                        <h5 class="text-dark font-weight-bold my-1 mr-5">{{ __('Users') }}</h5>
+                        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                            <li class="breadcrumb-item">
+                                <a href="{{ route('createUser') }}" class="text-muted">{{ __('Create User') }}</a>
                             </li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<div class="d-flex flex-column-fluid">
-			<div class="container">
-				<div class="card card-custom">
-					<div class="card-header">
-						<h3 class="card-title">{{__('Update User')}}</h3>
-						<div class="card-toolbar">
-							<div class="example-tools justify-content-center">
-								<span class="example-toggle" data-toggle="tooltip" title="View code"></span>
-								<span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
-							</div>
-                            <div class="card-toolbar">
-                                @if($userRole->id == 1)
-                                    <a href="{{route('listUsers')}}" class="btn btn-primary font-weight-bolder"><i class="la la-eye"></i> {{__('Users List')}}</a>
-                                @elseif($userRole->id == 4)
-                                    <a href="{{route('subAdminListUsers')}}" class="btn btn-primary font-weight-bolder"><i class="la la-eye"></i> {{__('Users List')}}</a>
-                                @endif
+        <div class="d-flex flex-column-fluid">
+            <div class="container">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <h3 class="card-title">{{ __('Edit User') }}</h3>
+                        <div class="card-toolbar">
+                            <div class="example-tools justify-content-center">
+                                <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
+                                <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
                             </div>
-						</div>
-					</div>
+                            <div class="card-toolbar">
+                                <a href="{{ route('listAdmins') }}" class="btn btn-primary font-weight-bolder"><i
+                                        class="la la-eye"></i>{{ __('View Users') }}</a>
+                            </div>
+                        </div>
+                    </div>
 
-                    @if($userRole->id == 1)
-                        <form method="POST" action="{{route('updateUser',$user->id)}}" enctype="multipart/form-data">
-                    @elseif($userRole->id == 4)
-                        <form method="POST" action="{{route('subAdminUpdateUser')}}" enctype="multipart/form-data">
-                    @endif
+                    <form method="POST" action="{{ route('updateUser',$user->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('First_name') }} <span class="text-danger">*</span></label>
+                                        <input type="text" name="first_name" class="form-control" 
+                                            placeholder="Enter First Name" value="{{ $user->first_name }}" required>
 
-						@csrf
-						<div class="card-body">
-							<div class="row">
+                                        @error('first_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Last_Name') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter last Name"
+                                            name="last_name" value="{{ $user->last_name }}" required />
+                                        @error('last_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Username') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Username"
+                                            name="username" value="{{ $user->username }}" required />
+                                        @error('username')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Email') }} <span class="text-danger">*</span></label>
+                                        <input type="email" class="form-control" placeholder="Enter Email" name="email"
+                                            value="{{ $user->email }}" required />
+                                        @error('email')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Date of Birth') }} <span class="text-danger">*</span></label>
+                                        <input type="date" class="form-control" name="date_of_birth"
+                                            value="{{ $user->date_of_birth }}" required />
+                                        @error('date_of_birth')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Gender') }} <span class="text-danger">*</span></label>
+                                        <select name="gender" class="form-control" required>
+                                            <option selected="selected" disabled="disabled" value="">
+                                                {{ __('Select Gender') }}</option>
+                                            <option value='male' {{$user->gender == "male" ? 'selected' : ""}}>Male</option>
+                                            <option  value='female' {{$user->gender == "female" ? 'selected' : ""}}>Female</option>
+                                        </select>
+                                        @error('gender')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Placement') }} <span class="text-danger">*</span></label>
+                                        <select name="placement" class="form-control" required>
+                                            <option selected="selected" disabled="disabled" value="">
+                                                {{ __('Select Placement') }}</option>
+                                            <option value='1' {{$user->placement == "1" ? 'selected' : ""}}>Left</option>
+                                            <option value='2' {{$user->placement == "2" ? 'selected' : ""}}>Right</option>
+                                        </select>
+                                        @error('placement')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Country') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Country" name="country"
+                                            value="{{ $user->country }}" required />
+                                        @error('country')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('City') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter City" name="city"
+                                            value="{{ $user->city }}" required />
+                                        @error('city')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('State') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter State" name="state"
+                                            value="{{ $user->state }}" required />
+                                        @error('state')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Zip Code') }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" placeholder="Enter Zipcode"
+                                            name="zip_code" value="{{ $user->zip_code }}" required />
+                                        @error('State')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Address') }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Address" name="address"
+                                            value="{{ $user->address }}" required />
+                                        @error('address')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Phone Number') }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" placeholder="Enter Name"
+                                            name="phone_number" value="{{ $user->phone_number }}" required />
+                                        @error('phone_number')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Cnic Number') }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" placeholder="Enter Cnic Number" name="cnic"
+                                            value="{{ $user->cnic }}" required />
+                                        @error('cnic')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
 								<div class="col-6">
-									<div class="form-group">
-										<label>{{__('Account Type')}} <span class="text-danger">*</span></label>
-                                        @if ($user->roles->first()->id == 1)
-                                            <select name="accountTypeUser" disabled class="form-control" required>
-                                                @if($user->roles->first()->id == 1)    <option selected="selected" disabled="disabled">{{__('Admin')}}</option>
-                                                @elseif($user->roles->first()->id == 2) <option selected="selected" disabled="disabled">{{__('Employer')}}</option>
-                                                @elseif($user->roles->first()->id == 3) <option selected="selected" disabled="disabled">{{__('Employee')}}</option>
-                                                @endif
-                                            </select>
-                                        @else
-                                            <select name="accountTypeUser" disabled class="form-control" required>
-                                                @if($user->roles->first()->id == 2) <option selected="selected" disabled="disabled">{{__('Employer')}}</option>
-                                                @elseif($user->roles->first()->id == 3) <option selected="selected" disabled="disabled">{{__('Employee')}}</option>
-                                                @endif
-                                            </select>
-                                        @endif
-										@error('accountTypeUser')
-											<span class="invalid-feedback" role="alert">
-												{{ $message }}
-											</span>
-										@enderror
-									</div>
-								</div>
-								
+                                    <div class="form-group">
+                                        <label>{{ __('Payment Process') }} <span class="text-danger">*</span></label>
+                                        <select name="payment_process" class="form-control" required>
+                                            <option selected="selected" disabled="disabled" value="">
+                                                {{ __('Select Payment Process') }}</option>
+											@foreach ($payment_methods as $method)
+												<option value="{{ $method->id }}" {{$method->id == $user->payment_process ? 'selected' : ""}}>{{ $method->name }}</option>
+												
+											@endforeach
+                                        </select>
+                                        @error('payment_process')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
 								<div class="col-6">
-								<div class="form-group">
-									<label>{{__('First_name')}} <span class="text-danger">*</span></label>
-									<input type="text" name="first_name"  value="{{ $user->first_name }}" class="form-control" required>
-									  
-									@error('first_name')
-									<span class="invalid-feedback" role="alert">
-										{{ $message }}
-									</span>
-									@enderror
-								</div>
-							</div>
-							
+                                    <div class="form-group">
+                                        <label>{{ __("Sponser I'd") }} <span class="text-danger">*</span></label>
+                                        <input type="number" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id"
+                                            value="{{ $user->sponser_id }}" required />
+                                        @error('sponser_id')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+								<div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __("Mother Name") }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Mother Name" name="mother_name"
+                                            value="{{ $user->mother_name }}" required />
+                                        @error('mother_name')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+								<div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __("Favaourite Pet") }} <span class="text-danger">*</span></label>
+                                        <input type="text" class="form-control" placeholder="Enter Favaourite Pet" name="favourite_pet"
+                                            value="{{ $user->favourite_pet }}" required />
+                                        @error('favourite_pet')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>{{ __('Password') }}<span class="text-danger">*</span></label>
+                                        <input type="password" class="form-control" placeholder="Enter Password"
+                                            name="password" value="{{ old('password') }}" required />
+                                        @error('password')
+                                            <span class="invalid-feedback" role="alert">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div>
+                                </div>
 
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('Last_Name')}} <span class="text-danger">*</span></label>
-									<input type="text" class="form-control" value="{{ $user->last_name }}"  placeholder="Enter last Name" name="last_name"  required />
-									@error('last_name')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('Street Address')}} <span class="text-danger">*</span></label>
-									<input type="text" class="form-control"  placeholder="Enter Name" name="street_address" value="{{ $user->street_address  }}" required />
-									@error('street_address')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('State')}} <span class="text-danger">*</span></label>
-									<select name="state_id"  class="form-control" required>
-										<option selected="selected" disabled="disabled" value="">{{__('Select State')}}</option>
-										@foreach($countries as $country)
-										<option value='{{$country->id}}' {{ $user->state_id == $country->id ? 'selected' : ""}}>{{$country->name}}</option>
-										@endforeach
-									</select>
-									@error('State')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('City Name')}} <span class="text-danger">*</span></label>
-									<select name="city_name"  class="form-control" required>
-										<option selected="selected" disabled="disabled" value="">{{__('Select State')}}</option>
-										@foreach($cities as $city)
-										<option value='{{$city->id}}' {{ $user->city_name == $city->id ? 'selected' : ""}}>{{$city->name}}</option>
-										@endforeach
-									</select>
-									@error('last_name')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('Zip Code')}} <span class="text-danger">*</span></label>
-									<input type="number" class="form-control"   placeholder="Enter Name" name="zip_code" value="{{ $user->zip_code }}" required />
-									@error('State')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('Email')}} <span class="text-danger">*</span></label>
-									<input type="email" class="form-control"  placeholder="Enter Email" name="UserEmail" value="{{ $user->email }}" required />
-									@error('UserEmail')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							<div class="col-6">
-								<div class="form-group">
-									<label>{{__('Phone Number')}} <span class="text-danger">*</span></label>
-									<input type="number" class="form-control"  placeholder="Enter Name" name="phone_number" value="{{$user->phone_number}}" required />
-									@error('State')
-										<span class="invalid-feedback" role="alert">
-											{{ $message }}
-										</span>
-									@enderror
-								</div>
-							</div>
-							
-							</div>
-						</div>
-						<div class="card-footer" style="text-align: end">
-							<input type="hidden" name="id" value="{{$user->id}}"/>
-							<input type="hidden" type="number" name="free_jobs" value="{{$user->free_jobs}}"/>
-							<button type="submit" class="btn btn-primary mr-2">{{__('Update')}}</button>
-							<button type="reset" class="btn btn-secondary">{{__('Cancel')}}</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+                              
+                            </div>
+                        </div>
+                        <div class="card-footer" style="text-align: end">
+                            <button type="submit" class="btn btn-primary mr-2">{{ __('Submit') }}</button>
+                            <button type="reset" class="btn btn-secondary">{{ __('Reset') }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')

@@ -14,23 +14,18 @@
 		<link href="{{asset('public/toast/toastr1.css')}}" rel="stylesheet">
     	<link href="{{asset('public/toast/toastr2.css')}}" rel="styleshee">
     	<title>Login</title>
-		 <link rel="shortcut icon" href="{{ asset('/public/frontend/img/logo-color.png') }}">
+		 {{--  <link rel="shortcut icon" href="{{ asset('/public/frontend/img/logo-color.png') }}">  --}}
 	</head>
 	<body>
 		<section class="welcome">
-			<a href="#" class="welcome-logo">
-				<img src="{{ asset('/public/frontend/img/logo-white.png') }}" alt="main-logo" />
-			</a>
+			
 
 			<main class="main">
 				<div class="main-header">
-					<img src="{{ asset('/public/frontend/img/logo-color.png') }}" alt="" />
+					<h4 class="text-white">Star Multinational</h4>
 				</div>
 				<div class="main-content">
-					<p>
-						Find the perfect job and explore<br />
-						thousands of vacancies daily
-					</p>
+					
 					<h6>Log in your account</h6>
 
 					<form class="main-form" action="{{ route('user-login') }}" method="post">
@@ -56,13 +51,13 @@
 						<p>Or continue with social accounts</p>
 						<ul>
 							<li>
-								<a href="{{ url('/login/facebook') }}"> <i class="fab fa-facebook-f"></i></a>
+								<a href=""> <i class="fab fa-facebook-f"></i></a>
 							</li>
 							<li>
-								<a href="{{ url('/login/twitter') }}"><i class="fab fa-twitter"></i></a>
+								<a href=""><i class="fab fa-twitter"></i></a>
 							</li>
 							<li>
-								<a href="{{ url('/login/google') }}">
+								<a href="">
 									<i class="fab fa-google"></i>
 								</a>
 							</li>

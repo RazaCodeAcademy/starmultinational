@@ -70,7 +70,9 @@ class RegisterController extends Controller
      * @return RedirectResponse
      */
     protected function create(array $data)
+
     {
+        // dd('sadjhfsd');
         $agreement = '';
         if($data['agreeterms'] == true)
         {

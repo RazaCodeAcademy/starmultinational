@@ -11,6 +11,8 @@ use App\Models\Job;
 use App\Models\User;
 use App\Models\EmployeeAppliedJob;
 use App\Models\Country;
+use App\Models\AccountType;
+use App\Models\PaymentMethod;
 use App\Models\EmployeeBussinessCategory;
 
 class DashboardController extends Controller
@@ -25,9 +27,11 @@ class DashboardController extends Controller
         // $date = \Carbon\Carbon::today()->subDays(5);
         // $jobs = Job::where('created_at','>=',$date)->with('get_bussines_catogories','get_location')->get();
         // $countries = Country::all();
-
+        $users = User::all();
+        $accounts = AccountType::all();
+        $payments = PaymentMethod::all();
         return view('backend.pages.dashboard.dashboard', 
-            // compact('liveJobs','liveAppliedEmployeeJobs','employers','employees','jobs','countries')
+            compact('users','accounts','payments')
         );
     }
 
