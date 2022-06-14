@@ -102,6 +102,7 @@ Route::prefix('admin')->namespace('Backend')->group(function (){
         Route::resource('manage-account-types', 'AccountTypeController');
         Route::resource('manage-payment-methods', 'PaymentMethodController');
         Route::resource('manage-withdraw', 'WithdrawController');
+        Route::resource('manage-transaction', 'TransactionController');
 
         Route::get('dashboard', 'DashboardController@dashboard')->name('adminDashboard');
         Route::post('filterCountry', 'DashboardController@filterCountry')->name('filterCountryDashboard');

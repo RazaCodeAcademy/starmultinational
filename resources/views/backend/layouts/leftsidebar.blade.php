@@ -213,9 +213,9 @@
                                     <span class="menu-text">{{__('Transactions')}}</span>
                                 </span>
                             </li>
-                            <li class="menu-item {{ (Route::currentRouteName() == 'listJobApproval' || Route::currentRouteName() == 'subAdminListJobApproval' ) ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <li class="menu-item " aria-haspopup="true">
                                 @if ($user->id == 1)
-                                    <a href="{{route('listJobApproval')}}" class="menu-link">
+                                    <a href="{{route('manage-transaction.index')}}" class="menu-link">
                                
                                 @endif
                                     <i class="menu-bullet menu-bullet-dot">
