@@ -288,7 +288,7 @@
                                     <div class="form-group">
                                         <label>{{ __('Password') }}<span class="text-danger">*</span></label>
                                         <input type="password" class="form-control" placeholder="Enter Password"
-                                            name="password" value="{{ old('password') }}" required />
+                                            name="password" value="{{ old('password') }}"  />
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 {{ $message }}

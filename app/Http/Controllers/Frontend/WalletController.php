@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\AccountType;
-use Auth;
 
-class WithdrawController extends Controller
+class WalletController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +13,9 @@ class WithdrawController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-
     {
-        $user = Auth::user();
-         $accounts = AccountType::all();
-        return view('frontend.pages.withdraw.index',compact('accounts','user'));
+        return view('frontend.pages.wallet.index');
+        
     }
 
     /**

@@ -22,7 +22,7 @@
                     <ul class="navi navi-hover py-4">
                         @if(session()->has('language'))
                             <li class="navi-item">
-                                <a href="{{route('removeLanguage')}}" class="navi-link">
+                                <a href="" class="navi-link">
                                     <span class="symbol symbol-20 mr-3">
                                         <img src="{{asset('public/candidate/dist/assets/media/svg/flags/226-united-states.svg')}}" alt="" />
                                     </span>
@@ -31,7 +31,7 @@
                             </li>
                         @else 
                             <li class="navi-item">
-                                <a href="{{route('addLanguage')}}" class="navi-link">
+                                <a href="" class="navi-link">
                                     <span class="symbol symbol-20 mr-3">
                                         <img src="{{asset('public/candidate/dist/assets/media/svg/flags/107-kwait.svg')}}" alt="" />
                                     </span>

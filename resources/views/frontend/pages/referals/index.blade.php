@@ -41,7 +41,9 @@ Referals
                                                 <button type="submit" name="submit" value="search" id="submit" class="btn btn-primary"><i class="fa fa-fw fa-search"></i> Search</button>
                                             </div>
                                             <div class="d-block d-sm-none"> &nbsp; </div>
-                                            <div> <a href="javascript:;" data-href="adduser.php?redir=userlist&addref=umar751" data-poptitle="<i class='fa fa-fw fa-plus-circle'></i> Add Referral" class="openPopup btn btn-dark"><i class="fa fa-fw fa-user-plus"></i> Add Referral</a> </div>
+                                            <div> 
+                                                <button type="button" class=" btn btn-dark" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"><i class='fa fa-plus-circle'></i>Add Referral </button>
+                                                {{--  <a href="javascript:;" data-href="adduser.php?redir=userlist&addref=umar751" data-poptitle=" Add Referral" class="openPopup btn btn-dark"><i class="fa fa-fw fa-user-plus"></i> Add Referral</a> </div>  --}}
                                         </div>
                                     </div>
                                 </div>
@@ -93,16 +95,68 @@ Referals
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="...">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body"> </div>
+  
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add New Refferal</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
+            <div class="modal-body">
+              <form>
+                <div class="row">
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">First Name:</label>
+                            <input type="text" name="first_name" class="form-control" id="recipient-name" required placeholder="Please Enter First Name">
+                          </div>
+                    </div>
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Last Name:</label>
+                            <input type="text" name="last_name" class="form-control" id="recipient-name" required placeholder="Please Enter Last Name">
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Username :</label>
+                            <input type="text" name="username" class="form-control" id="recipient-name" required placeholder="Please Enter UserName">
+                          </div>
+                    </div>
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Email:</label>
+                            <input type="email" name="email" class="form-control" id="recipient-name" required placeholder="Please Enter Email">
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Password:</label>
+                            <input type="password" name="password" class="form-control" id="recipient-name"required placeholder="Please Enter Password">
+                          </div>
+                    </div>
+                    <div class="col md-4">
+                        <div class="form-group">
+                            <label for="recipient-name" class="col-form-label">Confirm Password:</label>
+                            <input type="password" name="Confirmpassword" class="form-control" id="recipient-name" required placeholder="Please Enter Confirm Password">
+                          </div>
+                    </div>
+                </div>
+                
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Add New</button>
+            </div>
+          </div>
         </div>
-    </div> 
+      </div>
 @endsection

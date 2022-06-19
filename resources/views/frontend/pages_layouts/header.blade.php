@@ -6,7 +6,7 @@
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item mr-auto">
             <a class="navbar-brand" href="">
-              <img class="brand-logo" alt="modern admin logo" src="{{ asset('public/app-assets/images/logo/logo.png') }}">
+              <img class="brand-logo" alt="modern admin logo" src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png" >
               <h3 class="brand-text">Star Multinational</h3>
             </a>
           </li>

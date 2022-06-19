@@ -2,9 +2,13 @@
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
-        <a href="{{route('adminDashboard')}}" class="brand-logo" style="padding-left: 40px">
-            <h1 class="text-white">Admin</h1>
-            {{-- <img alt="Logo" src="{{asset('public/asset/images/joblot-blue-logo.png')}}"  style="width: 100px; height:50px;"/> --}}
+        <a href="{{route('adminDashboard')}}" class="brand-logo" style="padding-left: 5px">
+            <!--<h1 class="text-white">Admin</h1>-->
+            <img alt="Logo" src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png"  style="height:50px;"/>
+            <span style="margin-top: 13px;
+    margin-left: 10px;
+    color: white;
+    font-size: 19px;">Admin</span>
         </a>
 
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
@@ -32,8 +36,7 @@
                 <li class="menu-item {{ (Route::currentRouteName() == 'adminDashboard' || Route::currentRouteName() == 'subAdminDashboard') ? 'menu-item-active' : '' }}" aria-haspopup="true">
                     @if($user->id == 1)
                     <a href="{{route('adminDashboard')}}" class="menu-link">
-                    @elseif($user->id == 4)
-                    <a href="{{route('subAdminDashboard')}}" class="menu-link">
+                    
                     @endif
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">

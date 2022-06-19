@@ -59,6 +59,7 @@
 									<th>{{__('Gender')}}</th>
 									<th>{{__('Cnic')}}</th>
 									<th>{{__('Sponser_id')}}</th>
+									<th>{{__('Account_type')}}</th>
 									<th>{{__('Actions')}}</th>
 								</tr>
 							</thead>
@@ -91,10 +92,15 @@
 											{{ $user->sponser_id }}
 										</td>
 										<td>
-                                            {{--  @if($userRole->id == 1)
-                                                <a href="{{route('viewUser', $user->id)}}"><i class="la la-eye text-success mr-5"></i></a>
-                                            
-                                            @endif  --}}
+											<select class="form-select" style="width: 100%; margin:0 auto;" aria-label="Default select example" name="account_type" onchange="changeStatus('{{ $user->id }}', this.value)" >
+												<option value="" selected disabled> Select Account Types </option>
+												@foreach ($account_types as $account_type)
+													<option value="{{ $account_type->id }}" {{ $user->account_type == $account_type->id ? 'selected' : '' }}>{{ $account_type->name }}</option>
+												@endforeach
+											</select>
+										</td>
+										<td>
+                                     
 
                                             @if($userRole->id == 1)
                                                 <a href="{{route('editUser', $user->id)}}"><i class="la la-pencil-alt text-success mr-5"></i></a>
@@ -162,46 +168,25 @@
 			});
         }
 
-        function deleteFunctionSubAdmin(id) {
-            swal({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover!",
-                icon: "warning",
-                buttons: true,
-                dangerMode: true,
-            })
-                .then((willDelete) => {
-                    if (willDelete) {
-
-                        $.ajax({
-                            method: "POST",
-                            url: "{{route('subAdminDeleteUser')}}",
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr('content'),
-                                'id': id
-                            },
-                            success: function (response) {
-                                if(response.status === 1){
-                                    swal("Successfully Deleted", {
-                                        icon: "success",
-                                    });
-                                    window.setTimeout(function() {
-                                        location.reload();
-                                    }, 1000);
-                                }
-                                else{
-                                    swal("Error While Deleting", {
-                                        icon: "error",
-                                    });
-                                }
-                            }
-                        });
-
-                    } else {
-                        swal("Your Data is safe!");
-                    }
-                });
-        }
+       
+		function changeStatus(id, value) {
+			var route = "{{ route('userAccounttype', ':id') }}";
+			route = route.replace(":id", id);
+			$.ajax({
+				type: 'GET'
+				, url: route
+				, data: {
+					account_type: value
+				, }
+				, success: function(response) {
+					if (response.success == true) {
+						toastr.success(response.message);
+						window.location = "{{ route('listAdmins') }}"
+					} else
+						alert(response.message);
+				}
+			})
+		}
 
 	</script>
 @endsection

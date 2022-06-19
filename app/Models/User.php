@@ -41,6 +41,7 @@ class User extends Authenticatable
         'mother_name', 
         'favourite_pet', 
         'password',  
+        'account_type',  
     ];
 
     /**
@@ -103,7 +104,12 @@ class User extends Authenticatable
         return $this->hasMany(EmployeeExperience::class, 'user_id', 'id');
     }
 
- 
+    public function account_bal()
+    {
+        return $this->hasOne(AccountType::class, 'id', 'account_type');
+    }
+
+
 
     public function get_notification()
     {

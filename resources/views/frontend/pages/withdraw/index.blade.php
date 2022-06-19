@@ -3,7 +3,7 @@
  Withdraw 
  @endsection
   @section('content')
-    <div class="container">
+    <div class="container mt-5">
         <div class="main-content">
             <div class="section-header">
                 <h1><i class="fa fa-fw fa-hand-holding-usd"></i> Withdrawal Request</h1> </div>
@@ -12,7 +12,7 @@
                 <div class="card card-primary">
                     <div class="card-header">
                         <h4>
-                            Balance <span class=" text-info">$850.00</span>              </h4> </div>
+                            Balance <span class=" text-info">{{ Auth::user()->account_bal->price ?? 0 }}$</span>              </h4> </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 float-md-right">
@@ -25,8 +25,12 @@
                                     <div class="input-group">
                                         <div class="input-group-prepend"> <span class="input-group-text">Account</span> </div>
                                         <select name='txpaytype' class="custom-select" id="inputGroupSelect05" required="">
-                                            <option value="" disabled="" selected>-</option> @foreach ($accounts as $account )
-                                            <option value="{{ $account->id }}">{{ $account->name }}</option> @endforeach </select>
+                                            <option value="" disabled="" selected>-
+                                            </option> 
+                                            @foreach ($accounts as $account_type)
+													<option value="{{ $account_type->id }}" {{ $user->account_type == $account_type->id ? 'selected' : '' }}>{{ $account_type->name }}</option>
+												@endforeach
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">

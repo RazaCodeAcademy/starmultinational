@@ -201,7 +201,13 @@ class UserController extends Controller
         $notification = array(
             'success' => 'logout Successfully!', 
             );
-        return redirect()->route('login')->with($notification);
+            return redirect()->to('https://starmultinational.com/');
+    }
+
+    public function profile($id)
+    {
+        $user =User::find($id);
+        return redirect()->route('update-employee-details-page');
     }
 
 }

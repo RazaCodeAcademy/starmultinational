@@ -37,7 +37,7 @@
                   <span class="user-name text-bold-700"></span>
                 </span>
                 <span class="avatar avatar-online">
-                  <img src="{{asset('public/assets/frontend/img/Group 5.svg')}}" alt="avatar"><i></i></span>
+                  <img src="{{asset('public/app-assets/frontend/img/Group 5.svg')}}" alt="avatar"><i></i></span>
               </a>
               <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href=""><i class="ft-user"></i> {{ __('Edit Profile') }}</a>
                 <a class="dropdown-item" href=""><i class="ft-settings"></i> {{ __('Settings') }}</a>

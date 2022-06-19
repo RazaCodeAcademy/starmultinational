@@ -8,84 +8,8 @@
 @endsection
 
 @section('main-content')
-    {{--  <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
-
-        <div class="subheader py-2 py-lg-6 subheader-solid" id="kt_subheader">
-            <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-                <div class="d-flex align-items-center flex-wrap mr-1">
-                    <div class="d-flex align-items-baseline flex-wrap mr-5">
-                        <h5 class="text-dark font-weight-bold my-1 mr-5">{{ __('Withdraw') }}</h5>
-                        <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-                            <li class="breadcrumb-item">
-                                <a href="#" class="text-muted">{{ __('List Withdraw') }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex flex-column-fluid">
-            <div class="container">
-                <div class="card card-custom gutter-b">
-                    <div class="card-header flex-wrap border-0 pt-6 pb-0">
-                        <div class="card-title">
-                            <h3 class="card-label">{{ __('Withdraw Table') }}
-                                <span class="d-block text-muted pt-2 font-size-sm"></span>
-                            </h3>
-                        </div>
-                        <div class="card-toolbar">
-                            <a href="{{ route('manage-account-types.create') }}"
-                                class="btn btn-primary font-weight-bolder"><i class="la la-plus"></i>
-                                {{ __('Add Withdraw') }}</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-separate table-head-custom table-checkable" id="myCustomTable">
-                            <thead>
-                                <tr>
-                                    <th>{{ __('ID') }}</th>
-                                    <th>{{ __('Name') }}</th>
-                                    <th>{{ __('Price') }}</th>
-                                    <th>{{ __('Left Users') }}</th>
-                                    <th>{{ __('Right Users') }}</th>
-                                    <th>{{ __('Created By') }}</th>
-                                    <th>{{ __('Updated By') }}</th>
-                                    <th>{{ __('Created At') }}</th>
-                                    <th>{{ __('Updated At') }}</th>
-                                    <th>{{ __('Actions') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if(!empty($account_types))
-                                @foreach ($account_types as $type)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $type->name }}</td>
-                                        <td>{{ $type->price }}</td>
-                                        <td>{{ $type->left_users }}</td>
-                                        <td>{{ $type->right_users }}</td>
-                                        <td>{{ $type->created_by() }}</td>
-                                        <td>{{ $type->updated_by() }}</td>
-                                        <td>{{ $type->updated_by() }}</td>
-                                        <td>{{ $type->updated_by() }}</td>
-                                        <td>
-                                            <a href="{{ route('manage-account-types.edit', $type->id) }}"><i
-                                                    class="la la-pencil-alt text-success mr-5"></i></a>
-                                            <a style="cursor: pointer" onclick="deleteFunction('{{ $type->id }}') "><i
-                                                    class="la la-trash text-danger mr-5"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>  --}}
-    <div class="container">
+    
+    <div class="container py-4" style="margin-bottom: 20%;" >
         <div class="main-content">
             
                 <div class="section-header">
@@ -144,19 +68,7 @@
             
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog" aria-labelledby="...">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-                </div>
-                <div class="modal-body"> </div>
-            </div>
-        </div>
-    </div>
+    
 @endsection
 
 @section('script')
@@ -203,44 +115,6 @@
                 });
         }
 
-        function deleteFunctionSubAdmin(id) {
-            swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-
-                        $.ajax({
-                            method: "POST",
-                            url: "{{ route('subAdminDeleteUser') }}",
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr('content'),
-                                'id': id
-                            },
-                            success: function(response) {
-                                if (response.status === 1) {
-                                    swal("Successfully Deleted", {
-                                        icon: "success",
-                                    });
-                                    window.setTimeout(function() {
-                                        location.reload();
-                                    }, 1000);
-                                } else {
-                                    swal("Error While Deleting", {
-                                        icon: "error",
-                                    });
-                                }
-                            }
-                        });
-
-                    } else {
-                        swal("Your Data is safe!");
-                    }
-                });
-        }
+       
     </script>
 @endsection
