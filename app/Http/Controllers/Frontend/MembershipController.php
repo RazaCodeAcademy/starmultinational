@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Transaction;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Models\MemberShip;
 
-class TransactionController extends Controller
+class MembershipController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,10 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $transactions = Transaction::orderBy('created_at', 'DESC')->get();
-       return view('backend.pages.transaction.index',compact('transactions'));
+    {   
+         $membership = Membership::where('user_id', Auth::user()->id)->first();
+        
+         return view('frontend.pages.membership.index',compact('membership'));
     }
 
     /**
@@ -38,7 +39,17 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =[
+            'user_id' => Auth::user()->id,
+            'description' => $request->description,
+            'status' => 1,
+
+        ];
+        $membership = Membership::create($data);
+        $notification = array(
+            'success' => ' Request Send Successfully!', 
+            );
+        return redirect()->back()->with($notification);
     }
 
     /**

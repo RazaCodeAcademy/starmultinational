@@ -1,10 +1,13 @@
 @extends('frontend.pages_layouts.master')
  @section('title') 
- Withdraw 
+ Wallet 
  @endsection
   @section('content')
-    <div class="container mt-5">
-        <div class="main-content">
+  <div class="app-content content">
+    <div class="content-wrapper">
+      <div class="content-header row">
+      </div>
+      <div class="content-body">
             <div class="section-header">
                 <h1><i class="fa fa-fw fa-hand-holding-usd"></i>Wallet</h1> </div>
             <div class="section-body">
@@ -24,5 +27,7 @@
                 <input type="hidden" name="dosubmit" value="1"> </div>
         </div>
     </div>
+  </div>
+  
     
  @endsection

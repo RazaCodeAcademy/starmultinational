@@ -64,6 +64,12 @@
         .cursor {
             cursor: pointer;
         }
+        .toggle-icon::before{
+            display: none !important;
+        }
+        a::after{
+            display: none !important;
+        }
 
         
 

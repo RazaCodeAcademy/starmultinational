@@ -24,12 +24,13 @@ use App\Models\SavedJob;
 use App\Models\EmployeeAppliedJob;
 use App\Models\EmployeeBussinessCategory;
 use App\Models\TrendingFilter;
+use App\Models\Transaction;
 class DashboardController extends Controller
 {
     public function index(request $request){
         
-
-        return view('frontend.pages.index');
+        $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
+        return view('frontend.pages.index',compact('transaction'));
     }
 
     // Employee Details 
@@ -57,7 +58,7 @@ class DashboardController extends Controller
                 'email'      => $data['email'], 
                 'state'          => $data['state'], 
                 'address'    => $data['address'],
-                'city'    => $data['city'],
+                'country'    => $data['country'],
                
             ];
 

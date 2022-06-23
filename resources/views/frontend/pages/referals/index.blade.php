@@ -4,9 +4,11 @@ Referals
 @endsection
   @section('content')
     <!-- Main Content -->
-    <div class="container">
-        <div class="main-content">
-            <section class="section">
+    <div class="app-content content">
+        <div class="content-wrapper">
+          <div class="content-header row">
+          </div>
+          <div class="content-body">
                 <div class="section-header">
                     <h1><i class="fa fa-fw fa-users"></i> Referral List</h1> </div>
                 <div class="section-body">
@@ -91,7 +93,7 @@ Referals
                     <div class="clearfix"></div>
                 </div>
         </div>
-        </section>
+        
     </div>
 
     <!-- Modal -->
@@ -158,5 +160,5 @@ Referals
             </div>
           </div>
         </div>
-      </div>
+    </div>
 @endsection

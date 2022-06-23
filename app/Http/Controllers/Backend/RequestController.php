@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Transaction;
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Models\MemberShip;
+use App\Models\AccountType;
 
-class TransactionController extends Controller
+class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,9 @@ class TransactionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $transactions = Transaction::orderBy('created_at', 'DESC')->get();
-       return view('backend.pages.transaction.index',compact('transactions'));
+    {   $account_types = AccountType::orderBy('created_at', 'DESC')->get();
+        $requests = Membership::all();
+        return view('backend.pages.request.index',compact('requests','account_types'));
     }
 
     /**
@@ -83,6 +84,12 @@ class TransactionController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account_type = Membership::find($id);
+        if($account_type){
+            $account_type->delete();
+            return response()->json([
+                'status' => 1
+            ]);
+        }
     }
 }

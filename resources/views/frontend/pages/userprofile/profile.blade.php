@@ -48,7 +48,7 @@
                         <div class="row">
                             
                             <div class="col">
-                                <label for="last_name">Whatsapp Number</label><br>
+                                <label for="last_name">Phone</label><br>
                                 <input type="text" name="phone_number" value="{{Auth::user()->phone_number}}" class="form-control" placeholder="Number">
                                 @if ($errors->has('last_name'))
                                  <div> <span  class="text-danger" id="last_nameError">{{ $errors->first('last_name') }}</span></div>
@@ -61,8 +61,8 @@
                             <input type="text" name="state" class="form-control" value="{{Auth::user()->state}}"  placeholder="State">
                         </div>
                         <div class="main-form-control">
-                            <label for="City">City</label><br>
-                            <input type="text" name="city" class="form-control" value="{{Auth::user()->city}}" placeholder="City">
+                            <label for="City">Country</label><br>
+                            <input type="text" name="country" class="form-control" value="{{Auth::user()->country}}" placeholder="Country">
                         </div>
                         <div class="mb-3">
                             <label for="Street Address">Street Address</label><br>

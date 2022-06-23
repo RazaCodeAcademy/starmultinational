@@ -36,6 +36,7 @@ Route::middleware(['frontend'])->group(function () {
     Route::resource('withdraw', 'Frontend\WithdrawController');
     Route::resource('referal', 'Frontend\ReferalController');
     Route::resource('wallet', 'Frontend\WalletController');
+    Route::resource('membership', 'Frontend\MemberShipController');
     // Route::get('/', function(){
     //     return redirect()->route('adminLogin');
     // })->name('welcome');
@@ -64,6 +65,7 @@ Route::prefix('admin')->namespace('Backend')->group(function (){
         Route::resource('manage-payment-methods', 'PaymentMethodController');
         Route::resource('manage-withdraw', 'WithdrawController');
         Route::resource('manage-transaction', 'TransactionController');
+        Route::resource('manage-request', 'RequestController');
 
         Route::get('dashboard', 'DashboardController@dashboard')->name('adminDashboard');
         Route::post('filterCountry', 'DashboardController@filterCountry')->name('filterCountryDashboard');

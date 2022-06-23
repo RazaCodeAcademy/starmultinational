@@ -81,7 +81,16 @@ Dashboard
                 <div class="card-body">
                   <div class="media d-flex">
                     <div class="media-body text-left">
-                      <h3 class="success"> ${{ Auth::user()->account_bal->price ?? 0 }}</h3>
+                      @if(!empty($transaction))
+                        @if($transaction->status == 1 )
+                        <h3 class="success">
+                          ${{ Auth::user()->account_bal->price - $transaction->amount ?? 0 }}</h3>
+                       
+                          @endif
+                          @else
+                          <h3 class="success">
+                            $git</h3>
+                        @endif
                       <h6>Wallet Amount </h6>
                     </div>
                     <div>
@@ -106,10 +115,28 @@ Dashboard
         <span aria-hidden="true">&times;</span>
         </button>
         <p>Please Upgrade your Account  </p>
-        <a href="" ><u>Click Here To Upgrade your Account</u></a>
+        <a href="{{ route('membership.index') }}" ><u>Click Here To Upgrade your Account</u></a>
      
-  </div>
+    </div>
+    @elseif (!empty($transaction))
+    <div class="alert alert-success" role="alert" id="succMsg">
+      <button type="button" class="close " data-dismiss="alert" aria-label="Close">
       
+        <span aria-hidden="true">&times;</span>
+        </button>
+        <p>Successfully Upgraded Your Account  </p>
+      
+    </div>
+    @else
+    <div class="alert alert-warning" role="alert" id="succMsg">
+      <button type="button" class="close " data-dismiss="alert" aria-label="Close">
+      
+        <span aria-hidden="true">&times;</span>
+        </button>
+        <p>Congratulations Your registration bonus transfer to your wallet please transfer $50 To StarMultiNational to withdraw balance Amount!  </p>
+        <a href="{{ route('transaction.create') }}" ><u>Transfer Amount ??</u></a>
+     
+    </div>
     @endif
     <div class="row">
 
@@ -169,5 +196,51 @@ Dashboard
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row ">
+      <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+        <div class="card">
+          <div class="card-header">
+              <h4>Membership</h4>
+              <div class="card-header-action">
+                  <div class='badge badge-success'>Active</div>                    
+              </div>
+          </div>
+          <div class="card-body">
+              <div class="summary">
+                @if(!empty($transaction))
+                  <div class="summary-info">
+                      <h4><span class="text-success"><i class="la la-caret-up"></i></span>${{ Auth::user()->account_bal->price ?? 0 }} <span class="text-danger"><i class="la la-caret-down"></i></span>${{ $transaction->amount ?? '0'}} </h4>
+                      <div class="text-muted">from total 1 transactions</div>
+                      <h3 class="mt-2"><span class="text-info"><i class="fas fa-wallet"></i></span>${{ Auth::user()->account_bal->price - $transaction->amount ?? 0 }}  </h3>
+                      <div class="d-block mt-2">
+                          <a href="{{ route('membership.index') }}">View Details</a>
+                      </div>
+                  </div>
+                @else
+                <div class="summary-info">
+                  <h4><span class="text-success"><i class="la la-caret-up"></i></span>$0 <span class="text-danger"><i class="la la-caret-down"></i></span>$0 </h4>
+                  <div class="text-muted">from total 1 transactions</div>
+                  <h3 class="mt-2"><span class="text-info"><i class="fas fa-wallet"></i></span>${{ Auth::user()->account_bal->price ?? 0 }}  </h3>
+                  <div class="d-block mt-2">
+                      <a href="{{ route('membership.index') }}">View Details</a>
+                  </div>
+              </div>
+                @endif
+                  <div class="summary-item">
+                      <h6><span class='text-muted'>Registered Since</span> {{ Auth::user()->created_at }}</h6>
+                    
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+</div>
+
+
     
 @endsection

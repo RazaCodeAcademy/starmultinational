@@ -4,7 +4,8 @@ namespace App\Http\Controllers\frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Transaction;
+use Auth;
 class TransactionController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('frontend.pages.transaction.histroy');
+        $transactions = Transaction::where('sender_id', Auth::user()->id)->get();
+        return view('frontend.pages.transaction.histroy',compact('transactions'));
     }
 
     /**
@@ -24,7 +26,8 @@ class TransactionController extends Controller
      */
     public function create()
     {
-        //
+        $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
+        return view('frontend.pages.transaction.index',compact('transaction'));
     }
 
     /**
@@ -35,7 +38,17 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =[
+            'sender_id' => Auth::user()->id,
+            'amount' => $request->amount,
+            'status' => 1,
+
+        ];
+        $transaction = Transaction::create($data);
+        $notification = array(
+            'success' => ' Amount Send Successfully!', 
+            );
+        return redirect()->back()->with($notification);
     }
 
     /**
