@@ -15,12 +15,12 @@ Account upgrade
                 <div class="col-md-12">
                     <div class="card">
                         <span class="badge badge-pill badge-danger ml-1" style="position: absolute; margin-top:15%;">
-                            $50.00
+                            ${{ Auth::user()->account_bal->price ?? 0 }}
                         </span>
                         <img class="card-img-top" src="{{ asset('public/app-assets/images/planlogo.jpg') }}" height="200" width="100" alt="Card image cap">
 
                         <div class="card-body">
-                            <h5 class="card-title">Member Distributor Account</h5>
+                            <h5 class="card-title">Membership Enrollement Account</h5>
                             <p class="card-text"></p>
                             <div class="d-flex justify-content-end ">
                                 {{--  @dd($membership)  --}}
@@ -54,7 +54,7 @@ Account upgrade
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Send Anount For Upgradation </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Send Amount For Upgradation </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -67,7 +67,8 @@ Account upgrade
                             <div class="col md-4">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Amount:</label>
-                                    <input name="amount" class="form-control" required placeholder="Enter Amount" value="50" readonly>
+                                    <input name="amount" type="number" class="form-control" value="{{ Auth::user()->account_bal->price ?? 0 }}" required placeholder="Enter Amount" readonly>
+                                    <small class="text-danger">Amount must be Equilent to wallet amount </small>
                                 </div>
                             </div>
                         </div>

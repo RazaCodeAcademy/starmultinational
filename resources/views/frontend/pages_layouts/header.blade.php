@@ -37,7 +37,13 @@
                   <span class="user-name text-bold-700"></span>
                 </span>
                 <span class="avatar avatar-online">
+                  @if(empty( user()->get_image() ))
+                    
                   <img src="{{asset('public/frontend/img/download.png')}}" alt="avatar"><i></i></span>
+                  @else
+                  <img src="{{  user()->get_image() }}" alt="avatar"><i></i></span>
+
+                  @endif
               </a>
               <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="{{ route('update-employee-details-page') }}"><i class="ft-user"></i> {{ __('Edit Profile') }}</a>
                

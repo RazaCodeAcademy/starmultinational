@@ -15,12 +15,12 @@ Account upgrade
                 <div class="col-md-12">
                     <div class="card">
                         <span class="badge badge-pill badge-danger ml-1" style="position: absolute; margin-top:15%;">
-                            $50.00
+                             ${{ Auth::user()->account_bal->price ?? 0 }}
                         </span>
                         <img class="card-img-top" src="{{ asset('public/app-assets/images/planlogo.jpg') }}" height="200" width="100" alt="Card image cap">
 
                         <div class="card-body">
-                            <h5 class="card-title">Member Distributor Account</h5>
+                            <h5 class="card-title">Membership Enrollment Account</h5>
                             <p class="card-text"></p>
                             <div class="d-flex justify-content-end ">
                                 {{--  @dd($membership)  --}}

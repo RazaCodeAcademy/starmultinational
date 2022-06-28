@@ -14,6 +14,8 @@ use Storage;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Photos\Facades\Image;
+
 
 use Illuminate\Support\Facades\Validator;
 
@@ -62,9 +64,12 @@ class DashboardController extends Controller
                
             ];
 
-            User::find(user()->id)->update($user_data);
+             $user = User::find(user()->id)->update($user_data);
+             if($user){
+                Image::upload($request->image, 'user',user()->id, User::class);
+                 return redirect()->route('dashboard')->with('success', 'Profile Updated Successfully!');
+             }
 
-            return redirect()->route('dashboard')->with('success', 'Profile Updated Successfully!');
         }
     
         return view('frontend.pages.userprofile.profile');

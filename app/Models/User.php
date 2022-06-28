@@ -76,13 +76,7 @@ class User extends Authenticatable
         }
     }
 
-    public function get_image(){
-        if(!empty($this->profile_image)){
-            return asset('storage/app/'.$this->profile_image);
-        }else{
-            return asset('public/images/1615444706.jpg');
-        }
-    }
+   
 
     public function saved_jobs()
     {
@@ -156,30 +150,22 @@ class User extends Authenticatable
         ];
     }
 
-    // employee shortlisted or not
-    public function isShortListed($job_id){
-        return EmployeeShortListed::where([['job_id', $job_id], ['user_id', $this->id]])->first() ? 1 : 0;
+    public function photos(){
+        return $this->hasMany(Photo::class, 'parent_id', 'id')->where('parent_type', User::class);
+
     }
 
-    // employee savedlisted or not
-    public function isSavedListed($job_id){
-        return EmployeeSavedListed::where([['job_id', $job_id], ['user_id', $this->id]])->first() ? 1 : 0;
+    public function get_image()
+    {
+        $image = !empty($this->photos->sortByDesc('created_at')->first());
+        $image = $image ? $this->photos->sortByDesc('created_at')->first()->path : '';
+        if(!empty($image) && file_exists(public_path().'/storage/'.$image)){
+            return asset('public/storage/'.$image);
+        }else{
+            return asset('public/app-assets/images/portrait/small/avatar-s-19.png');
+        }
     }
-
-    // employee appliedlisted or not
-    public function isAppliedListed($job_id){
-        return EmployeeAppliedJob::where([['job_id', $job_id], ['user_id', $this->id]])->first() ? 1 : 0;
-    }
-
-    // is saved job
-    public function isSavedJob($id){
-        return $this->saved_jobs()->where('job_id', $id)->first() ? true : false;
-    }
-
-    // is saved job
-    public function isAppliedJob($id){
-        return $this->applied_jobs()->where('job_id', $id)->first() ? true : false;
-    }
+    
 
     public function getLastLogin(){
         return $this->last_login != null ? Carbon::parse($this->last_login)->diffForHumans() : 'N/A';

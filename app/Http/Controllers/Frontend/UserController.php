@@ -29,7 +29,7 @@ class UserController extends Controller
         $rules = [
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'username' => 'required|max:255',
+            'username' => 'required|unique:users|max:255',
             'email' => 'required|unique:users,email',
             'date_of_birth' => 'required',
             'gender' => 'required',
@@ -42,7 +42,6 @@ class UserController extends Controller
             'phone_number' => 'required',
             'cnic' => 'required',
             'payment_process' => 'required',
-            'sponser_id' => 'required',
             'mother_name' => 'required',
             'favourite_pet' => 'required',
                 'password' => [
@@ -160,7 +159,7 @@ class UserController extends Controller
 
             if (Auth::attempt($userdata))
             {   
-                Auth::user()->last_login = Carbon::now()->toDateTimeString();
+               
                 // Auth::user()->update();
                     if (Auth::user()->hasRole('admin'))
                     {
@@ -207,7 +206,8 @@ class UserController extends Controller
     public function profile($id)
     {
         $user =User::find($id);
-        return redirect()->route('update-employee-details-page');
+        $payment_methods = PaymentMethod::all();
+       return view('frontend.pages.register',compact('payment_methods'));
     }
 
 }

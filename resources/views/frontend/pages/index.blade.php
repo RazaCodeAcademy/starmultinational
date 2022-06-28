@@ -83,13 +83,14 @@ Dashboard
                     <div class="media-body text-left">
                       @if(!empty($transaction))
                         @if($transaction->status == 1 )
+                        
                         <h3 class="success">
                           ${{ Auth::user()->account_bal->price - $transaction->amount ?? 0 }}</h3>
                        
                           @endif
                           @else
                           <h3 class="success">
-                            $git</h3>
+                           ${{ Auth::user()->account_bal->price ?? 0 }} </h3>
                         @endif
                       <h6>Wallet Amount </h6>
                     </div>
@@ -133,7 +134,7 @@ Dashboard
       
         <span aria-hidden="true">&times;</span>
         </button>
-        <p>Congratulations Your registration bonus transfer to your wallet please transfer $50 To StarMultiNational to withdraw balance Amount!  </p>
+        <p>Congratulations Your registration bonus transfer to your wallet please transfer ${{ Auth::user()->account_bal->price ?? 0 }}  To StarMultiNational to withdraw balance Amount!  </p>
         <a href="{{ route('transaction.create') }}" ><u>Transfer Amount ??</u></a>
      
     </div>
@@ -175,7 +176,7 @@ Dashboard
                                     <div class="media-body">
                                         <div class="text-small">Referral URL <a href="{{ url()->current() }}" target="_blank" class="d-sm-none" data-toggle="tooltip" title=""><span class="text-small"><i class="fa fa-fw fa-external-link-alt"></i></span></a></div>
                                         <div class="media-title">
-                                            <a class="d-none d-sm-block" href="{{ url()->current() }}" target="_blank" data-toggle="tooltip" title="">
+                                            <a class="d-none d-sm-block" href="{{ route('user-profile',Auth::user()->id) }}" target="_blank" data-toggle="tooltip" title="">
                                                 {{ url()->route('user-profile',Auth::user()->id) }}                                             
                                             </a>
                                             <div class="d-sm-none">

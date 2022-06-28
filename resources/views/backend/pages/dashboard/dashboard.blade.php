@@ -51,7 +51,7 @@
                                      
                                     @endphp
                                    
-                                    {{ $total }}
+                                    ${{ $total }}
                                 </span>
                                 <span class="font-weight-bold text-muted font-size-sm">{{__('Wallet Amount')}} </span>
                             </div>
