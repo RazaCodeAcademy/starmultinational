@@ -20,7 +20,9 @@ class UserController extends Controller
     public function create()
     {
         $payment_methods = PaymentMethod::all();
-       return view('frontend.pages.register',compact('payment_methods'));
+        $username = User::find(1)->username;
+        
+        return view('frontend.pages.register',compact('payment_methods', 'username'));
     }
 
     public function store(Request $request){
@@ -140,7 +142,7 @@ class UserController extends Controller
 
     public function loginuser(Request $request){
         $rules = array(
-            'email' => 'required|email',
+            'email' => 'required',
             'password' => 'required'
         );
 
@@ -152,14 +154,18 @@ class UserController extends Controller
           }
           else
             {
-                $userdata = array(
+                $user_with_email_data = array(
                     'email' => $request->email,
                     'password' => $request->password,
                 );
+                
+                $user_with_username_data = array(
+                    'username' => $request->email,
+                    'password' => $request->password,
+                );
 
-            if (Auth::attempt($userdata))
+            if (Auth::attempt($user_with_email_data) || Auth::attempt($user_with_username_data))
             {   
-               
                 // Auth::user()->update();
                     if (Auth::user()->hasRole('admin'))
                     {
@@ -168,11 +174,6 @@ class UserController extends Controller
                             'success' => 'Login Successfully!', 
                             );
                         return redirect()->route('adminDashboard')->with($notification);
-                    }
-                    elseif (Auth::user()->hasRole('employer'))
-                    {
-                        
-                        return redirect()->route('employerDashboard')->with($notification);
                     }
                     elseif (Auth::user()->hasRole('customer'))
                     {   
@@ -205,9 +206,9 @@ class UserController extends Controller
 
     public function profile($id)
     {
-        $user =User::find($id);
+        $username =User::find($id)->username;
         $payment_methods = PaymentMethod::all();
-       return view('frontend.pages.register',compact('payment_methods'));
+       return view('frontend.pages.register',compact('payment_methods', 'username'));
     }
 
 }
