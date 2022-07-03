@@ -479,9 +479,14 @@ Register
                                 <label>{{ __("Sponser I'd") }} <span class="text-danger">*</span></label>
                                 @if(current_route() == 'register')
 
-                                <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" value="{{ $username }}" readonly/>
+                                <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" />
+                                
+                                <input type="hidden" class="form-control" placeholder="Enter Sponser I'd" name="sponser_user_id" value="1" />
                                 @elseif(current_route() == 'user-profile')
                                 <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" value="{{ $username }}" readonly />
+                                <input type="hidden" class="form-control" placeholder="Enter Sponser I'd" name=
+                                "sponser_user_id" value="{{ request()->route('id') }}"  />
+                    
                                 @endif
                                 @error('sponser_id')
                                 <span class="invalid-feedback" role="alert">

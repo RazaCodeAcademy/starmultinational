@@ -20,7 +20,7 @@ Account upgrade
                         <img class="card-img-top" src="{{ asset('public/app-assets/images/planlogo.jpg') }}" height="200" width="100" alt="Card image cap">
 
                         <div class="card-body">
-                            <h5 class="card-title">Membership Enrollement Account</h5>
+                            <h5 class="card-title">{{ Auth::user()->account_bal->name ?? 'Membership Enrollment' }}</h5>
                             <p class="card-text"></p>
                             <div class="d-flex justify-content-end ">
                                 {{--  @dd($membership)  --}}

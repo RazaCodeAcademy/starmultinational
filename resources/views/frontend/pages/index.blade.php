@@ -17,7 +17,20 @@ Dashboard
                 <div class="card-body">
                   <div class="media d-flex">
                     <div class="media-body text-left">
-                      <h3 class="info">$0</h3>
+                      @if(!empty($transaction))
+                      @if($transaction->status == 1 )
+                      @if(Auth::user()->account_bal->name == 'Supervisor enrollment Account')
+                      <h3 class="info">$8</h3>
+                      @elseif(Auth::user()->account_bal->name == 'Member Enrollment account')
+                      <h3 class="info">$5</h3>
+                      @elseif(Auth::user()->account_bal->name == 'Pre member Enrollment account')
+                      <h3 class="info">$3</h3>
+                      @elseif(Auth::user()->account_bal->name == 'Manager Enrollment Account')
+                      <h3 class="info">$10</h3>
+
+                      @endif
+                      @endif
+                      @endif
                       <h6>Earnings</h6>
                     </div>
                     <div>
@@ -37,8 +50,22 @@ Dashboard
               <div class="card-content">
                 <div class="card-body">
                   <div class="media d-flex">
-                    <div class="media-body text-left">
+                    <div class="media-body text-left"> 
+                      {{--  @dd(Auth::user()->sponser[0]->sponser_id)  --}}
+                      @if(Auth::user()->sponser[0]->sponser_id == 2) 
+                      <h3 class="warning">$4</h3>
+                      
+                      @elseif(Auth::user()->sponser[0]->sponser_id == 6) 
+                      <h3 class="warning">$24</h3>
+                      
+                      @elseif(Auth::user()->sponser[0]->sponser_id == 12) 
+                      <h3 class="warning">$48</h3>
+                      
+                      @elseif(Auth::user()->sponser[0]->sponser_id == 48) 
+                      <h3 class="warning">$96</h3>
+                      @else
                       <h3 class="warning">$0</h3>
+                      @endif
                       <h6>Bonus</h6>
                     </div>
                     <div>
@@ -134,7 +161,7 @@ Dashboard
       
         <span aria-hidden="true">&times;</span>
         </button>
-        <p>Congratulations Your registration bonus transfer to your wallet please transfer ${{ Auth::user()->account_bal->price ?? 0 }}  To StarMultiNational to withdraw balance Amount!  </p>
+        <p>Congratulations Your registration bonus transfer for the Account Type of <b>{{ Auth::user()->account_bal->name ?? 'n/a' }}</b> to your wallet please transfer ${{ Auth::user()->account_bal->price ?? 0 }}  To StarMultiNational to withdraw balance Amount!  </p>
         <a href="{{ route('transaction.create') }}" ><u>Transfer Amount ??</u></a>
      
     </div>

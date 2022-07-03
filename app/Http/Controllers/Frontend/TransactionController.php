@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Refferaltransfer;
 use Auth;
 class TransactionController extends Controller
 {
@@ -45,10 +46,36 @@ class TransactionController extends Controller
 
         ];
         $transaction = Transaction::create($data);
-        $notification = array(
-            'success' => ' Amount Send Successfully!', 
-            );
-        return redirect()->back()->with($notification);
+        if($transaction){
+            
+             $referal_amount = New Refferaltransfer;
+             $referal_amount->sender_id = Auth::user()->id;
+             if(Auth::user()->sponser_id != '' || Auth::user()->sponser_id != 'admin' || Auth::user()->sponser_id == User::all() ){
+
+                 $referal_amount->referal_recever_id = Auth::user()->sponser_id;
+             }
+             if(Auth::user()->account_bal->name == 'Supervisor enrollment Account'){
+                $referal_amount->amount = 8;
+                
+            }elseif(Auth::user()->account_bal->name == 'Member Enrollment account'){
+                 $referal_amount->amount = 5;
+                 
+            }elseif(Auth::user()->account_bal->name == 'Pre member Enrollment account'){
+                 $referal_amount->amount = 3;
+                 
+            }
+            elseif(Auth::user()->account_bal->name == 'Manager Enrollment Account'){
+                 $referal_amount->amount = 10;
+                 
+            }
+            $referal_amount->save();
+
+            $notification = array(
+                'success' => ' Amount Send Successfully!', 
+                );
+            return redirect()->back()->with($notification);
+        }
+    
     }
 
     /**

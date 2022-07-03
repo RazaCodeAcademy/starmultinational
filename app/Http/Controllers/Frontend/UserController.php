@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
 use App\Models\User;
+use App\Models\UserSponser;
 use App\Models\ModelHasRole;
 use App\Models\Role;
 use Carbon\Carbon;
@@ -26,7 +27,7 @@ class UserController extends Controller
     }
 
     public function store(Request $request){
-        
+        // dd($request);
         
         $rules = [
             'first_name' => 'required|string|max:255',
@@ -41,7 +42,7 @@ class UserController extends Controller
             'state' => 'required',
             'zip_code' => 'required',
             'address' => 'required',
-            'phone_number' => 'required',
+            'phone_number' => 'required|unique:users,phone_number',
             'cnic' => 'required',
             'payment_process' => 'required',
             'mother_name' => 'required',
@@ -99,10 +100,17 @@ class UserController extends Controller
                 'favourite_pet' => $request->favourite_pet,
                 'password' => bcrypt($request->password),
             ];
-
+            // dd(current_route() == 'user-profile');
             $user= User::create($data);
+            if($user){
+              $user_sponser = New UserSponser;
+              $user_sponser->user_id = $user->id;
+              $user_sponser->sponser_id = $request->sponser_user_id;
+              $user_sponser->placement = $request->placement;
 
+              $user_sponser->save();
 
+            }
         }
         $notification = array(
         'success' => 'User Register Successfully!', 

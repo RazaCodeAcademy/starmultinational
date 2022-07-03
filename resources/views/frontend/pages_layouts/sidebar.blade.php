@@ -7,7 +7,7 @@
                   <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Dahboard') }}</span>
           </li>
          
-          <li class="nav-item">
+          {{--  <li class="nav-item">
             <a href="#">
               <i class="la la-tag"></i>
               <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Transactions') }}</span>
@@ -23,8 +23,39 @@
                 <a class="menu-item" href="{{route('wallet.index')}} ">{{ __('Wallet') }}</a>
               </li>
             </ul>
+          </li>  --}}
+          <li class="nav-item">
+            <a href="{{ route('transaction.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Transaction History') }}</span>
+            </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('withdraw.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Withdraw') }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('wallet.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Wallet') }}</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="{{ route('referal.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('My Refferal History') }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('referal.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('My Refferal Network') }}</span>
+            </a>
+          </li>
+          {{--  <li class="nav-item">
             <a href="#">
               <i class="la la-tag"></i>
               <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __(' User Referal  ') }}</span>
@@ -37,7 +68,7 @@
                 <a class="menu-item" href="{{ route('referal.index') }}">{{ __('Referal Network') }}</a>
               </li>
             </ul>
-          </li>
+          </li>  --}}
 
 
       </ul>

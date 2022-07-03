@@ -170,4 +170,11 @@ class User extends Authenticatable
     public function getLastLogin(){
         return $this->last_login != null ? Carbon::parse($this->last_login)->diffForHumans() : 'N/A';
     }
+
+    
+    public function sponser()
+    {
+        return $this->hasMany(UserSponser::class, 'sponser_id', 'id');
+    }
+    
 }
