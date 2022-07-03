@@ -27,9 +27,11 @@ Dashboard
                       <h3 class="info">$3</h3>
                       @elseif(Auth::user()->account_bal->name == 'Manager Enrollment Account')
                       <h3 class="info">$10</h3>
-
+                      
                       @endif
                       @endif
+                      @else
+                      <h3 class="info">$0</h3>
                       @endif
                       <h6>Earnings</h6>
                     </div>
@@ -52,6 +54,9 @@ Dashboard
                   <div class="media d-flex">
                     <div class="media-body text-left"> 
                       {{--  @dd(Auth::user()->sponser[0]->sponser_id)  --}}
+                      @if(!empty($transaction))
+                      @if($transaction->status == 1 )
+                      @if(Auth::user()->account_bal->name == 'Supervisor enrollment Account' || Auth::user()->account_bal->name == 'Manager Enrollment Account')
                       @if(Auth::user()->sponser[0]->sponser_id == 2) 
                       <h3 class="warning">$4</h3>
                       
@@ -63,6 +68,10 @@ Dashboard
                       
                       @elseif(Auth::user()->sponser[0]->sponser_id == 48) 
                       <h3 class="warning">$96</h3>
+                      
+                      @endif
+                      @endif
+                      @endif
                       @else
                       <h3 class="warning">$0</h3>
                       @endif
