@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\Refferaltransfer;
 use Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\UpgradeAccount;
 class TransactionController extends Controller
 {
     /**
@@ -47,7 +49,8 @@ class TransactionController extends Controller
         ];
         $transaction = Transaction::create($data);
         if($transaction){
-            
+            $user = Auth::user();
+            Mail::to($user->email)->send(new UpgradeAccount($user));
              $referal_amount = New Refferaltransfer;
              $referal_amount->sender_id = Auth::user()->id;
              if(Auth::user()->sponser_id != '' || Auth::user()->sponser_id != 'admin' || Auth::user()->sponser_id == User::all() ){

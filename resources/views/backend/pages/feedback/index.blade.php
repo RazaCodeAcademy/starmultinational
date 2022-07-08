@@ -16,10 +16,10 @@
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <div class="d-flex align-items-center flex-wrap mr-1">
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">{{ __('Withdraw ') }}</h5>
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">{{ __('Feedback ') }}</h5>
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="#" class="text-muted">{{ __('Withdraw Requests') }}</a>
+                            <a href="#" class="text-muted">{{ __('Feedback Users') }}</a>
                         </li>
                     </ul>
                 </div>
@@ -32,7 +32,7 @@
             <div class="card card-custom gutter-b">
                 <div class="card-header flex-wrap border-0 pt-6 pb-0">
                     <div class="card-title">
-                        <h3 class="card-label">{{ __('Withdraw Requests') }}
+                        <h3 class="card-label">{{ __('Feedback Users') }}
                            
                         </h3>
                     </div>
@@ -44,30 +44,22 @@
                             <tr>
                                 <th>{{ __('ID') }}</th>
                                 <th>{{ __('UserName') }}</th>
-                                <th>{{ __('Payment Method') }}</th>
-                                <th>{{ __('Amount') }}</th>
-                                <th>{{ __('Status') }}</th>
+                                <th>{{ __('Subject') }}</th>
+                                <th>{{ __('Message') }}</th>
+                                <th>{{ __('Image') }}</th>
                                 <th>{{ __('Actions') }}</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($withdraws as $type)
-                            {{--  @dd($type->payment)  --}}
+                            @foreach ($feedbacks as $type)
+                            
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $type->user ? $type->user->username : 'N/A'  }}</td>
-                                    <td>{{ $type->payment->name ?? 'N/A' }}</td>
+                                    <td>{{ $type->subject ?? 'N/A' }}</td>
+                                    <td>{{ $type->message ?? 'N/A' }}</td>
                                     <td>
-                                       {{ $type->amount ?? 0 }}$
-                                    </td>
-                                    <td>
-                                        <select class="form-select" style="width: 100%; margin:0 auto;" aria-label="Default select example" name="status" onchange="changeStatus('{{ $type->id }}', this.value)" >
-                                            <option value="" selected disabled> Select Status </option>
-                                            <option value="1" {{$type->status == "1" ? 'selected' : ""}}>Approved</option>
-                                            <option value="0" {{$type->status == "0" ? 'selected' : ""}}>DisApproved</option>
-                                            <option value="2" {{$type->status == "2" ? 'selected' : ""}}>Pending</option>
-                                            
-                                        </select>
+                                      <img src=" {{ $type->get_image() ?? '' }}" alt="image" width="70" height="70" />
                                     </td>
                                     
                                     <td>
@@ -90,26 +82,8 @@
 
 @section('script')
     <script>
-        function changeStatus(id, value) {
-            var route = "{{ route('manage_withdraw_status', ':type_id') }}";
-            route = route.replace(":type_id", id);
-            $.ajax({
-                type: 'GET'
-                , url: route
-                , data: {
-                    status: value
-                , }
-                , success: function(response) {
-                    if (response.success == true) {
-                        toastr.success(response.message);
-                        window.location = "{{ route('manage-withdraw.index') }}"
-                    } else
-                        alert(response.message);
-                }
-            })
-        }
         function deleteFunction(id) {
-            var route = "{{ route('manage-withdraw.destroy', 'type_id') }}";
+            var route = "{{ route('manage-feedback.destroy', 'type_id') }}";
             route = route.replace('type_id', id);
             swal({
                     title: "Are you sure?",

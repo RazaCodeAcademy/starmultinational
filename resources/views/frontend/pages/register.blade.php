@@ -4,6 +4,7 @@ Register
 @endsection
 @section('content')
 
+
 <div class="d-flex flex-column-fluid welcome">
     <div class="container">
         <div class="card card-custom">
@@ -14,6 +15,11 @@ Register
                         <span class="example-toggle" data-toggle="tooltip" title="View code"></span>
                         <span class="example-copy" data-toggle="tooltip" title="Copy code"></span>
                     </div>
+                    @if(session()->has('error'))
+                        <div class="alert alert-danger">
+                            {{ session()->get('error') }}
+                        </div>
+                    @endif
                     @if (count($errors) > 0)
                     <div class="alert alert-danger">
                         <ul>

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
+use Auth;
+
 class ReferalController extends Controller
 {
     /**
@@ -14,7 +17,9 @@ class ReferalController extends Controller
      */
     public function index()
     {
-        return view('frontend.pages.referals.index');
+        $users = User::where('sponser_id',Auth::user()->username)->get();
+
+        return view('frontend.pages.referals.index',compact('users'));
         
     }
 

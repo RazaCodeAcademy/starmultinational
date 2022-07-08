@@ -51,13 +51,13 @@
                                 @foreach ($requests as $type)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $type->user->username  }}</td>
+                                        <td>{{ $type->user ? $type->user->username : 'N/A'  }}</td>
                                         <td>{{ $type->description }}</td>
                                         <td>
 											<select class="form-select" style="width: 100%; margin:0 auto;" aria-label="Default select example" name="account_type" onchange="changeStatus('{{ $type->user_id }}', this.value)" >
 												<option value="" selected disabled> Select Account Types </option>
 												@foreach ($account_types as $account_type)
-													<option value="{{ $account_type->id }}" {{ $type->user->account_type == $account_type->id ? 'selected' : '' }}>{{ $account_type->name }}</option>
+													<option value="{{ $account_type->id }}" {{ $type->user ? ($type->user->account_type == $account_type->id ? 'selected' : '') : '' }}>{{ $account_type->name }}</option>
 												@endforeach
 											</select>
 										</td>

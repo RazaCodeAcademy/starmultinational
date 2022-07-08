@@ -1,4 +1,7 @@
 @extends('frontend.pages_layouts.master')
+@section('title') 
+Profile
+@endsection
 @section('content')
 <div class="container mt-5">
     <div class="row justify-content-center ">
@@ -63,7 +66,7 @@
                         <div class="main-form-control">
                             <label for="City">Country</label><br>
                             <select name="country" class="form-control" id="country">
-                                <option value="0" label="Select a country ... " selected="selected" disabled>Select a country ... </option>
+                                <option value="0" label="Select a country ... "   disabled>Select a country ... </option>
                                 <optgroup id="country-optgroup-Africa" label="Africa">
                                     <option value="DZ" label="Algeria">Algeria</option>
                                     <option value="AO" label="Angola">Angola</option>

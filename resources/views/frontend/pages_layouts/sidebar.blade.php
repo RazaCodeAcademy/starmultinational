@@ -7,23 +7,11 @@
                   <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Dahboard') }}</span>
           </li>
          
-          {{--  <li class="nav-item">
-            <a href="#">
-              <i class="la la-tag"></i>
-              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Transactions') }}</span>
-            </a>
-            <ul class="menu-content">
-              <li class="">
-                <a class="menu-item" href="{{ route('transaction.index') }} ">{{ __('Transaction History') }}</a>
-              </li>
-              <li class="">
-                <a class="menu-item" href="{{route('withdraw.index')}} ">{{ __('Withdraw') }}</a>
-              </li>
-              <li class="">
-                <a class="menu-item" href="{{route('wallet.index')}} ">{{ __('Wallet') }}</a>
-              </li>
-            </ul>
-          </li>  --}}
+          <li class=" navigation-header">
+            <span data-i18n="">Account</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip"
+            data-placement="right" data-original-title="Account"></i>
+          </li>
+         
           <li class="nav-item">
             <a href="{{ route('transaction.index') }}">
               <i class="la la-tag"></i>
@@ -46,30 +34,41 @@
           <li class="nav-item">
             <a href="{{ route('referal.index') }}">
               <i class="la la-tag"></i>
-              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('My Refferal History') }}</span>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Referal History') }}</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="{{ route('referal.index') }}">
               <i class="la la-tag"></i>
-              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('My Refferal Network') }}</span>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Referal Network') }}</span>
             </a>
           </li>
-          {{--  <li class="nav-item">
-            <a href="#">
-              <i class="la la-tag"></i>
-              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __(' User Referal  ') }}</span>
-            </a>
-            <ul class="menu-content">
-              <li class="">
-                <a class="menu-item" href="{{ route('referal.index') }}">{{ __('My Referal History') }}</a>
-              </li>
-              <li class="">
-                <a class="menu-item" href="{{ route('referal.index') }}">{{ __('Referal Network') }}</a>
-              </li>
-            </ul>
-          </li>  --}}
+         
+          <li class=" navigation-header">
+            <span data-i18n="">Settings</span><i class="la la-ellipsis-h ft-minus" data-toggle="tooltip"
+            data-placement="right" data-original-title="Settings"></i>
+          </li>
 
+          <li class="nav-item">
+            <a href="{{ route('update-employee-details-page') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Profile') }}</span>
+            </a>
+          </li>
+
+          
+          <li class="nav-item">
+            <a href="{{ route('feedback.create') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('FeedBack') }}</span>
+            </a>
+          </li>
+      
+
+          
+          <li class="">
+            <a class="btn btn-danger text-white m-2" href="{{ route('logout') }}">{{ __('Logout') }}</a>
+          </li>
 
       </ul>
   </div>

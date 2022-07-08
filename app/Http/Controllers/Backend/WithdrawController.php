@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AccountType;
+use App\Models\Withdraw;
 
 class WithdrawController extends Controller
 {
@@ -16,7 +17,8 @@ class WithdrawController extends Controller
     public function index()
     {
         $accounts = AccountType::all();
-        return view('backend.pages.withdraw.index',compact('accounts'));
+        $withdraws = Withdraw::orderBy('created_at','Desc')->get();
+        return view('backend.pages.withdraw.index',compact('accounts','withdraws'));
     }
 
     /**
@@ -82,6 +84,23 @@ class WithdrawController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account_type = Withdraw::find($id);
+        if($account_type){
+            $account_type->delete();
+            return response()->json([
+                'status' => 1
+            ]);
+        }
+    }
+
+    public function status(Request $request,$id){
+       
+        $withdraw = Withdraw::find($id);
+        $withdraw->status = $request->status;
+        $withdraw->update();
+        return response()->json([
+            'success' => true,
+            'message' => "Status updated successfuly!",
+        ]);
     }
 }

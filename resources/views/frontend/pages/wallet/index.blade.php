@@ -15,7 +15,7 @@
                 <div class="card card-primary">
                     <div class="card-header">
                         <h4>
-                            Total Amount <span class=" text-info">{{ Auth::user()->account_bal->price ?? 0 }}$</span>              </h4> </div>
+                            Total Amount <span class=" text-info">{{ Auth::user()->account_bal->price+$direct_earning->amount+$indirect_earning->amount ?? 0 }}$</span>              </h4> </div>
                    
                     <div class="card-footer bg-whitesmoke">
                         <div class="row">

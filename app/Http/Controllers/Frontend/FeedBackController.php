@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\IndirectEarning;
-use App\Models\DirectEarning;
+use Photos\Facades\Image;
+use App\Models\Feedback;
 use Auth;
 
-class WalletController extends Controller
+class FeedBackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +17,7 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
-        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        return view('frontend.pages.wallet.index',compact('indirect_earning','direct_earning'));
-        
+        //
     }
 
     /**
@@ -30,7 +27,7 @@ class WalletController extends Controller
      */
     public function create()
     {
-        //
+        return view('frontend.pages.Feedback.index');
     }
 
     /**
@@ -41,7 +38,17 @@ class WalletController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =[
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'user_id' => Auth::user()->id,
+
+        ];
+        $feedback = Feedback::create($data);
+        if($feedback){
+            Image::upload($request->image, 'feedback',$feedback->id, Feedback::class);
+            return redirect()->route('dashboard')->with('success', 'Message Send Successfully!');
+        }
     }
 
     /**

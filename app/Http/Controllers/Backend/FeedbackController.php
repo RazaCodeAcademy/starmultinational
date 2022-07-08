@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\IndirectEarning;
-use App\Models\DirectEarning;
-use Auth;
+use App\Models\Feedback;
 
-class WalletController extends Controller
+class FeedbackController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,10 +15,8 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
-        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        return view('frontend.pages.wallet.index',compact('indirect_earning','direct_earning'));
-        
+        $feedbacks = Feedback::orderBy('created_at','desc')->get();
+        return view('backend.pages.feedback.index',compact('feedbacks'));
     }
 
     /**
@@ -86,6 +82,12 @@ class WalletController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account_type = Feedback::find($id);
+        if($account_type){
+            $account_type->delete();
+            return response()->json([
+                'status' => 1
+            ]);
+        }
     }
 }

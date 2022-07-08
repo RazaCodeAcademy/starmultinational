@@ -23,11 +23,15 @@
           </ul>
           <ul class="nav navbar-nav float-right">
             <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-{{ session()->has('language') ? 'ar' : 'gb' }}"></i><span class="selected-language"></span></a>
+              aria-haspopup="true" aria-expanded="false"> 
+              
+                <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" height="14" width="14" />
+           
+            <span class="selected-language"></span></a>
               <div class="dropdown-menu" aria-labelledby="dropdown-flag">
                 <a class="dropdown-item" href="">
-                  <i class="flag-icon flag-icon-{{ session()->has('language') ? 'gb' : 'ar' }}"></i>
-                  {{ session()->has('language') ? 'English' : 'Arabic' }}
+                  <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" height="20" width="20" />
+           
                 </a>
               </div>
             </li>

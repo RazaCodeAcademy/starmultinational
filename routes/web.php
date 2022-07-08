@@ -33,10 +33,11 @@ Route::middleware(['frontend'])->group(function () {
     Route::get('/welcome', 'Frontend\IndexController@index')->name('welcome');
     
     Route::resource('transaction', 'Frontend\TransactionController');
+    Route::resource('feedback', 'Frontend\FeedbackController');
     Route::resource('withdraw', 'Frontend\WithdrawController');
     Route::resource('referal', 'Frontend\ReferalController');
     Route::resource('wallet', 'Frontend\WalletController');
-    Route::resource('membership', 'Frontend\MemberShipController');
+    Route::resource('membership', 'Frontend\MembershipController');
     // Route::get('/', function(){
     //     return redirect()->route('adminLogin');
     // })->name('welcome');
@@ -61,12 +62,14 @@ Route::prefix('admin')->namespace('Backend')->group(function (){
 
     Route::middleware(['admin'])->group(function () {
 
+        Route::resource('manage-feedback', 'FeedbackController');
         Route::resource('manage-account-types', 'AccountTypeController');
         Route::resource('manage-payment-methods', 'PaymentMethodController');
         Route::resource('manage-withdraw', 'WithdrawController');
+
         Route::resource('manage-transaction', 'TransactionController');
         Route::resource('manage-request', 'RequestController');
-
+        Route::get('/manage-withdraw_status/{id}', 'WithdrawController@status')->name('manage_withdraw_status');
         Route::get('dashboard', 'DashboardController@dashboard')->name('adminDashboard');
         Route::post('filterCountry', 'DashboardController@filterCountry')->name('filterCountryDashboard');
         Route::post('profile-update', 'AuthController@adminUpdateProfile')->name('adminUpdateProfile');
