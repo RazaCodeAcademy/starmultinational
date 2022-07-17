@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use beinmedia\payment\Parameters\Redirect;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -18,10 +17,6 @@ use App\Models\ModelHasRole;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\PaymentMethod;
-
-// mails 
-use App\Mail\Register;
-
 class UserController extends Controller
 {
     public function create()
@@ -234,7 +229,7 @@ class UserController extends Controller
 
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            Mail::to($user->email)->send(new Register($user));
+
             return redirect()->route('dashboard')->with($notification);
         }
           

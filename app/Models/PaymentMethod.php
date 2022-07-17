@@ -34,8 +34,4 @@ class PaymentMethod extends Model
     public function updated_by(){
         return  $this->user_updated ? $this->user_updated->first_name. ' ' . $this->user_updated->first_name : 'N/A';
     }
-    public function payment()
-    {
-        return $this->belongsTo(PaymentMethod::class, 'payment_method', 'id');
-    }
 }

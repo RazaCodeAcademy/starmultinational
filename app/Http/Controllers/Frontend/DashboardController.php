@@ -34,11 +34,11 @@ class DashboardController extends Controller
 {
     public function index(request $request){
         
-        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
         $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
+        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
         $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
         $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        return view('frontend.pages.index',compact('withdraw','transaction','indirect_earning','direct_earning'));
+        return view('frontend.pages.index',compact('transaction','indirect_earning','direct_earning','withdraw'));
     }
 
     // Employee Details 
@@ -46,6 +46,17 @@ class DashboardController extends Controller
     {
         if($request->isMethod('post')){
             $data=$request->all();
+
+            $profileFolder = 'profile';
+            if (!Storage::exists($profileFolder)) {
+                Storage::makeDirectory($profileFolder);
+            }
+    
+            // upload file
+            if ($request->hasFile('profile_image')) {
+                $image = Storage::putFile($profileFolder, new File($request->file('profile_image')));
+                $data['profile_image'] = $image;
+            }
 
             // add user data into array
             $user_data = [

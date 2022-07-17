@@ -4,9 +4,6 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\IndirectEarning;
-use App\Models\DirectEarning;
-use Auth;
 
 class WalletController extends Controller
 {
@@ -17,9 +14,7 @@ class WalletController extends Controller
      */
     public function index()
     {
-        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
-        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        return view('frontend.pages.wallet.index',compact('indirect_earning','direct_earning'));
+        return view('frontend.pages.wallet.index');
         
     }
 

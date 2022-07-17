@@ -17,6 +17,7 @@ use App\Models\ModelHasRole;
 use App\Models\Role;
 use App\Models\PaymentMethod;
 use App\Models\AccountType;
+use App\Models\DirectEarning;
 
 class UserController extends Controller
 {
@@ -195,9 +196,47 @@ class UserController extends Controller
     }
     public function account_type(Request $request,$id)
     {
+        
         $request['account_type'] = $request->account_type;
         $user = User::find($id);
+
         $user->update($request->toArray());
+        
+        $sponser = User::where('username', $user->sponser_id)->first();
+        if(empty($sponser)){
+            return response()->json([
+                'success' => true,
+                'message' => "Your Sponser is no more longer please select new sponser for yourself!",
+            ]);
+        }
+        
+        $amount = 0;
+       
+        if($user->account_bal->name == 'Member Enrollment account'){
+            $amount= 5;
+        }elseif($user->account_bal->name == 'Pre member Enrollment account'){
+            $amount= 3;
+            
+        }elseif($user->account_bal->name == 'Supervisor enrollment Account'){
+            $amount= 8;
+            
+        }elseif($user->account_bal->name == 'Manager Enrollment Account'){
+            $amount= 10;
+            
+        }
+        $direct_earning = DirectEarning::where('user_id', $sponser->id )->first();
+        if($direct_earning){
+
+            $direct_earning->amount = $amount;
+            $direct_earning->save();
+           
+        }else{
+            DirectEarning::create([
+                'user_id' => $sponser->id,
+                'amount' => $amount,
+            ]);
+        }
+
         return response()->json([
             'success' => true,
             'message' => "Account updated successfuly!",

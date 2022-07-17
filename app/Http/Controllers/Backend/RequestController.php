@@ -17,7 +17,7 @@ class RequestController extends Controller
      */
     public function index()
     {   $account_types = AccountType::orderBy('created_at', 'DESC')->get();
-        $requests = Membership::all();
+        $requests = Membership::orderBy('created_at','Desc')->get();
         return view('backend.pages.request.index',compact('requests','account_types'));
     }
 

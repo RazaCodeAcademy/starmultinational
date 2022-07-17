@@ -89,27 +89,24 @@ Dashboard
                             <div class="card-body">
                                 <div class="media d-flex">
                                     <div class="media-body text-left">
+                                         @php
+                            if(!empty($indirect_earning && $direct_earning) ){
 
-                                        @php
-                                            
-                                        if(!empty($indirect_earning && $direct_earning) )
-                                        {
-                
-                                                $total= $indirect_earning->amount + $direct_earning->amount;
-                                            }
-                                            else{
-                                                $total = 0;
-                                        }
-            
-                                        @endphp
+                                $total= $indirect_earning->amount + $direct_earning->amount;
+                            }
+                            else{
+                                $total = 0;
+                            }
 
-                                       @if(!empty($withdraw))
-                                        <h3 class="danger">${{  $total ?  $total-$withdraw->amount : 0 }}</h3>
-                                        @else
-                                        <h3 class="danger">${{  $indirect_earning->amount + $direct_earning->amount ?? 0 }}</h3>
-                                        @endif
+                        @endphp
+                        <h4>
+                            @if(!empty($withdraw))
+                             <span class=" text-danger">${{ $total ?  $total-$withdraw->amount : 0 }}</span> </h4>
+                            @else
+                             <span class=" text-danger">${{  $total ?? 0 }}</span> </h4>
+                            @endif
                                        
-                                        <h6>Points</h6>
+                                        <h6>Total Earnings</h6>
                                     </div>
                                     <div>
                                         <i class="icon font-large-2 float-right"></i>

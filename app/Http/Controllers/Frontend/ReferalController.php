@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\Transaction;
 use Auth;
 
 class ReferalController extends Controller
@@ -30,7 +31,13 @@ class ReferalController extends Controller
      */
     public function create()
     {
-        //
+        
+        
+         $users = User::with('transaction')->whereHas('transaction', function($q){
+            return $q->where('sponser_id', Auth::user()->username);
+        })->get();
+        
+        return view('frontend.pages.referals.rfnt',compact('users'));
     }
 
     /**

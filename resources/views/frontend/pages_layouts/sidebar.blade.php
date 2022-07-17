@@ -38,7 +38,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('referal.index') }}">
+            <a href="{{ route('referal.create') }}">
               <i class="la la-tag"></i>
               <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Referal Network') }}</span>
             </a>

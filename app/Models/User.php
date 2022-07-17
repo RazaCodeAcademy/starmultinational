@@ -176,5 +176,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(UserSponser::class, 'sponser_id', 'id');
     }
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class, 'sender_id', 'id');
+    }
     
 }
