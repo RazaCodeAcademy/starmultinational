@@ -57,17 +57,12 @@ class UserController extends Controller
             'date_of_birth' => 'required',
             'gender' => 'required',
             'placement' => 'required',
-            'country' => 'required',
             'city' => 'required',
-            'state' => 'required',
             'zip_code' => 'required',
-            'address' => 'required',
             'phone_number' => 'required',
             'cnic' => 'required',
             'payment_process' => 'required',
             'sponser_id' => 'required',
-            'mother_name' => 'required',
-            'favourite_pet' => 'required',
                 'password' => [
                 'required',
                 'string',
@@ -123,17 +118,15 @@ class UserController extends Controller
             'date_of_birth' => 'required',
             'gender' => 'required',
             'placement' => 'required',
-            'country' => 'required',
+            
             'city' => 'required',
-            'state' => 'required',
+            
             'zip_code' => 'required',
-            'address' => 'required',
+       
             'phone_number' => 'required',
             'cnic' => 'required',
             'payment_process' => 'required',
             'sponser_id' => 'required',
-            'mother_name' => 'required',
-            'favourite_pet' => 'required',
         ];
 
         if($request->password){

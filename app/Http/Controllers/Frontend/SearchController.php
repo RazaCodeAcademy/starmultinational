@@ -1,15 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use App\Models\User;
-use App\Models\Transaction;
-use Auth;
 
-class ReferalController extends Controller
+class SearchController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,12 +15,8 @@ class ReferalController extends Controller
      */
     public function index()
     {
-        $users = User::where('sponser_id',Auth::user()->username)->get();
-        $left = User::where('sponser_id',Auth::user()->username)->where('placement',1)->get();
-        $right = User::where('sponser_id',Auth::user()->username)->where('placement',2)->get();
-
-        return view('frontend.pages.referals.index',compact('users','left','right'));
-        
+        $users= User::all();
+        return view('frontend.pages.search.index',compact('users'));
     }
 
     /**
@@ -33,19 +26,7 @@ class ReferalController extends Controller
      */
     public function create()
     {
-        
-        
-         $users = User::with('transaction')->whereHas('transaction', function($q){
-            return $q->where('sponser_id', Auth::user()->username);
-        })->get();
-         $left = User::with('transaction')->whereHas('transaction', function($q){
-            return $q->where('sponser_id', Auth::user()->username)->where('placement',1);
-        })->get();
-         $right = User::with('transaction')->whereHas('transaction', function($q){
-            return $q->where('sponser_id', Auth::user()->username)->where('placement',2);
-        })->get();
-
-        return view('frontend.pages.referals.rfnt',compact('users','left','right'));
+        //
     }
 
     /**
@@ -56,7 +37,25 @@ class ReferalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+    }
+    public function search(Request $request)
+    {
+        if($request->ajax())
+        {
+            $output = '';
+            $query = $request->get('query');
+            if($query != '')
+            {
+             $data = User::where('username', 'like', '%'.$query.'%')
+             ->orWhere('sponser_id', 'like', '%'.$query.'%')
+             ->get();
+           
+            }
+            
+      
+            echo json_encode($data);
+           }
     }
 
     /**
@@ -103,4 +102,5 @@ class ReferalController extends Controller
     {
         //
     }
+   
 }

@@ -30,6 +30,12 @@
               <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Wallet') }}</span>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('search.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Search') }}</span>
+            </a>
+          </li>
 
           <li class="nav-item">
             <a href="{{ route('referal.index') }}">

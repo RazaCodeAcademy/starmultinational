@@ -53,7 +53,6 @@
 									<th>{{__('ID')}}</th>
 									<th>{{__('Name')}}</th>
 									<th>{{__('Email')}}</th>
-									<th>{{__('Country')}}</th>
 									<th>{{__('City')}}</th>
 									<th>{{__('Date Of Birth')}}</th>
 									<th>{{__('Gender')}}</th>
@@ -69,9 +68,7 @@
 										<td>{{$loop->iteration}}</td>
 										<td>{{$user->first_name.' '.$user->last_name}}</td>
 										<td>{{$user->email}}</td>
-										<td>
-											{{ $user->country }}
-										</td>
+										
 										<td>
 											{{ $user->city }}
 										</td>

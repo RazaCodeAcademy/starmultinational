@@ -76,4 +76,82 @@
     </style>
 
     @yield('css')
+
+    <script>
+        window.onload = function () {
+        
+            var today = new Date();
+
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var yesterday = today.getFullYear()+'-'+(today.getMonth()-1)+'-'+today.getDate();
+        
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            title:{
+                text: "Referal & Earnings"
+            },
+            axisX:{
+                unit: "day",
+                crosshair: {
+                    enabled: true,
+                    snapToDataPoint: true
+                }
+            },
+            axisY: {
+                title: "Refferals",
+                includeZero: true,
+                crosshair: {
+                    enabled: true
+                }
+            },
+            toolTip:{
+                shared:true
+            },  
+            legend:{
+                cursor:"pointer",
+                verticalAlign: "bottom",
+                horizontalAlign: "left",
+                dockInsidePlotArea: true,
+                itemclick: toogleDataSeries
+            },
+            data: [{
+                type: "line",
+                showInLegend: true,
+                name: "Refferals",
+                markerType: "square",
+                xValueFormatString: "DD MMM, YYYY",
+                color: "#F08080",
+                dataPoints: [
+                    { x: new Date(yesterday), y: {{$direct_earning_today->amount ?? 0 }} },
+                    { x: new Date(date), y: {{$direct_earning_today->amount ?? 0 }} },
+                  
+                ]
+            },
+            {
+                type: "line",
+                showInLegend: true,
+                name: "Earnings", 
+                dataPoints: [
+                    { x: new Date(yesterday), y: {{  $total_today ?? 0 }} },
+                    { x: new Date(date), y: {{  $total_today ?? 0 }} },
+                    
+                    
+                ]
+            }]
+        });
+        chart.render();
+        
+        function toogleDataSeries(e){
+            if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                e.dataSeries.visible = false;
+            } else{
+                e.dataSeries.visible = true;
+            }
+            chart.render();
+        }
+        
+        }
+        </script>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>

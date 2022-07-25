@@ -30,6 +30,7 @@ use App\Models\Transaction;
 use App\Models\IndirectEarning;
 use App\Models\DirectEarning;
 use App\Models\Withdraw;
+
 class DashboardController extends Controller
 {
     public function index(request $request){
@@ -38,7 +39,20 @@ class DashboardController extends Controller
         $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
         $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
         $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        return view('frontend.pages.index',compact('transaction','indirect_earning','direct_earning','withdraw'));
+        $direct_earning_today = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,date('Y-m-d') )->first();
+        $indirect_earning_today = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,date('Y-m-d') )->first();
+        
+        if(!empty($direct_earning_today && $indirect_earning_today)){
+
+            $total_today = $direct_earning_today->amount  + $indirect_earning_today->amount ;
+           
+        }
+        else{
+            $total_today = 0;
+        }
+        return view('frontend.pages.index',
+        compact('transaction','indirect_earning','direct_earning',
+        'withdraw','direct_earning_today','indirect_earning_today','total_today'));
     }
 
     // Employee Details 

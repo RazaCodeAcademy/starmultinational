@@ -20,6 +20,7 @@
 
   <!-- END PAGE VENDOR JS-->
   <!-- BEGIN MODERN JS-->
+  
   <script src="{{ asset('public/app-assets/js/core/app-menu.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/app-assets/js/core/app.js') }}" type="text/javascript"></script>
   <script src="{{ asset('public/app-assets/js/scripts/customizer.js') }}" type="text/javascript"></script>
@@ -34,6 +35,13 @@
   <script src="{{ asset('public/app-assets/js/scripts/forms/form-repeater.js') }}" type="text/javascript"></script>
   <script src="{{asset('public/app-assets/js/toastr.js')}}"></script>
   <script src="{{asset('public/app-assets/js/toastr.min.js')}}"></script>
+
+  <script src="{{asset('public/app-assets/vendors/js/charts/echarts/echarts.js')}}" type="text/javascript"></script>
+  <!-- END PAGE VENDOR JS-->
+  <!-- BEGIN MODERN JS-->
+  
+
+
   <!-- END PAGE LEVEL JS-->
 
   @if(session()->has('language'))

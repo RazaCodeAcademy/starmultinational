@@ -5,6 +5,7 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\Withdraw;
 use App\Models\Refferaltransfer;
 use Auth;
 class TransactionController extends Controller
@@ -17,7 +18,8 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::where('sender_id', Auth::user()->id)->get();
-        return view('frontend.pages.transaction.histroy',compact('transactions'));
+        $withdraws = Withdraw::where('user_id', Auth::user()->id)->get();
+        return view('frontend.pages.transaction.histroy',compact('transactions','withdraws'));
     }
 
     /**

@@ -17,6 +17,8 @@ use App\Models\ModelHasRole;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\PaymentMethod;
+use Photos\Facades\Image;
+
 class UserController extends Controller
 {
     public function create()
@@ -38,16 +40,13 @@ class UserController extends Controller
             'date_of_birth' => 'required',
             'gender' => 'required',
             'placement' => 'required',
-            'country' => 'required',
             'city' => 'required',
-            'state' => 'required',
+            
             'zip_code' => 'required',
-            'address' => 'required',
+            
             'phone_number' => 'required|unique:users,phone_number',
             'cnic' => 'required',
             'payment_process' => 'required',
-            'mother_name' => 'required',
-            'favourite_pet' => 'required',
                 'password' => [
                 'required',
                 'string',
@@ -275,6 +274,13 @@ public function register($request, $phase_no)
                  'user_id' =>  $request->sponser_user_id,
                  'amount'=> 2,
             ]);
+             
+        }
+        if($request->hasfile('image')){
+            
+            $path = $request->file('image')->store('user', 'public');
+            upload_image($path, $user->id, User::class);
+                
              
         }
          

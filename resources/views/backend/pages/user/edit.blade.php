@@ -141,18 +141,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>{{ __('Country') }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Country" name="country"
-                                            value="{{ $user->country }}" required />
-                                        @error('country')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                                
 
                                 <div class="col-6">
                                     <div class="form-group">
@@ -167,18 +156,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>{{ __('State') }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter State" name="state"
-                                            value="{{ $user->state }}" required />
-                                        @error('state')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+                               
 
                                 <div class="col-6">
                                     <div class="form-group">
@@ -193,18 +171,6 @@
                                     </div>
                                 </div>
 
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label>{{ __('Address') }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Address" name="address"
-                                            value="{{ $user->address }}" required />
-                                        @error('address')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
 
                                 <div class="col-6">
                                     <div class="form-group">
@@ -260,30 +226,8 @@
                                         @enderror
                                     </div>
                                 </div>
-								<div class="col-6">
-                                    <div class="form-group">
-                                        <label>{{ __("Mother Name") }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Mother Name" name="mother_name"
-                                            value="{{ $user->mother_name }}" required />
-                                        @error('mother_name')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-								<div class="col-6">
-                                    <div class="form-group">
-                                        <label>{{ __("Favaourite Pet") }} <span class="text-danger">*</span></label>
-                                        <input type="text" class="form-control" placeholder="Enter Favaourite Pet" name="favourite_pet"
-                                            value="{{ $user->favourite_pet }}" required />
-                                        @error('favourite_pet')
-                                            <span class="invalid-feedback" role="alert">
-                                                {{ $message }}
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
+								
+								
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label>{{ __('Password') }}<span class="text-danger">*</span></label>

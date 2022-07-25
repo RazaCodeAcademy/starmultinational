@@ -18,9 +18,21 @@ Referals
                     <div class="card card-custom gutter-b">
                         <div class="card-header flex-wrap border-0 pt-6 pb-0">
                             <div class="card-title">
-                                <h3 class="card-label">{{ __('History') }}
-                                    <span class="d-block text-muted pt-2 font-size-sm"></span>
+                                <h3 class="card-label">
+                                    {{ __('History') }}
+                                    
                                 </h3>
+                                <div class="row p-2">
+                                    <div class="col-md-4 ">
+                                    
+                                        <h3>Total Left:{{ $left->count() ?? 0 }}</h3>
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h3>Total Right:{{ $right->count() ?? 0 }}</h3>
+                                    </div>
+                                </div>
                             </div>
                             
                         </div>
@@ -31,6 +43,7 @@ Referals
                                         <th>{{ __('ID') }}</th>
                                         <th>{{ __('User Name') }}</th>
                                         <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Placement') }}</th>
                                         <th>{{ __('Date') }}</th>
                                         
                                     </tr>
@@ -41,6 +54,13 @@ Referals
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->email }}</td>
+                                            @if($user->placement == 1)
+                                            <td>Left</td>
+                                            @elseif($user->placement == 2)
+                                            <td>Right</td>
+                                            @else
+                                            <td>N/A</td>
+                                            @endif
                                             <td>{{ $user->created_at }}</td>
                                             
                                         </tr>

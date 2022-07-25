@@ -38,6 +38,9 @@ Route::middleware(['frontend'])->group(function () {
     Route::resource('referal', 'Frontend\ReferalController');
     Route::resource('wallet', 'Frontend\WalletController');
     Route::resource('membership', 'Frontend\MembershipController');
+    Route::resource('search', 'Frontend\SearchController');
+    Route::get('user_search', 'Frontend\SearchController@search')->name('search_sponser');
+    Route::get('/account_update', 'Frontend\MembershipController@account_type')->name('userAccountupdate');
     // Route::get('/', function(){
     //     return redirect()->route('adminLogin');
     // })->name('welcome');
