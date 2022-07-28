@@ -50,6 +50,19 @@ class DashboardController extends Controller
         else{
             $total_today = 0;
         }
+
+        $earning =IndirectEarning::where('user_id', Auth::user()->id)->first();
+        
+        if($earning && !empty($transaction)){
+            $earning->amount += 2;
+            $earning->save();
+        }elseif(!empty($transaction)){
+            $earning =IndirectEarning::create([
+                 'user_id' =>  Auth::user()->id,
+                 'amount'=> 2,
+            ]);
+             
+        }
         return view('frontend.pages.index',
         compact('transaction','indirect_earning','direct_earning',
         'withdraw','direct_earning_today','indirect_earning_today','total_today'));
