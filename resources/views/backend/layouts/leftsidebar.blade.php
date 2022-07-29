@@ -2,9 +2,13 @@
 <div class="aside aside-left aside-fixed d-flex flex-column flex-row-auto" id="kt_aside">
     <!--begin::Brand-->
     <div class="brand flex-column-auto" id="kt_brand">
-        <a href="{{route('adminDashboard')}}" class="brand-logo" style="padding-left: 40px">
-            <h1 class="text-white">Admin</h1>
-            {{-- <img alt="Logo" src="{{asset('public/asset/images/joblot-blue-logo.png')}}"  style="width: 100px; height:50px;"/> --}}
+        <a href="{{route('adminDashboard')}}" class="brand-logo" style="padding-left: 5px">
+            <!--<h1 class="text-white">Admin</h1>-->
+            <img alt="Logo" src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png"  style="height:50px;"/>
+            <span style="margin-top: 13px;
+    margin-left: 10px;
+    color: white;
+    font-size: 19px;">Admin</span>
         </a>
 
         <button class="brand-toggle btn btn-sm px-0" id="kt_aside_toggle">
@@ -32,8 +36,7 @@
                 <li class="menu-item {{ (Route::currentRouteName() == 'adminDashboard' || Route::currentRouteName() == 'subAdminDashboard') ? 'menu-item-active' : '' }}" aria-haspopup="true">
                     @if($user->id == 1)
                     <a href="{{route('adminDashboard')}}" class="menu-link">
-                    @elseif($user->id == 4)
-                    <a href="{{route('subAdminDashboard')}}" class="menu-link">
+                    
                     @endif
                         <span class="svg-icon menu-icon">
                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
@@ -213,9 +216,9 @@
                                     <span class="menu-text">{{__('Transactions')}}</span>
                                 </span>
                             </li>
-                            <li class="menu-item {{ (Route::currentRouteName() == 'listJobApproval' || Route::currentRouteName() == 'subAdminListJobApproval' ) ? 'menu-item-active' : '' }}" aria-haspopup="true">
+                            <li class="menu-item " aria-haspopup="true">
                                 @if ($user->id == 1)
-                                    <a href="{{route('listJobApproval')}}" class="menu-link">
+                                    <a href="{{route('manage-transaction.index')}}" class="menu-link">
                                
                                 @endif
                                     <i class="menu-bullet menu-bullet-dot">
@@ -246,7 +249,7 @@
                         <ul class="menu-subnav">
                             <li class="menu-item menu-item-parent" aria-haspopup="true">
                                 <span class="menu-link">
-                                    <span class="menu-text">{{__('Withdraw')}}</span>
+                                    <span class="menu-text">{{__('Withdraw Requests')}}</span>
                                 </span>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -257,11 +260,86 @@
                                     <i class="menu-bullet menu-bullet-dot">
                                         <span></span>
                                     </i>
-                                    <span class="menu-text">{{__('withdraw ')}}</span>
+                                    <span class="menu-text">{{__('Withdraw Request ')}}</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
+                  
+                </li>
+                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M5,5 L5,15 C5,15.5948613 5.25970314,16.1290656 5.6719139,16.4954176 C5.71978107,16.5379595 5.76682388,16.5788906 5.81365532,16.6178662 C5.82524933,16.6294602 15,7.45470952 15,7.45470952 C15,6.9962515 15,6.17801499 15,5 L5,5 Z M5,3 L15,3 C16.1045695,3 17,3.8954305 17,5 L17,15 C17,17.209139 15.209139,19 13,19 L7,19 C4.790861,19 3,17.209139 3,15 L3,5 C3,3.8954305 3.8954305,3 5,3 Z" fill="#000000" fill-rule="nonzero" transform="translate(10.000000, 11.000000) rotate(-315.000000) translate(-10.000000, -11.000000)" />
+                                    <path d="M20,22 C21.6568542,22 23,20.6568542 23,19 C23,17.8954305 22,16.2287638 20,14 C18,16.2287638 17,17.8954305 17,19 C17,20.6568542 18.3431458,22 20,22 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="menu-text">{{__('Requests')}}</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                <span class="menu-link">
+                                    <span class="menu-text">{{__('Requests')}}</span>
+                                </span>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                @if ($user->id == 1)
+                                    <a href="{{route('manage-request.index')}}" class="menu-link">
+                               
+                                @endif
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">{{__('Requests ')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                  
+                </li>
+                <li class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
+                    <a href="javascript:;" class="menu-link menu-toggle">
+                        <span class="svg-icon menu-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <rect x="0" y="0" width="24" height="24" />
+                                    <path d="M5,5 L5,15 C5,15.5948613 5.25970314,16.1290656 5.6719139,16.4954176 C5.71978107,16.5379595 5.76682388,16.5788906 5.81365532,16.6178662 C5.82524933,16.6294602 15,7.45470952 15,7.45470952 C15,6.9962515 15,6.17801499 15,5 L5,5 Z M5,3 L15,3 C16.1045695,3 17,3.8954305 17,5 L17,15 C17,17.209139 15.209139,19 13,19 L7,19 C4.790861,19 3,17.209139 3,15 L3,5 C3,3.8954305 3.8954305,3 5,3 Z" fill="#000000" fill-rule="nonzero" transform="translate(10.000000, 11.000000) rotate(-315.000000) translate(-10.000000, -11.000000)" />
+                                    <path d="M20,22 C21.6568542,22 23,20.6568542 23,19 C23,17.8954305 22,16.2287638 20,14 C18,16.2287638 17,17.8954305 17,19 C17,20.6568542 18.3431458,22 20,22 Z" fill="#000000" opacity="0.3" />
+                                </g>
+                            </svg>
+                        </span>
+                        <span class="menu-text">{{__('Users Feedback')}}</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="menu-submenu">
+                        <i class="menu-arrow"></i>
+                        <ul class="menu-subnav">
+                            <li class="menu-item menu-item-parent" aria-haspopup="true">
+                                <span class="menu-link">
+                                    <span class="menu-text">{{__('Users Feedback')}}</span>
+                                </span>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                @if ($user->id == 1)
+                                    <a href="{{route('manage-feedback.index')}}" class="menu-link">
+                               
+                                @endif
+                                    <i class="menu-bullet menu-bullet-dot">
+                                        <span></span>
+                                    </i>
+                                    <span class="menu-text">{{__('Users Feedback ')}}</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                  
                 </li>
 
                 @endif

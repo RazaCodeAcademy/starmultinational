@@ -4,6 +4,7 @@
 use App\Models\Notification;
 use App\Models\User;
 use App\Models\Job;
+use App\Models\Photo;
 use Illuminate\Support\Facades\Auth;
 
 // send notifications
@@ -118,5 +119,16 @@ if(!function_exists('formatJob'))
         }
 
         return $jobs_array;
+    }
+}
+if(!function_exists("upload_image"))
+{
+    function upload_image($path, $parent_id, $parent_type)
+    {
+        $photo = new Photo();
+        $photo->path = $path;
+        $photo->parent_id = $parent_id;
+        $photo->parent_type = $parent_type;
+        $photo->save();
     }
 }

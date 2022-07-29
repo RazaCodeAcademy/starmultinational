@@ -106,6 +106,17 @@
       0 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
     ),
   ),
+  'sjsolutionz/photos' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Photos\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Photos\\Facades\\Image',
+    ),
+  ),
   'spatie/laravel-permission' => 
   array (
     'providers' => 

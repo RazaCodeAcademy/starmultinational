@@ -14,6 +14,8 @@ use Storage;
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Photos\Facades\Image;
+
 
 use Illuminate\Support\Facades\Validator;
 
@@ -24,12 +26,50 @@ use App\Models\SavedJob;
 use App\Models\EmployeeAppliedJob;
 use App\Models\EmployeeBussinessCategory;
 use App\Models\TrendingFilter;
+use App\Models\Transaction;
+use App\Models\IndirectEarning;
+use App\Models\DirectEarning;
+use App\Models\Withdraw;
+
 class DashboardController extends Controller
 {
     public function index(request $request){
         
+        $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
+        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
+        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
+        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
+        $direct_earning_today = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,date('Y-m-d') )->first();
+        $indirect_earning_today = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,date('Y-m-d') )->first();
+        
+        
+        $direct_earning_yesterday = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
+        $indirect_earning_yesterday = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
+         
+ 
+        if(!empty($direct_earning_today && $indirect_earning_today)){
 
-        return view('frontend.pages.index');
+            $total_today = $direct_earning_today->amount  + $indirect_earning_today->amount  ;
+           
+        }
+        else{
+            $total_today = 0;
+        }
+        if(!empty($direct_earning_yesterday && $indirect_earning_yesterday)){
+
+            $total_yesterday = $direct_earning_today->amount ?? 0  + $indirect_earning_today->amount ?? 0 ;
+           
+        }
+        else{
+            $total_yesterday = 0;
+        }
+
+
+
+        return view('frontend.pages.index',
+        compact('transaction','indirect_earning','direct_earning',
+        'withdraw','direct_earning_today','indirect_earning_today'
+        ,'total_today','total_yesterday','direct_earning_yesterday','indirect_earning_yesterday'));
     }
 
     // Employee Details 
@@ -57,13 +97,16 @@ class DashboardController extends Controller
                 'email'      => $data['email'], 
                 'state'          => $data['state'], 
                 'address'    => $data['address'],
-                'city'    => $data['city'],
+                'country'    => $data['country'],
                
             ];
 
-            User::find(user()->id)->update($user_data);
+             $user = User::find(user()->id)->update($user_data);
+             if($user){
+                Image::upload($request->image, 'user',user()->id, User::class);
+                 return redirect()->route('dashboard')->with('success', 'Profile Updated Successfully!');
+             }
 
-            return redirect()->route('dashboard')->with('success', 'Profile Updated Successfully!');
         }
     
         return view('frontend.pages.userprofile.profile');

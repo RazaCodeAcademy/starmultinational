@@ -16,17 +16,20 @@ use App\Models\User;
 use App\Models\ModelHasRole;
 use App\Models\Role;
 use App\Models\PaymentMethod;
+use App\Models\AccountType;
+use App\Models\DirectEarning;
 
 class UserController extends Controller
 {
     public function listAdmins()
     {
+        $account_types = AccountType::orderBy('id', 'desc')->get();
         $users = User::whereHas(
             'roles', function($q){
                 $q->where('role_id', '2');
             })->orderby('created_at','desc')->get();
        
-        return view('backend.pages.user.list', compact('users'));
+        return view('backend.pages.user.list', compact('users','account_types'));
     }
     public function listEmployers()
     {
@@ -54,17 +57,12 @@ class UserController extends Controller
             'date_of_birth' => 'required',
             'gender' => 'required',
             'placement' => 'required',
-            'country' => 'required',
             'city' => 'required',
-            'state' => 'required',
             'zip_code' => 'required',
-            'address' => 'required',
             'phone_number' => 'required',
             'cnic' => 'required',
             'payment_process' => 'required',
             'sponser_id' => 'required',
-            'mother_name' => 'required',
-            'favourite_pet' => 'required',
                 'password' => [
                 'required',
                 'string',
@@ -116,32 +114,32 @@ class UserController extends Controller
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'username' => 'required|max:255',
-            'email' => 'required|unique:users,email',
+            'email' => 'required',
             'date_of_birth' => 'required',
             'gender' => 'required',
             'placement' => 'required',
-            'country' => 'required',
+            
             'city' => 'required',
-            'state' => 'required',
+            
             'zip_code' => 'required',
-            'address' => 'required',
+       
             'phone_number' => 'required',
             'cnic' => 'required',
             'payment_process' => 'required',
             'sponser_id' => 'required',
-            'mother_name' => 'required',
-            'favourite_pet' => 'required',
-                'password' => [
-                'required',
-                'string',
-                'min:6',            
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*#?&]/', // must contain a special character
-            ],
         ];
 
+        if($request->password){
+            $rules['password'] = [
+            'required',
+            'string',
+            'min:6',            
+            'regex:/[a-z]/',      // must contain at least one lowercase letter
+            'regex:/[A-Z]/',      // must contain at least one uppercase letter
+            'regex:/[0-9]/',      // must contain at least one digit
+            'regex:/[@$!%*#?&]/', 
+        ];
+        }
         $messages = [
             'password.regex' => 'Password must be one capital one small, one special character and one number'
         ];
@@ -159,7 +157,6 @@ class UserController extends Controller
         
 
         return redirect()->route('listAdmins')->with('success', 'Record Updated Successfully.');
-
     }
 
     public function deleteUser(Request $request){
@@ -189,5 +186,54 @@ class UserController extends Controller
         }
 
         return view('backend.pages.user.view', compact('user'));
+    }
+    public function account_type(Request $request,$id)
+    {
+        
+        $request['account_type'] = $request->account_type;
+        $user = User::find($id);
+
+        $user->update($request->toArray());
+        
+        $sponser = User::where('username', $user->sponser_id)->first();
+        if(empty($sponser)){
+            return response()->json([
+                'success' => true,
+                'message' => "Your Sponser is no more longer please select new sponser for yourself!",
+            ]);
+        }
+        
+        $amount = 0;
+       
+        if($user->account_bal->name == 'Member Enrollment account'){
+            $amount= 5;
+        }elseif($user->account_bal->name == 'Pre member Enrollment account'){
+            $amount= 3;
+            
+        }elseif($user->account_bal->name == 'Supervisor enrollment Account'){
+            $amount= 8;
+            
+        }elseif($user->account_bal->name == 'Manager Enrollment Account'){
+            $amount= 10;
+            
+        }
+        $direct_earning = DirectEarning::where('user_id', $sponser->id )->first();
+        if($direct_earning){
+
+            $direct_earning->amount = $amount;
+            $direct_earning->save();
+           
+        }else{
+            DirectEarning::create([
+                'user_id' => $sponser->id,
+                'amount' => $amount,
+            ]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Account updated successfuly!",
+        ]);
+        
     }
 }

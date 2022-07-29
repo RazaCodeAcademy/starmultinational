@@ -129,44 +129,6 @@
                 });
         }
 
-        function deleteFunctionSubAdmin(id) {
-            swal({
-                    title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover!",
-                    icon: "warning",
-                    buttons: true,
-                    dangerMode: true,
-                })
-                .then((willDelete) => {
-                    if (willDelete) {
-
-                        $.ajax({
-                            method: "POST",
-                            url: "{{ route('subAdminDeleteUser') }}",
-                            data: {
-                                _token: $('meta[name="csrf-token"]').attr('content'),
-                                'id': id
-                            },
-                            success: function(response) {
-                                if (response.status === 1) {
-                                    swal("Successfully Deleted", {
-                                        icon: "success",
-                                    });
-                                    window.setTimeout(function() {
-                                        location.reload();
-                                    }, 1000);
-                                } else {
-                                    swal("Error While Deleting", {
-                                        icon: "error",
-                                    });
-                                }
-                            }
-                        });
-
-                    } else {
-                        swal("Your Data is safe!");
-                    }
-                });
-        }
+      
     </script>
 @endsection

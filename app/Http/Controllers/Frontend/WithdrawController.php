@@ -5,6 +5,11 @@ namespace App\Http\Controllers\frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\AccountType;
+use App\Models\PaymentMethod;
+use App\Models\IndirectEarning;
+use App\Models\DirectEarning;
+use App\Models\Withdraw;
+use Auth;
 
 class WithdrawController extends Controller
 {
@@ -14,8 +19,14 @@ class WithdrawController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    { $accounts = AccountType::all();
-        return view('frontend.pages.withdraw.index',compact('accounts'));
+
+    {
+        $user = Auth::user();
+        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
+        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
+        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
+         $payment_methods = PaymentMethod::all();
+        return view('frontend.pages.withdraw.index',compact('withdraw','payment_methods','user','indirect_earning','direct_earning'));
     }
 
     /**
@@ -36,7 +47,17 @@ class WithdrawController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data =[
+            'payment_method' => $request->payment_method,
+            'amount' => $request->amount,
+            'user_id' => Auth::user()->id,
+
+        ];
+        $withdraw = Withdraw::create($data);
+        if($withdraw){
+           
+            return redirect()->route('dashboard')->with('success', 'Your Request has Sended Successfully!');
+        }
     }
 
     /**

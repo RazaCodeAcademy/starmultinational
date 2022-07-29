@@ -34,4 +34,8 @@ class AccountType extends Model
     public function updated_by(){
         return  $this->user_updated ? $this->user_updated->first_name. ' ' . $this->user_updated->first_name : 'N/A';
     }
+    public function account_bal()
+    {
+        return $this->belongsTo(User::class, 'account_type', 'id');
+    }
 }

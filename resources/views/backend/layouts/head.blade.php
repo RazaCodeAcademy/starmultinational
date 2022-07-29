@@ -30,7 +30,7 @@
     <link href="{{asset('public/backend/dist/assets/css/themes/layout/aside/dark.css')}}" rel="stylesheet" type="text/css" />
     <!--end::Layout Themes-->
 
-    <link rel="shortcut icon" href="{{asset('public/asset/images/joblot-blue-logo.png')}}" />
+    <link rel="shortcut icon" href="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png" />
 
     <link href="{{asset('public/toast/toastr1.css')}}" rel="stylesheet">
     <link href="{{asset('public/toast/toastr2.css')}}" rel="stylesheet">
@@ -38,6 +38,8 @@
 	<link href="{{asset('public/backend/dist/assets/plugins/custom/datatables/datatables.bundle.css')}}" rel="stylesheet" type="text/css" />
 
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <style>
         .invalid-feedback{

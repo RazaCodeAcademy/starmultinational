@@ -185,7 +185,7 @@ p {
 }
 
 .welcome {
-    background-image: linear-gradient(to left, rgba(10, 77, 163, 0.75), rgba(52, 147, 213, 0.4));
+    background-image: linear-gradient(to left, rgb(128 210 203 / 84%), rgb(143 28 57 / 90%));
     background-size: cover;
     background-position: center;
     min-height: 100vh;
@@ -225,7 +225,7 @@ p {
 }
 
 .main .main-header {
-    background-image: linear-gradient(to left, #0a4da3, #3493d5);
+    background-image: linear-gradient(to left, rgba(55, 216, 203, 0.84), rgba(202, 16, 62, 0.9));
     padding: 2rem;
     text-align: center;
 }
@@ -295,7 +295,7 @@ p {
 }
 
 .main .main-footer a:hover {
-    color: #2ea3ea;
+    color: #c43f46;
 }
 
 .main .main-form-control {
@@ -357,7 +357,7 @@ p {
 }
 
 .main-form button {
-    background-color: #45adec;
+    background-color:  rgba(165, 27, 27, 0.84);
     padding: 1.5rem;
     font-size: 1.4rem;
     width: 100%;
@@ -372,7 +372,7 @@ p {
 }
 
 .main-form button:hover {
-    background-color: #2ea3ea;
+    background-color:  rgba(150, 16, 49, 0.9);
 }
 
 @media only screen and (max-height: 600px) {
@@ -780,7 +780,7 @@ p {
 }
 
 .icon-color {
-    color: #45adec!important;
+    color: #45adec !important;
 }
 
 .notification-img {
@@ -1382,6 +1382,7 @@ i {
         width: 41rem;
         height: 41rem;
     }
+
     .map-wrapper iframe {
         width: 40rem;
         height: 40rem;
@@ -1392,10 +1393,12 @@ i {
     .site-map-text ul li {
         font-size: 1.5rem;
     }
+
     .map-wrapper {
         width: 31rem;
         height: 31rem;
     }
+
     .map-wrapper iframe {
         width: 30rem;
         height: 30rem;
@@ -1406,13 +1409,16 @@ i {
     .site-map-text {
         text-align: center;
     }
+
     .map-wrapper {
         margin: auto;
     }
+
     .map-wrapper {
         width: 41rem;
         height: 41rem;
     }
+
     .map-wrapper iframe {
         width: 40rem;
         height: 40rem;

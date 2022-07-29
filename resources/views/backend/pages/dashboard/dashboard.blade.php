@@ -42,7 +42,16 @@
                                     <!--end::Svg Icon-->
                                 </span>
                                 <span class="card-title font-weight-bolder text-dark-75 font-size-h2 mb-0 mt-6 d-block" id="live-jobs">
-                                    {{-- {{$liveJobs}} --}}0
+                                    @php
+                                        $total= 0;
+                                        foreach ($transactions as $tarnsaction)
+                                        {
+                                             $total +=$tarnsaction->amount;  
+                                        }
+                                     
+                                    @endphp
+                                   
+                                    ${{ $total }}
                                 </span>
                                 <span class="font-weight-bold text-muted font-size-sm">{{__('Wallet Amount')}} </span>
                             </div>

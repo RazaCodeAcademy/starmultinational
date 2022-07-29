@@ -11,9 +11,9 @@
                 <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
                     <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
                         @if(session()->has('language'))
-                            <img class="h-20px w-20px rounded-sm" src="{{asset('public/candidate/dist/assets/media/svg/flags/107-kwait.svg')}}" alt="" />
+                            <img class="h-20px w-20px rounded-sm" src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" />
                         @else 
-                            <img class="h-20px w-20px rounded-sm" src="{{asset('public/candidate/dist/assets/media/svg/flags/226-united-states.svg')}}" alt="" />
+                            <img class="h-20px w-20px rounded-sm" src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" />
                         @endif
                     </div>
                 </div>
@@ -22,20 +22,20 @@
                     <ul class="navi navi-hover py-4">
                         @if(session()->has('language'))
                             <li class="navi-item">
-                                <a href="{{route('removeLanguage')}}" class="navi-link">
+                                <a href="" class="navi-link">
                                     <span class="symbol symbol-20 mr-3">
-                                        <img src="{{asset('public/candidate/dist/assets/media/svg/flags/226-united-states.svg')}}" alt="" />
+                                        <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" />
                                     </span>
-                                    <span class="navi-text">English</span>
+                                    
                                 </a>
                             </li>
                         @else 
                             <li class="navi-item">
-                                <a href="{{route('addLanguage')}}" class="navi-link">
+                                <a href="" class="navi-link">
                                     <span class="symbol symbol-20 mr-3">
-                                        <img src="{{asset('public/candidate/dist/assets/media/svg/flags/107-kwait.svg')}}" alt="" />
+                                        <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" />
                                     </span>
-                                    <span class="navi-text">عربى</span>
+                                    
                                 </a>
                             </li>
                         @endif

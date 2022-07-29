@@ -6,7 +6,7 @@
           <li class="nav-item mobile-menu d-md-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ft-menu font-large-1"></i></a></li>
           <li class="nav-item mr-auto">
             <a class="navbar-brand" href="">
-              <img class="brand-logo" alt="modern admin logo" src="{{ asset('public/app-assets/images/logo/logo.png') }}">
+              <img class="brand-logo" alt="modern admin logo" src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png" >
               <h3 class="brand-text">Star Multinational</h3>
             </a>
           </li>
@@ -23,11 +23,15 @@
           </ul>
           <ul class="nav navbar-nav float-right">
             <li class="dropdown dropdown-language nav-item"><a class="dropdown-toggle nav-link" id="dropdown-flag" href="#" data-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false"><i class="flag-icon flag-icon-{{ session()->has('language') ? 'ar' : 'gb' }}"></i><span class="selected-language"></span></a>
+              aria-haspopup="true" aria-expanded="false"> 
+              
+                <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" height="14" width="14" />
+           
+            <span class="selected-language"></span></a>
               <div class="dropdown-menu" aria-labelledby="dropdown-flag">
                 <a class="dropdown-item" href="">
-                  <i class="flag-icon flag-icon-{{ session()->has('language') ? 'gb' : 'ar' }}"></i>
-                  {{ session()->has('language') ? 'English' : 'Arabic' }}
+                  <img src="{{asset('public/candidate/dist/assets/media/svg/flags/100-pakistan.svg')}}" alt="" height="20" width="20" />
+           
                 </a>
               </div>
             </li>
@@ -37,7 +41,13 @@
                   <span class="user-name text-bold-700"></span>
                 </span>
                 <span class="avatar avatar-online">
+                  @if(empty( user()->get_image() ))
+                    
                   <img src="{{asset('public/frontend/img/download.png')}}" alt="avatar"><i></i></span>
+                  @else
+                  <img src="{{  user()->get_image() }}" alt="avatar"><i></i></span>
+
+                  @endif
               </a>
               <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="{{ route('update-employee-details-page') }}"><i class="ft-user"></i> {{ __('Edit Profile') }}</a>
                

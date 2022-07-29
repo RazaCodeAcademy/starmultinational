@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e0b0edd72210b1376dbcfa2bae1791dd",
+    "content-hash": "17b08b56f91f305e99cdc68f12905c55",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -4340,6 +4340,54 @@
                 }
             ],
             "time": "2021-09-25T23:10:38+00:00"
+        },
+        {
+            "name": "sjsolutionz/photos",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Asad921/Photos.git",
+                "reference": "3046714db5a7d2f14e239d61dddda7192a3b0070"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Asad921/Photos/zipball/3046714db5a7d2f14e239d61dddda7192a3b0070",
+                "reference": "3046714db5a7d2f14e239d61dddda7192a3b0070",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Photos\\ImageServiceProvider"
+                    ],
+                    "aliases": {
+                        "Image": "Photos\\Facades\\Image"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Photos\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Asad921",
+                    "email": "officiallasad.ali@gmail.com"
+                }
+            ],
+            "description": "tis is an image package",
+            "support": {
+                "issues": "https://github.com/Asad921/Photos/issues",
+                "source": "https://github.com/Asad921/Photos/tree/master"
+            },
+            "time": "2022-05-20T13:52:38+00:00"
         },
         {
             "name": "spatie/laravel-permission",
@@ -9559,7 +9607,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "sjsolutionz/photos": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

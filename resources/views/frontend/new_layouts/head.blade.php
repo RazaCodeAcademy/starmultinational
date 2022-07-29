@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> @yield('title')</title>
     <link rel="apple-touch-icon" href="{{ asset('public/app-assets/images/ico/apple-icon-120.png') }}">
-    <link rel="icon" href="{{ asset('public/assets/frontend/img/Group 5.svg') }}" sizes="any" type="image/svg" />
+    <link rel="icon" href="{{ asset('public/app-assets/frontend/img/Group 5.svg') }}" sizes="any" type="image/svg" />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Quicksand:300,400,500,700"
     rel="stylesheet">
   

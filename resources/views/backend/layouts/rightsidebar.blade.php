@@ -38,10 +38,8 @@
                             <span class="navi-text text-muted text-hover-primary">{{auth()->user()->email}}</span>
                         </span>
                     </a>
-                    <a onclick="event.preventDefault();document.getElementById('logout-form-admin').submit();" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
-                    <form id="logout-form-admin" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
+                    <a href="{{ route('logout') }}" class="btn btn-sm btn-light-primary font-weight-bolder py-2 px-5">Sign Out</a>
+                  
                 </div>
             </div>
         </div>
