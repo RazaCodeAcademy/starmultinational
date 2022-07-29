@@ -79,7 +79,7 @@
 
     <script>
         window.onload = function () {
-        
+            
             var today = new Date();
 
             var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
@@ -123,7 +123,7 @@
                 xValueFormatString: "DD MMM, YYYY",
                 color: "#F08080",
                 dataPoints: [
-                    { x: new Date(yesterday), y: {{$direct_earning_today->amount ?? 0 }} },
+                    { x: new Date(yesterday), y: {{$direct_earning_yesterday->amount ?? 0 }} },
                     { x: new Date(date), y: {{$direct_earning_today->amount ?? 0 }} },
                   
                 ]
@@ -133,7 +133,7 @@
                 showInLegend: true,
                 name: "Earnings", 
                 dataPoints: [
-                    { x: new Date(yesterday), y: {{  $total_today ?? 0 }} },
+                        { x: new Date(yesterday), y: {{  $total_yesterday ?? 0 }} },
                     { x: new Date(date), y: {{  $total_today ?? 0 }} },
                     
                     

@@ -42,30 +42,34 @@ class DashboardController extends Controller
         $direct_earning_today = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,date('Y-m-d') )->first();
         $indirect_earning_today = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,date('Y-m-d') )->first();
         
+        
+        $direct_earning_yesterday = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
+        $indirect_earning_yesterday = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
+         
+ 
         if(!empty($direct_earning_today && $indirect_earning_today)){
 
-            $total_today = $direct_earning_today->amount  + $indirect_earning_today->amount ;
+            $total_today = $direct_earning_today->amount  + $indirect_earning_today->amount  ;
            
         }
         else{
             $total_today = 0;
         }
+        if(!empty($direct_earning_yesterday && $indirect_earning_yesterday)){
 
-        $earning =IndirectEarning::where('user_id', Auth::user()->id)->first();
-        
-        if($earning && !empty($transaction)){
-            $earning->amount += 2;
-            $earning->save();
-        }elseif(!empty($transaction)){
-            $earning =IndirectEarning::create([
-                 'user_id' =>  Auth::user()->id,
-                 'amount'=> 2,
-            ]);
-             
+            $total_yesterday = $direct_earning_today->amount ?? 0  + $indirect_earning_today->amount ?? 0 ;
+           
         }
+        else{
+            $total_yesterday = 0;
+        }
+
+
+
         return view('frontend.pages.index',
         compact('transaction','indirect_earning','direct_earning',
-        'withdraw','direct_earning_today','indirect_earning_today','total_today'));
+        'withdraw','direct_earning_today','indirect_earning_today'
+        ,'total_today','total_yesterday','direct_earning_yesterday','indirect_earning_yesterday'));
     }
 
     // Employee Details 
