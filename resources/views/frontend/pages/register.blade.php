@@ -283,7 +283,14 @@ Register
         </button>
       </div>
       <div class="modal-body">
-        <h2>From Star Multinational!</h2>
+        <ol>
+            <li>1. Star Multinational have all  its rights reserved</li>
+            <li>2. Star Multinational is take strict action against misuse of Data</li>
+            <li>3. You can receive your payment in 24 hours Approximately</li>
+            <li>4. Minimum Withdraw Amount is 5$</li>
+            <li>5. In case of not performing you will get repay in 3 months</li>
+            <li>6. For any complaint & Suggestions please contact us <a href="tel:+923257380732">+923257380732</a></li>
+        </ol>
       </div>
      
     </div>

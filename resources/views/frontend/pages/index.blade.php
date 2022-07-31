@@ -37,21 +37,14 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            @php
-                                                if (!empty($indirect_earning && $direct_earning)) {
-                                                    $total = $indirect_earning->amount + $direct_earning->amount;
-                                                } else {
-                                                    $total = 0;
-                                                }
-                                                
-                                            @endphp
+
                                             <h4>
-                                                @if (!empty($withdraw))
+                                                @if ($withdraw_amount > 0)
                                                     <span
-                                                        class=" text-danger">${{ $total ? $total - $withdraw->amount : 0 }}</span>
+                                                        class=" text-danger">${{ $total_earning ? $total_earning - $withdraw_amount : 0 }}</span>
                                             </h4>
                                         @else
-                                            <span class=" text-danger">${{ $total ?? 0 }}</span> </h4>
+                                            <span class=" text-danger">${{ $total_earning ?? 0 }}</span> </h4>
                                             @endif
 
                                             <h6>Current Balance</h6>
@@ -130,17 +123,8 @@
                                 <div class="card-body">
                                     <div class="media d-flex">
                                         <div class="media-body text-left">
-                                            @php
-                                                if (!empty($indirect_earning && $direct_earning)) {
-                                                    $total = $indirect_earning->amount + $direct_earning->amount;
-                                                } else {
-                                                    $total = 0;
-                                                }
-                                                
-                                            @endphp
                                             <h4>
-                                            
-                                                <span class=" text-info">${{ $total ?? 0 }}</span>
+                                                <span class=" text-info">${{ $total_earning ?? 0 }}</span>
                                             </h4>
 
 
@@ -168,29 +152,9 @@
                             <div class="card-content">
                                 <div class="card-body">
                                     <div class="media d-flex">
-                                      
-                                        @php
-                                            if (!empty($indirect_earning && $direct_earning)) {
-                                                $total = $indirect_earning->amount + $direct_earning->amount;
-                                            } else {
-                                                $total = 0;
-                                            }
-                                        
-                                        @endphp
                                         <div class="media-body text-left">
                                             <h4>
-                                               
-                                                @if($total == 5)
-                                                <span class=" text-info">1 Points</span>
-                                                @elseif($total == 10)
-                                                <span class=" text-info">2 Points</span>
-                                                @elseif($total == 15)
-                                                <span class=" text-info">3 Points</span>
-                                                @elseif($total > 15)
-                                                <span class=" text-info">4 Points</span>
-                                                @else
-                                                <span class=" text-info"> 4+1 Points</span>
-                                                @endif
+                                                <span class=" text-info">{{ $earn_points ?? 0 }} Points</span>
                                             </h4>
                                             <h6>Points</h6>
                                         </div>
@@ -266,7 +230,8 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <p>Successfully Upgraded Your Account </p>
-                    <p> Want to Change Membership  <a href="{{ route('membership.create') }}"><u>make a request for upgradation</u></a> </p>
+                    <p> Want to Change Membership <a href="{{ route('membership.create') }}"><u>make a request for
+                                upgradation</u></a> </p>
 
                 </div>
             @else
@@ -278,7 +243,8 @@
                     <p>Congratulations your balance for
                         <b>{{ Auth::user()->account_bal ? Auth::user()->account_bal->name : 'n/a' }}</b> has been sended
                         please transfer {{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}$ in wallet
-                        to upgrade your account!</p>
+                        to upgrade your account!
+                    </p>
                     <a href="{{ route('transaction.create') }}"><u>Transfer Amount ??</u></a>
 
                 </div>
@@ -305,8 +271,7 @@
                                         <div class="media-body">
                                             <div class="media-title">
                                                 <img class='mr-3 rounded-circle img-responsive' width='80'
-                                                    height='80' src='{{ Auth::user()->get_image() }}'
-                                                    alt=''>
+                                                    height='80' src='{{ Auth::user()->get_image() }}' alt=''>
                                                 <div class="float-right"></div>
                                             </div>
                                         </div>
@@ -345,28 +310,28 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-8">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title">Performance</h4>
-                      <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                      <div class="heading-elements">
-                        <ul class="list-inline mb-0">
-                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                          <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                          <li><a data-action="close"><i class="ft-x"></i></a></li>
-                        </ul>
-                      </div>
+                <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Performance</h4>
+                            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-content collapse show">
-                      <div class="card-body">
-                        <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
             <div class="row ">
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
@@ -424,39 +389,127 @@
             </div>
 
             <div class="row">
-                <div class="col-8">
-                  <div class="card">
-                    <div class="card-header">
-                      <h4 class="card-title">Points</h4>
-                      <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                      <div class="heading-elements">
-                        <ul class="list-inline mb-0">
-                          <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                          <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
-                          <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                          <li><a data-action="close"><i class="ft-x"></i></a></li>
-                        </ul>
-                      </div>
+                <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Points</h4>
+                            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                            <div class="heading-elements">
+                                <ul class="list-inline mb-0">
+                                    <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                    <li><a data-action="reload"><i class="ft-rotate-cw"></i></a></li>
+                                    <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                    <li><a data-action="close"><i class="ft-x"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="card-content collapse show">
+                            <div class="card-body">
+                                <table style="width: 100%;" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ __('ID') }}</th>
+                                            <th>{{ __('Points') }}</th>
+                                            <th>{{ __('Date') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (count($list_points) > 0)
+                                            @foreach ($list_points as $point)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $point->number }}</td>
+                                                    <td>{{ date('d-m-Y', strtotime($point->created_at)) }}</td>
+                                                </tr>
+                                            @endforeach
+                                        @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-content collapse show">
-                      <div class="card-body">
-                        <ul>
-                            <li> If Your Total Earning is 5$ you get 1point. </li> 
-                            <li> If Your Total Earning is 10$ you get 2point. </li> 
-                            <li> If Your Total Earning is 15$ you get 3point. </li> 
-                        </ul>
-                        
-
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
+            </div>
         </div>
     </div>
 
 
-  
 
 
+    <script>
+        window.onload = function() {
+
+            var refferal_analytics = <?php echo json_encode($refferal_analytics, true); ?>;
+            refferal_analytics.forEach(ele => {
+                ele.x = new Date(ele.x);
+            });
+
+            var total_earning_analytics = <?php echo json_encode($total_earning_analytics, true); ?>;
+            total_earning_analytics.forEach(ele => {
+                ele.x = new Date(ele.x);
+            });
+
+            console.log(new Date(2017, 01, 4));
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "Referal & Earnings"
+                },
+                axisX: {
+                    unit: "day",
+                    crosshair: {
+                        enabled: true,
+                        snapToDataPoint: true
+                    },
+                },
+                axisY: {
+                    title: "Refferals",
+                    includeZero: true,
+                    crosshair: {
+                        enabled: true
+                    }
+                },
+                toolTip: {
+                    shared: true
+                },
+                legend: {
+                    cursor: "pointer",
+                    verticalAlign: "bottom",
+                    horizontalAlign: "left",
+                    dockInsidePlotArea: true,
+                    itemclick: toogleDataSeries
+                },
+                data: [{
+                        type: "line",
+                        showInLegend: true,
+                        name: "Refferals",
+                        markerType: "square",
+                        color: "#F08080",
+                        xValueFormatString: "DD MMM, YYYY",
+                        dataPoints: refferal_analytics
+                    },
+                    {
+                        type: "line",
+                        showInLegend: true,
+                        name: "Earnings",
+                        xValueFormatString: "DD MMM, YYYY",
+                        dataPoints: total_earning_analytics
+                    }
+                ]
+            });
+            chart.render();
+
+            function toogleDataSeries(e) {
+                if (typeof(e.dataSeries.visible) === "undefined" || e.dataSeries.visible) {
+                    e.dataSeries.visible = false;
+                } else {
+                    e.dataSeries.visible = true;
+                }
+                chart.render();
+            }
+
+        }
+    </script>
 @endsection

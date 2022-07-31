@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserSponser;
 use App\Models\IndirectEarning;
 use App\Models\ModelHasRole;
+use App\Models\PhasePairing;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\PaymentMethod;
@@ -71,6 +72,7 @@ class UserController extends Controller
         }
 
         $userCount = User::where('email', $request->email)->count();
+        
         if ($userCount > 0){
             // dd( $userCount);
             $notification = array(
@@ -81,14 +83,18 @@ class UserController extends Controller
         else{
             $sponser = User::find($request->sponser_user_id);
             $phase = UserSponser::orderby('id', 'Desc')->where('sponser_id', $request->sponser_user_id)->first();
+            if(empty($sponser->account_bal) && $request->username != $request->sponser_id){
+                $notification = array(
+                'error' => 'The sponser account is not upgraded please try with another sponser!', 
+                );
+                return redirect()->back()->with($notification);
+            }
             if(!empty($phase)){
                 $sponser_account_phase1 =  $sponser->account_bal ? ($sponser->account_bal->name == 'Member Enrollment account' || $sponser->account_bal->name == 'Supervisor enrollment Account' || $sponser->account_bal->name == 'Manager Enrollment Account') : '';
                 $sponser_account_phase =  $sponser->account_bal ? ($sponser->account_bal->name == 'Supervisor enrollment Account' || $sponser->account_bal->name == 'Manager Enrollment Account') : '';
                 if($sponser_account_phase1){
-
                     if($phase->phase_no == 1){
                         $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
-                        
                         if(count($phase_user)< 2){
                           $left =  $phase_user->where('placement', 1);
     
@@ -183,7 +189,7 @@ class UserController extends Controller
                         $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
                         
                         if(count($phase_user)< 48 ){
-                          $left =  $phase_user->where('placement',1);
+                          $left =  $phase_user->where('placement', 1);
     
                           if(count($left) >= 24 && $request->placement == 1){
                             $notification = array(
@@ -202,7 +208,7 @@ class UserController extends Controller
                                   );
                               return redirect()->back()->with($notification);
                             }
-                           $user = $this->register($request,$phase->phase_no);
+                           $user = $this->register($request, $phase->phase_no);
                         }else{
                             $notification = array(
                                 'error' => 'You cannot register with this sponser_id because Its Limit is full !', 
@@ -215,16 +221,17 @@ class UserController extends Controller
                 }
 
             }else{
+                
                 $user = $this->register($request, 1);
             }
  
+            $notification = array(
+            'success' => 'User Register Successfully!', 
+            );
+            $data1=array('role_id'=>'2',"model_type"=>'App\Models\User',"model_id"=>$user->id);
+            ModelHasRole::insert($data1);
             
         }
-        $notification = array(
-        'success' => 'User Register Successfully!', 
-        );
-          $data1=array('role_id'=>'2',"model_type"=>'App\Models\User',"model_id"=>$user->id);
-        ModelHasRole::insert($data1);
 
         
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
@@ -258,33 +265,26 @@ public function register($request, $phase_no)
     ];
     $user= User::create($data);
     if($user){
-      $user_sponser = New UserSponser;
-      $user_sponser->user_id = $user->id;
-      $user_sponser->sponser_id = $request->sponser_user_id;
-      $user_sponser->phase_no = $phase_no;
-      $user_sponser->placement = $request->placement;
-
-      $user_sponser->save();
-        $earning =IndirectEarning::where('user_id', $request->sponser_user_id)->first();
-        if($earning){
-            $earning->amount += 2;
-            $earning->save();
-        }else{
-            $earning =IndirectEarning::create([
-                 'user_id' =>  $request->sponser_user_id,
-                 'amount'=> 2,
-            ]);
-             
-        }
-        if($request->hasfile('image')){
+        if($request->username != $request->sponser_id){
+            $user_sponser = New UserSponser;
+            $user_sponser->user_id = $user->id;
+            $user_sponser->sponser_id = $request->sponser_user_id;
+            $user_sponser->phase_no = $phase_no;
+            $user_sponser->placement = $request->placement;
+            $user_sponser->save();
             
+            if($user_sponser){
+                $this->phase_pairing($request->sponser_user_id, $phase_no);
+            }
+        }
+
+        
+        if($request->hasfile('image')){
             $path = $request->file('image')->store('user', 'public');
             upload_image($path, $user->id, User::class);
-                
-             
         }
-         
     }
+    
     return $user;
 }
 
@@ -337,7 +337,6 @@ public function register($request, $phase_no)
 
             if (Auth::attempt($user_with_email_data) || Auth::attempt($user_with_username_data))
             {   
-                // Auth::user()->update();
                     if (Auth::user()->hasRole('admin'))
                     {
                         
@@ -380,6 +379,36 @@ public function register($request, $phase_no)
         $username =User::find($id)->username;
         $payment_methods = PaymentMethod::all();
        return view('frontend.pages.register',compact('payment_methods', 'username'));
+    }
+
+    public function phase_pairing($sponser_id, $phase_no)
+    {
+        $phases = UserSponser::where('sponser_id', $sponser_id)->where('phase_no', $phase_no)->get();
+        $left = $phases->where('placement', 1)->count();
+        $right = $phases->where('placement', 2)->count();
+        $phase_pairing = PhasePairing::where('user_id', $sponser_id)->where('phase_no', $phase_no)->first();
+        $placements = 0;
+        if($left > $right){
+            $placements = ($left - ($left - $right));
+        }elseif($left < $right){
+            $placements = ($right - ($right - $left));
+        }else{
+            $placements = $right;
+        }
+        if($phase_pairing){
+            if($phase_pairing->pair < $placements){
+                $phase_pairing->pair += 1;
+                $phase_pairing->save(); 
+            }
+        }else{
+            if($placements > 0){
+                PhasePairing::create([
+                    'user_id' => $sponser_id,
+                    'phase_no' => $phase_no,
+                    'pair' => $placements,
+                ]);
+            }
+        }
     }
 
 }

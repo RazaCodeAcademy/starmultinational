@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\AccountType;
 use App\Models\PaymentMethod;
 use App\Models\IndirectEarning;
+use App\Models\TotalEarning;
 use App\Models\DirectEarning;
 use App\Models\Withdraw;
 use Auth;
@@ -22,11 +23,11 @@ class WithdrawController extends Controller
 
     {
         $user = Auth::user();
-        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
-        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
+        $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
+        $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
         $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-         $payment_methods = PaymentMethod::all();
-        return view('frontend.pages.withdraw.index',compact('withdraw','payment_methods','user','indirect_earning','direct_earning'));
+        $payment_methods = PaymentMethod::all();
+        return view('frontend.pages.withdraw.index',compact('withdraw_amount','payment_methods','user','total_earning'));
     }
 
     /**

@@ -22,7 +22,7 @@
                         <div class="card-body">
                             <section id="horizontal">
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-lg-12 col-md-12 col-12 col-sm-12">
                                         <div class="card">
                                             <div class="card-header">
 
@@ -32,7 +32,7 @@
                                             <div class="card-content collapse show">
                                                 <div class="card-body card-dashboard">
 
-                                                    <table class="table table-striped table-bordered dynamic-height">
+                                                    <table style="width: 100%;" class="table table-striped table-bordered dynamic-height">
                                                         <thead>
                                                             <tr>
                                                                 <th>{{ __('ID') }}</th>
@@ -82,7 +82,7 @@
                     <div class="card-body">
                         <section id="horizontal">
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-lg-12 col-md-12 col-12 col-sm-12">
                                     <div class="card">
                                         <div class="card-header">
 
@@ -92,7 +92,7 @@
                                         <div class="card-content collapse show">
                                             <div class="card-body card-dashboard">
 
-                                                <table class="table table-striped table-bordered dynamic-height">
+                                                <table style="width: 100%;" class="table table-striped table-bordered dynamic-height">
                                                     <thead>
                                                         <tr>
                                                             <th>{{ __('ID') }}</th>

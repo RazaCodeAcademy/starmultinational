@@ -10,14 +10,20 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Carbon\Carbon;
 
 // use models
 use App\Models\User;
 use App\Models\ModelHasRole;
 use App\Models\Role;
+use App\Models\Point;
 use App\Models\PaymentMethod;
 use App\Models\AccountType;
+use App\Models\UserSponser;
+use App\Models\PhasePairing;
 use App\Models\DirectEarning;
+use App\Models\TotalEarning;
+use App\Models\IndirectEarning;
 
 class UserController extends Controller
 {
@@ -215,25 +221,91 @@ class UserController extends Controller
             
         }elseif($user->account_bal->name == 'Manager Enrollment Account'){
             $amount= 10;
+        }
+        
+        // direct and indirect earnings
+        $this->direct_earning($sponser->id, $amount);
+        $user_in_sponser =  UserSponser::where('user_id', $user->id)->first();
+        if($user_in_sponser){
+            $phase_pairing = PhasePairing::where('user_id', $sponser->id)->where('phase_no', $user_in_sponser->phase_no)->first();
+            if($phase_pairing){
+                $phase_pairing->upgrade_counts += 1;
+                $phase_pairing->save();
+                
+                $phase_pairing = PhasePairing::where('user_id', $sponser->id)->where('phase_no', $user_in_sponser->phase_no)->first();
+                if($phase_pairing->upgrade_counts % 2 == 0){
+                    $this->indirect_earning($sponser->id);
+                }
+            }
             
         }
-        $direct_earning = DirectEarning::where('user_id', $sponser->id )->first();
-        if($direct_earning){
-
-            $direct_earning->amount = $amount;
-            $direct_earning->save();
-           
-        }else{
-            DirectEarning::create([
-                'user_id' => $sponser->id,
-                'amount' => $amount,
-            ]);
-        }
-
+        
         return response()->json([
             'success' => true,
             'message' => "Account updated successfuly!",
         ]);
         
+    }
+
+    public function direct_earning($sponser_id, $amount)
+    {
+        $direct_earning = DirectEarning::where('user_id', $sponser_id )->first();
+        if($direct_earning){
+            $direct_earning->amount = $amount;
+            $direct_earning->save();
+        }else{
+            DirectEarning::create([
+                'user_id' => $sponser_id,
+                'amount' => $amount,
+            ]);
+        }
+        $this->total_earning($sponser_id, $amount);
+    }
+    
+    public function indirect_earning($sponser_id)
+    {
+        $earning = IndirectEarning::where('user_id', $sponser_id)->first();
+        if($earning){
+            $earning->amount += 2;
+            $earning->save();
+        }else{
+            $earning = IndirectEarning::create([
+                'user_id' =>  $sponser_id,
+                'amount'=> 2,
+            ]);
+        }
+        $this->total_earning($sponser_id, 2);
+    }
+    
+    public function total_earning($sponser_id, $amount)
+    {
+        $total_earning = TotalEarning::where('user_id', $sponser_id)->first();
+        if($total_earning){
+            $total_earning->amount += $amount;
+            $total_earning->save();
+        }else{
+            $total_earning = TotalEarning::create([
+                'user_id' => $sponser_id,
+                'amount' => $amount,
+            ]);
+        }
+
+        $this->earn_points($sponser_id, $total_earning->amount);
+    }
+
+    public function earn_points($sponser_id, $amount)
+    {
+        $point = Point::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
+        $points = Point::where('user_id', $sponser_id)->sum('number');
+        $points = (($amount - (($amount - (5*$points)) % 5))/5);
+        if($point){
+            $point->number = $points;
+            $point->save();
+        }else{
+            Point::create([
+                'user_id' => $sponser_id,
+                'number' => $points,
+            ]);
+        }
     }
 }

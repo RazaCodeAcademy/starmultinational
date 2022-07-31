@@ -22,54 +22,77 @@ use Illuminate\Support\Facades\Validator;
 // use models
 use App\Models\User;
 use App\Models\Job;
-use App\Models\SavedJob;
-use App\Models\EmployeeAppliedJob;
-use App\Models\EmployeeBussinessCategory;
-use App\Models\TrendingFilter;
+use App\Models\Point;
 use App\Models\Transaction;
 use App\Models\IndirectEarning;
 use App\Models\DirectEarning;
+use App\Models\TotalEarning;
+use App\Models\UserSponser;
 use App\Models\Withdraw;
 
 class DashboardController extends Controller
 {
-    public function index(request $request){
-        
+    public function index(request $request)
+    {
         $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
-        $withdraw = Withdraw::where('user_id', Auth::user()->id)->first();
+        $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
         $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
         $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
-        $direct_earning_today = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,date('Y-m-d') )->first();
-        $indirect_earning_today = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,date('Y-m-d') )->first();
+        $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
+        $earn_points = Point::where('user_id', Auth::user()->id)->sum('number');
+        $list_points = Point::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->take(5)->get();
         
+        $data1 = DirectEarning::selectRaw("COUNT(*) as earnings, DATE_FORMAT(created_at, '%Y-%m-%d') date, SUM(amount) as amount" )
+        ->orderBy('date', 'desc')
+        ->groupBy('date')
+        ->where('user_id', Auth::Id())
+        ->take(7)->get();
         
-        $direct_earning_yesterday = DirectEarning::where('user_id', Auth::user()->id)->whereDate('created_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
-        $indirect_earning_yesterday = IndirectEarning::where('user_id', Auth::user()->id)->whereDate('updated_at' ,'>=',date('Y-m-d',strtotime("-1 days")) )->first();
-         
- 
-        if(!empty($direct_earning_today && $indirect_earning_today)){
+        $data2 = IndirectEarning::selectRaw("COUNT(*) as earnings, DATE_FORMAT(created_at, '%Y-%m-%d') date, SUM(amount) as amount" )
+        ->orderBy('date', 'desc')
+        ->groupBy('date')
+        ->where('user_id', Auth::Id())
+        ->take(7)->get();
 
-            $total_today = $direct_earning_today->amount  + $indirect_earning_today->amount  ;
-           
-        }
-        else{
-            $total_today = 0;
-        }
-        if(!empty($direct_earning_yesterday && $indirect_earning_yesterday)){
+        $refferals = UserSponser::selectRaw("COUNT(*) as refferals, DATE_FORMAT(created_at, '%Y-%m-%d') date")
+        ->orderBy('date', 'desc')
+        ->groupBy('date')
+        ->where('sponser_id', Auth::Id())
+        ->take(7)->get();
 
-            $total_yesterday = $direct_earning_today->amount ?? 0  + $indirect_earning_today->amount ?? 0 ;
-           
-        }
-        else{
-            $total_yesterday = 0;
+        if($total_earning){
+            $total_earning = $total_earning ? $total_earning->amount : 0;
         }
 
+        $total_earning_analytics = [];
+        foreach ($data1 as $key => $value1) {
+            foreach ($data2 as $key => $value2) {
+                if($value1->date == $value2->date){
+                    $total_earning_analytics[] = array(
+                        'x'=>$value1->date, 'y'=>$value1->amount + $value2->amount
+                    );
+                }
+            }
+        }
 
+        $refferal_analytics = [];
+        foreach ($refferals as $key => $value) {
+            $refferal_analytics[] = array(
+                'x'=>$value->date, 'y'=>$value->refferals
+            );
+        }
 
-        return view('frontend.pages.index',
-        compact('transaction','indirect_earning','direct_earning',
-        'withdraw','direct_earning_today','indirect_earning_today'
-        ,'total_today','total_yesterday','direct_earning_yesterday','indirect_earning_yesterday'));
+        return view('frontend.pages.index', compact(
+            'transaction',
+            'indirect_earning',
+            'direct_earning',
+            'withdraw_amount',
+            'earn_points', 
+            'total_earning',
+            'list_points',
+            'refferal_analytics',
+            'total_earning_analytics'
+        ));
     }
 
     // Employee Details 
@@ -154,187 +177,5 @@ class DashboardController extends Controller
     {
         $notifications = unserialized_notification(user()->get_notification);
         return view('frontend.pages.userprofile.notifications', compact('notifications'));
-    }
-
-    // employed saved jobs
-    public function savedjob()
-    {
-       return view('frontend.pages.userprofile.savedjobs');
-    }
-
-    // Employee Search job
-    public function job_search(Request $request)
-    {
-        if($request->ajax()){
-            $output = '';
-            $query = $request->get('query');
-
-            $jobs =  Job::with('user')
-            ->where('job_approval', 1)
-            ->Where('title', 'like', '%'.$query.'%')
-            ->orderBy('id', 'desc')
-            ->get();
-
-            if(count($jobs) > 0)
-            {
-                $this->trending_filter($query);
-                return response()->json([
-                    'success' => true,
-                    'count' => count($jobs),
-                    'jobs' => $jobs
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'count' => count($jobs),
-                'jobs' => $jobs
-            ]);
-        }
-    }
-
-    // Employee Ctegory job Search 
-    public function category_job_search(Request $request)
-    {
-        if($request->ajax()){
-            $output = '';
-            $query = $request->get('query');
-
-            $jobs =  Job::with('user')
-            ->where('job_approval', 1)
-            ->Where('title', 'like', '%'.$query.'%')
-            ->orderBy('id', 'desc')
-            ->get();
-
-            if(count($jobs) > 0)
-            {
-                $this->categorytrending_filter($query);
-                return response()->json([
-                    'success' => true,
-                    'count' => count($jobs),
-                    'jobs' => $jobs
-                ]);
-            }
-
-            return response()->json([
-                'success' => false,
-                'count' => count($jobs),
-                'jobs' => $jobs
-            ]);
-        }
-    }
-     
-    function categorytrending_filter($query)
-    {
-       $filter = TrendingFilter::Where('title', 'like', '%'.$query.'%')->first();
-       if(!empty($filter)){
-            $filter->count += 1;
-       }else{
-           $filter = new TrendingFilter();
-           $filter->title = $query;
-       }
-       $filter->save();
-    }
-    
-    public function apply_job(Request $request )
-    {
-
-        if(request()->ajax()){
-            $user = Auth::user();
-            $job = Job::find($request->job_id);
-            $saved_job = EmployeeAppliedJob::where([
-                    ['user_id', $user->id],
-                    ['job_id', $request->job_id],
-                ])->first();
-            if(empty($saved_job)){
-                $user->applied_jobs()->attach($request->job_id);
-                notifications(
-                    $job->id, 
-                    $job->employer_id, 
-                    EmployeeAppliedJob::class, 
-                    "applied on job ". $job->title ." at: (". date('d-M-y') .")"
-                );
-                return response()->json([
-                    'method' => 'create',
-                    'message' => 'Job applied Successfully!', 
-                    'success' => true,
-                ], 200);
-            }else{
-                $user->applied_jobs()->detach($request->job_id);
-                return response()->json([
-                    'method' => 'delete',
-                    'message' => 'Job removed Successfully!', 
-                    'success' => true,
-                ], 200);
-            }
-        }
-
-
-        
-    }
-
-    public function savejob(Request $request){
-
-        if(request()->ajax()){
-            $user = Auth::user();
-            $saved_job = SavedJob::where([
-                    ['user_id', $user->id],
-                    ['job_id', $request->job_id],
-                ])->first();
-            if(empty($saved_job)){
-                $user->saved_jobs()->attach($request->job_id);
-                return response()->json([
-                    'method' => 'create',
-                    'message' => 'Job saved Successfully!', 
-                    'success' => true,
-                ], 200);
-            }else{
-                $user->saved_jobs()->detach($request->job_id);
-                return response()->json([
-                    'method' => 'delete',
-                    'message' => 'Job removed Successfully!', 
-                    'success' => true,
-                ], 200);
-            }
-        }
-    }
-
-    public function job_details($slug)
-    {
-        $job = Job::with('user')->select()->where('slug', $slug)->first();
-        //  dd($job);
-        if (empty($job)) {
-            return back()->with('error','Not Found.');
-        }
-
-        $timeCheck = Carbon::now();
-       return view('frontend.pages.find_job',compact('job','timeCheck'));
-       
-    }
-
-    public function category($slug)
-    {
-        $category = EmployeeBussinessCategory::where('slug', $slug)->first();
-        $trends = TrendingFilter::orderBy('count' ,'DESC')->paginate(10);
-        $jobs = Job::with('user')
-        ->orderBy('id','DESC')
-        ->where('job_approval', 1)
-        ->where('business_cat_id', $category->id)
-        ->paginate(20);
-
-       return view('frontend.pages.category',compact('jobs','category','trends'));
-    }
-
-    // Home page Trending filter
-    function trending_filter($query)
-    {
-       $filter = TrendingFilter::Where('title', 'like', '%'.$query.'%')->first();
-       if(!empty($filter)){
-            $filter->count += 1;
-       }else{
-           $filter = new TrendingFilter();
-           $filter->title = $query;
-       }
-       $filter->save();
     }
 }

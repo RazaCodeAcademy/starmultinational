@@ -68,7 +68,7 @@ Account upgrade
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Amount:</label>
                                     <input name="amount" type="number" class="form-control" value="{{ Auth::user()->account_bal->price ?? 0 }}" required placeholder="Enter Amount" readonly>
-                                    <small class="text-danger">Amount must be Equilent to wallet amount </small>
+                                    <small class="text-danger">Amount must be Equivalent to wallet amount </small>
                                 </div>
                             </div>
                         </div>
