@@ -36,8 +36,6 @@ class DashboardController extends Controller
     {
         $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
         $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
-        $indirect_earning = IndirectEarning::where('user_id', Auth::user()->id)->first();
-        $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
         $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
         $earn_points = Point::where('user_id', Auth::user()->id)->sum('number');
         $list_points = Point::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->take(5)->get();
@@ -84,8 +82,6 @@ class DashboardController extends Controller
 
         return view('frontend.pages.index', compact(
             'transaction',
-            'indirect_earning',
-            'direct_earning',
             'withdraw_amount',
             'earn_points', 
             'total_earning',

@@ -59,19 +59,20 @@
                                                     <input type="number" min='5'
                                                         max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}" step="any"
                                                         id="txamount" name="amount" class="form-control"
-                                                        placeholder="0.00" required="">
+                                                        placeholder="0.00" required="" oninput="amount_to_receive(this.value)">
                                                 @else
                                                     <input type="number" min='5'
                                                         max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}"
                                                         step="any" id="txamount" name="amount" class="form-control"
-                                                        placeholder="0.00" required="">
+                                                        placeholder="0.00" required="" oninput="amount_to_receive(this.value)">
                                                 @endif
                                             </div>
-                                            <h6 class="text-muted text-small">
-                                                <span class="badge badge-danger float-right mt-2" id="txamountstr2">
-                                                    Withdraw Amount Should be equal to total balance or greater than 5$</span>
-                                                <span class="badge badge-info float-right" id="txamountstr1"></span>
-                                            </h6>
+                                            <div class="float-right">
+                                                <p class="badge badge-info">Ammount to receive: $<span id="amount_to_receive">0.00</span></p>
+                                                <br>
+                                                <p class="badge badge-info"> Withdrawal Fee: $0.00</p>
+
+                                            </div>
                                         </div>
                                         <div class="float-md-right mt-4"> <a href="" class="btn btn-danger"><i
                                                     class="fa fa-fw fa-redo"></i> Clear</a>
@@ -112,4 +113,9 @@
             </div>
         </div>
     </div>
+    <script>
+        const amount_to_receive = (amount) => {
+            document.getElementById('amount_to_receive').innerText = amount != '' ? amount : '0.00';
+        }
+    </script>
 @endsection

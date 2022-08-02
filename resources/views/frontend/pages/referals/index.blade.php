@@ -11,7 +11,7 @@ Referals
       </div>
         <div class="content-body">    
             <div class="section-header">
-                <h1><i class="fa fa-fw fa-cash-register"></i> Refferal History</h1> 
+                <h1><i class="fa fa-fw fa-cash-register"></i> Referal History</h1> 
             </div>
             <div class="d-flex flex-column-fluid">
                 <div class="container">

@@ -94,6 +94,10 @@
         a::after {
             display: none !important;
         }
+
+        .canvasjs-chart-credit{
+            display: none;
+        }
     </style>
 
     @yield('css')

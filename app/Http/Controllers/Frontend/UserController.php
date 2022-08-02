@@ -85,7 +85,7 @@ class UserController extends Controller
             $phase = UserSponser::orderby('id', 'Desc')->where('sponser_id', $request->sponser_user_id)->first();
             if(empty($sponser->account_bal) && $request->username != $request->sponser_id){
                 $notification = array(
-                'error' => 'The sponser account is not upgraded please try with another sponser!', 
+                'error' => "The sponser ID isn't Valid  please contact your sponser or use your username as sponser id", 
                 );
                 return redirect()->back()->with($notification);
             }

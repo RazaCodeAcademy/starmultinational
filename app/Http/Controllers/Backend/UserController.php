@@ -249,7 +249,7 @@ class UserController extends Controller
 
     public function direct_earning($sponser_id, $amount)
     {
-        $direct_earning = DirectEarning::where('user_id', $sponser_id )->first();
+        $direct_earning = DirectEarning::where('user_id', $sponser_id )->whereDate('created_at', Carbon::today())->first();
         if($direct_earning){
             $direct_earning->amount = $amount;
             $direct_earning->save();
@@ -264,7 +264,7 @@ class UserController extends Controller
     
     public function indirect_earning($sponser_id)
     {
-        $earning = IndirectEarning::where('user_id', $sponser_id)->first();
+        $earning = IndirectEarning::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
         if($earning){
             $earning->amount += 2;
             $earning->save();
@@ -297,7 +297,9 @@ class UserController extends Controller
     {
         $point = Point::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
         $points = Point::where('user_id', $sponser_id)->sum('number');
-        $points = (($amount - (($amount - (5*$points)) % 5))/5);
+        $remain_amount = $amount - (5*$points);
+        $mod_amount = ($remain_amount % 5);
+        $points = (($remain_amount - $mod_amount)/5);
         if($point){
             $point->number = $points;
             $point->save();

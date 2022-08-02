@@ -33,15 +33,12 @@ Search  Sponser
                             </fieldset>
                           </div>
                         <div class="card-body">
-                            <table class="table table-striped table-bordered ">
+                            <table style="width: 100%; overflow-x: scroll;" class="table table-striped table-bordered dynamic-height">
                                 <thead>
                                     <tr>
-                                        
                                         <th>{{ __('User Name') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         <th>{{ __('Link') }}</th>
-                                      
-                                        
                                     </tr>
                                 </thead>
                                 <tbody class="search">
@@ -56,6 +53,9 @@ Search  Sponser
         </div> 
 </div>
 <script>
+    const getRoute = (link, id) => {
+        return link.replace('item_id', id);
+    }
     function fetch_customer_data(query = '')
 		 {
 		 
@@ -78,11 +78,9 @@ Search  Sponser
                         
 						html += `
 							<tr>
-                                            
-                                            <td>${ user.username }</td>
-                                            <td>${ user.email }</td>
-                                            <td> <a href="{{route('user-profile','')}}/${user.id} }}" target="_blank"> {{url()->route('user-profile','')}}/${user.id} </a></td>
-
+                                <td>${ user.username }</td>
+                                <td>${ user.email }</td>
+                                <td> <a href="${getRoute("{{route('user-profile','item_id')}}", user.id)}" target="_blank"> ${getRoute("{{route('user-profile','item_id')}}", user.id)} </a></td>
 							</tr>
 													
 						`;
