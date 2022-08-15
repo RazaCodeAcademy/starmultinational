@@ -254,7 +254,7 @@ class UserController extends Controller
             $direct_earning->amount = $amount;
             $direct_earning->save();
         }else{
-            DirectEarning::create([
+            $direct_earning = DirectEarning::create([
                 'user_id' => $sponser_id,
                 'amount' => $amount,
             ]);
@@ -274,6 +274,7 @@ class UserController extends Controller
                 'amount'=> 2,
             ]);
         }
+        
         $this->total_earning($sponser_id, 2);
     }
     
@@ -301,7 +302,7 @@ class UserController extends Controller
         $mod_amount = ($remain_amount % 5);
         $points = (($remain_amount - $mod_amount)/5);
         if($point){
-            $point->number = $points;
+            $point->number += $points;
             $point->save();
         }else{
             Point::create([

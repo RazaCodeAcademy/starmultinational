@@ -289,20 +289,24 @@
                                                 ({{ Auth::user()->email }})</div>
                                         </div>
                                     </li>
+                                    {{-- @if (!empty($transaction)) --}}
                                     <li class="">
                                         <div class="media-body">
                                             <div class="text-small">
                                                 Referral URL
                                             </div>
-
-                                            <a class="" href="{{ route('user-profile', Auth::user()->id) }}"
-                                                target="_blank" title="">
-                                                {{ url()->route('user-profile', Auth::user()->id) }}
-                                            </a>
-
-
+                                            <div style="white-space: nowrap; overflow-x:scroll; border: 1px solid black;">
+                                                <a id="referal_link" class=""
+                                                    href="{{ route('user-profile', Auth::user()->id) }}" target="_blank"
+                                                    title="">
+                                                    {{ url()->route('user-profile', Auth::user()->id) }}
+                                                </a>
+                                            </div>
+                                            {{-- <button id="btnCopy" class="btn btn-sm btn-success" title="Click to copy referal link!"
+                                                onclick="copyToClipboard(); alert('Referal link coppied!');">Copy</button> --}}
                                         </div>
                                     </li>
+                                    {{-- @endif --}}
                                 </ul>
                             </div>
                         </div>
@@ -434,7 +438,15 @@
     </div>
 
 
+    <script>
+        const copyToClipboard = () => {
+            /* Get the text field */
+            var copyText = document.getElementById("referal_link");
 
+            /* Copy the text inside the text field */
+            navigator.clipboard.writeText(copyText.innerText);
+        }
+    </script>
 
     <script>
         window.onload = function() {

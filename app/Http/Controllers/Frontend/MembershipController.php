@@ -7,7 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Membership;
-use App\Models\User;
+use App\Models\User; 
+use App\Models\Transaction; 
 use App\Models\AccountType;
 use App\Models\DirectEarning;
 
@@ -110,7 +111,12 @@ class MembershipController extends Controller
         $user = User::where('id',Auth::user()->id)->first();
 
         $user->update($request->toArray());
-        
+
+        $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
+        $user = User::where('id',Auth::user()->id)->first();
+        $transaction->amount = $user->account_bal ? $user->account_bal->price : 0;
+        $transaction->update();
+                
         $sponser = User::where('username', $user->sponser_id)->first();
         if(empty($sponser)){
             return response()->json([

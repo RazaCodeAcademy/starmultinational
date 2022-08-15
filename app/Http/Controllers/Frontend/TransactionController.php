@@ -49,20 +49,7 @@ class TransactionController extends Controller
 
         ];
         $transaction = Transaction::create($data);
-        $earning =IndirectEarning::where('user_id', Auth::user()->id)->first();
-        if($transaction){
-        
-            if(!empty($earning)){
-                $earning->amount += 2;
-                $earning->save();
-            }else{
-                $earning =IndirectEarning::create([
-                     'user_id' =>  Auth::user()->id,
-                     'amount'=> 2,
-                ]);
-                 
-            }
-            
+        if($transaction){    
             $notification = array(
                 'success' => ' Amount Send Successfully!', 
                 );

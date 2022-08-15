@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\ForgotPasswordController;
 // Auth::routes();
 Route::get('/clear', function(){
+    Artisan::call('config:cache');
     Artisan::call('config:clear');
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
@@ -80,6 +81,7 @@ Route::prefix('admin')->namespace('Backend')->group(function (){
         Route::group(['prefix' => 'manage-users'], function () {
             Route::get('/', 'UserController@listAdmins')->name('listAdmins');
             Route::get('/account_type/{id}', 'UserController@account_type')->name('userAccounttype');
+            Route::get('/sponser/{id}', 'UserController@earn_points')->name('earn_points');
             Route::get('/employers-list', 'UserController@listEmployers')->name('listEmployers');
             Route::get('/create', 'UserController@createUser')->name('createUser');
             Route::post('/store', 'UserController@storeUser')->name('storeUser');
