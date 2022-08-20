@@ -41,28 +41,15 @@
 							{{-- <span class="fa fa-info-circle errspan"></span> --}}
                         @endif
 						<button>Log in</button>
+						<div class="d-flex">
+							<input type="checkbox" name="remember" value="1" style="width: 20px; margin-top: 3px;">
+							<span style="width: 150px;">Remember me?</span>
+						</div>
 						<div class="main-bottom">
 							<a href="{{ route('ForgetPasswordGet') }}">{{ __('Forgot Your Password?') }}</a>
 							<a href="{{ route('register') }}">New member ?</a>
 						</div>
 					</form>
-
-					<footer class="main-footer">
-						<p>Or continue with social accounts</p>
-						<ul>
-							<li>
-								<a href=""> <i class="fab fa-facebook-f"></i></a>
-							</li>
-							<li>
-								<a href=""><i class="fab fa-twitter"></i></a>
-							</li>
-							<li>
-								<a href="">
-									<i class="fab fa-google"></i>
-								</a>
-							</li>
-						</ul>
-					</footer>
 				</div>
 			</main>
 		</section>

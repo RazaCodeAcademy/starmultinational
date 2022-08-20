@@ -71,28 +71,6 @@ class User extends Authenticatable
         }
     }
 
-   
-
-    public function saved_jobs()
-    {
-        return $this->belongsToMany(Job::class, 'saved_jobs', 'user_id', 'job_id');
-    }
-
-    public function applied_jobs()
-    {
-        return $this->belongsToMany(Job::class, 'employee_applied_jobs', 'user_id', 'job_id');
-    }
-
-    public function get_jobs()
-    {
-        return $this->hasMany(Job::class, 'employer_id', 'id');
-    }
-
-    public function get_experiences()
-    {
-        return $this->hasMany(EmployeeExperience::class, 'user_id', 'id');
-    }
-
     public function account_bal()
     {
         return $this->hasOne(AccountType::class, 'id', 'account_type');
@@ -118,33 +96,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class, 'city_name', 'id');
     }
-
-    public function jobs()
-    {
-        return $this->hasMany(Job::class, 'employer_id', 'id');
-    }
     
-    public function jobAppliedEmployee()
-    {
-        // return $this->jobs->pluck('id');
-        return EmployeeAppliedJob::whereIn('job_id', $this->jobs->pluck('id'))->count();
-    }
-
-    public function getLastMessage(){
-        $conversation = Conversation::where([
-            ['moderator_id', $user->id],
-            ['participant_id', $participantId],
-        ])->orWhere([
-            ['moderator_id', $participantId],
-            ['participant_id', $user->id],
-        ])->first();
-
-        $lastMessage = $this->messages->last() ? Str::limit($this->messages->last()->text, 12).'...' : '....';
-        return [
-            'text' => $lastMessage,
-        ];
-    }
-
     public function photos(){
         return $this->hasMany(Photo::class, 'parent_id', 'id')->where('parent_type', User::class);
 
@@ -174,6 +126,10 @@ class User extends Authenticatable
     public function transaction()
     {
         return $this->hasMany(Transaction::class, 'sender_id', 'id');
+    }
+
+    public function get_sponser(){
+        return $this->belongsTo(User::class, 'sponser_id', 'id');
     }
     
 }

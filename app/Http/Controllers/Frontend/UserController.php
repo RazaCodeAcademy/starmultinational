@@ -40,7 +40,6 @@ class UserController extends Controller
             'email' => 'required|unique:users,email',
             'date_of_birth' => 'required',
             'gender' => 'required',
-            'placement' => 'required',
             'city' => 'required',
             
             'zip_code' => 'required',
@@ -82,148 +81,14 @@ class UserController extends Controller
         }
         else{
             $sponser = User::find($request->sponser_user_id);
-            $phase = UserSponser::orderby('id', 'Desc')->where('sponser_id', $request->sponser_user_id)->first();
-            if(empty($sponser->account_bal) && $request->username != $request->sponser_id){
+            if(empty($sponser->account_bal)){
                 $notification = array(
                 'error' => "The sponser ID isn't Valid  please contact your sponser or use your username as sponser id", 
                 );
                 return redirect()->back()->with($notification);
             }
-            if(!empty($phase)){
-                $sponser_account_phase1 =  $sponser->account_bal ? ($sponser->account_bal->name == 'Member Enrollment account' || $sponser->account_bal->name == 'Supervisor enrollment Account' || $sponser->account_bal->name == 'Manager Enrollment Account') : '';
-                $sponser_account_phase =  $sponser->account_bal ? ($sponser->account_bal->name == 'Supervisor enrollment Account' || $sponser->account_bal->name == 'Manager Enrollment Account') : '';
-                if($sponser_account_phase1){
-                    if($phase->phase_no == 1){
-                        $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
-                        if(count($phase_user)< 2){
-                          $left =  $phase_user->where('placement', 1);
-    
-                          if(count($left) == 1 && $request->placement == 1){
-                            $notification = array(
-                                'error' => 'Left placement is not empty You must choose right placement!', 
-                                );
-                            return redirect()->back()->with($notification);
-    
-                          }
-                          
-                            $right =  $phase_user->where('placement', 2);
-      
-                            if(count($right) == 1 && $request->placement == 2){
-    
-                              $notification = array(
-                                  'error' => 'Right placement is not empty You must choose left placement!', 
-                                  );
-                              return redirect()->back()->with($notification);
-                            }
-                           $user = $this->register($request,$phase->phase_no);
-                        }else{
-                           $user= $this->register($request,$phase->phase_no+1);
-                        }
-    
-    
-                    }
-                }
-                if($sponser_account_phase){
-
-                    if($phase->phase_no == 2){
-                        $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
-                        
-                        if(count($phase_user)< 12){
-                          $left =  $phase_user->where('placement',1);
-    
-                          if(count($left) >= 6 && $request->placement == 1){
-                            $notification = array(
-                                'error' => 'Left placement is not empty You must choose right placement!', 
-                                );
-                            return redirect()->back()->with($notification);
-    
-                          }
-                          
-                            $right =  $phase_user->where('placement',2);
-      
-                            if(count($right) >= 6 && $request->placement == 2){
-    
-                              $notification = array(
-                                  'error' => 'Right placement is not empty You must choose left placement!', 
-                                  );
-                              return redirect()->back()->with($notification);
-                            }
-                           $user = $this->register($request,$phase->phase_no);
-                        }else{
-                           $user= $this->register($request,$phase->phase_no+1);
-                        }
-    
-    
-                    }
-                    if($phase->phase_no == 3){
-                        $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
-                        
-                        if(count($phase_user)< 24){
-                          $left =  $phase_user->where('placement',1);
-    
-                          if(count($left) >= 12 && $request->placement == 1){
-                            $notification = array(
-                                'error' => 'Left placement is not empty You must choose right placement!', 
-                                );
-                            return redirect()->back()->with($notification);
-    
-                          }
-                          
-                            $right =  $phase_user->where('placement',2);
-      
-                            if(count($right) >= 12 && $request->placement == 2){
-    
-                              $notification = array(
-                                  'error' => 'Right placement is not empty You must choose left placement!', 
-                                  );
-                              return redirect()->back()->with($notification);
-                            }
-                           $user = $this->register($request,$phase->phase_no);
-                        }else{
-                           $user= $this->register($request,$phase->phase_no+1);
-                        }
-    
-    
-                    }
-                    if($phase->phase_no == 4){
-                        $phase_user = UserSponser::orderby('id', 'Desc')->where([['phase_no', $phase->phase_no], ['sponser_id', $sponser->id]])->get();
-                        
-                        if(count($phase_user)< 48 ){
-                          $left =  $phase_user->where('placement', 1);
-    
-                          if(count($left) >= 24 && $request->placement == 1){
-                            $notification = array(
-                                'error' => 'Left placement is not empty You must choose right placement!', 
-                                );
-                            return redirect()->back()->with($notification);
-    
-                          }
-                          
-                            $right =  $phase_user->where('placement',2);
-      
-                            if(count($right) >= 24 && $request->placement == 2){
-    
-                              $notification = array(
-                                  'error' => 'Right placement is not empty You must choose left placement!', 
-                                  );
-                              return redirect()->back()->with($notification);
-                            }
-                           $user = $this->register($request, $phase->phase_no);
-                        }else{
-                            $notification = array(
-                                'error' => 'You cannot register with this sponser_id because Its Limit is full !', 
-                                );
-                            return redirect()->back()->with($notification);
-                        }
-                    }
-                }elseif(empty($sponser->account_bal)){
-                    $user = $this->register($request, 1);
-                }
-
-            }else{
-                
-                $user = $this->register($request, 1);
-            }
+            
+            $user = $this->register($request);
  
             $notification = array(
             'success' => 'User Register Successfully!', 
@@ -240,7 +105,7 @@ class UserController extends Controller
         }
           
     }
-public function register($request, $phase_no)
+public function register($request)
 {
     $data =[
         'first_name' => $request->first_name,
@@ -249,7 +114,7 @@ public function register($request, $phase_no)
         'email' => $request->email,
         'date_of_birth' => $request->date_of_birth,
         'gender' => $request->gender,
-        'placement' => $request->placement,
+        'placement' => 1,
         'city' => $request->city,
         'country' => $request->country,
         'state' => $request->state,
@@ -265,20 +130,6 @@ public function register($request, $phase_no)
     ];
     $user= User::create($data);
     if($user){
-        if($request->username != $request->sponser_id){
-            $user_sponser = New UserSponser;
-            $user_sponser->user_id = $user->id;
-            $user_sponser->sponser_id = $request->sponser_user_id;
-            $user_sponser->phase_no = $phase_no;
-            $user_sponser->placement = $request->placement;
-            $user_sponser->save();
-            
-            if($user_sponser){
-                $this->phase_pairing($request->sponser_user_id, $phase_no);
-            }
-        }
-
-        
         if($request->hasfile('image')){
             $path = $request->file('image')->store('user', 'public');
             upload_image($path, $user->id, User::class);
@@ -337,6 +188,12 @@ public function register($request, $phase_no)
 
             if (Auth::attempt($user_with_email_data) || Auth::attempt($user_with_username_data))
             {   
+                $user = Auth::getProvider()->retrieveByCredentials($user_with_email_data);
+                $user = Auth::getProvider()->retrieveByCredentials($user_with_username_data);
+
+                // Auth::login($user, $request->get('remember'));
+
+                // return $this->authenticated($request, $user);
                     if (Auth::user()->hasRole('admin'))
                     {
                         

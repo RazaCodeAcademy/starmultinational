@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Validator;
 
 // use models
 use App\Models\User;
+use App\Models\Hit;
+use App\Models\HitBonus;
 use App\Models\Job;
 use App\Models\Point;
 use App\Models\Transaction;
@@ -39,14 +41,11 @@ class DashboardController extends Controller
         $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
         $earn_points = Point::where('user_id', Auth::user()->id)->sum('number');
         $list_points = Point::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->take(5)->get();
+        $today_earn_points = Point::where('user_id', Auth::user()->id)->whereDate('created_at', Carbon::today())->first();
+        $hits = Hit::where('user_id', Auth::user()->id)->sum('number');
+        $hit_bonus = HitBonus::where('user_id', Auth::user()->id)->sum('amount');
         
         $data1 = DirectEarning::selectRaw("COUNT(*) as earnings, DATE_FORMAT(created_at, '%Y-%m-%d') date, SUM(amount) as amount" )
-        ->orderBy('date', 'desc')
-        ->groupBy('date')
-        ->where('user_id', Auth::Id())
-        ->take(7)->get();
-        
-        $data2 = IndirectEarning::selectRaw("COUNT(*) as earnings, DATE_FORMAT(created_at, '%Y-%m-%d') date, SUM(amount) as amount" )
         ->orderBy('date', 'desc')
         ->groupBy('date')
         ->where('user_id', Auth::Id())
@@ -64,13 +63,9 @@ class DashboardController extends Controller
 
         $total_earning_analytics = [];
         foreach ($data1 as $key => $value1) {
-            foreach ($data2 as $key => $value2) {
-                if($value1->date == $value2->date){
-                    $total_earning_analytics[] = array(
-                        'x'=>$value1->date, 'y'=>$value1->amount + $value2->amount
-                    );
-                }
-            }
+            $total_earning_analytics[] = array(
+                'x'=>$value1->date, 'y'=>$value1->amount
+            );
         }
 
         $refferal_analytics = [];
@@ -86,6 +81,9 @@ class DashboardController extends Controller
             'earn_points', 
             'total_earning',
             'list_points',
+            'hits',
+            'hit_bonus',
+            'today_earn_points',
             'refferal_analytics',
             'total_earning_analytics'
         ));

@@ -24,10 +24,8 @@
                             <div class="row">
                                 <div class="col-md-6 float-md-right">
                                     <blockquote>
-                                        <p><strong>Pending</strong>: The request has been sent but is not yet processed.
-                                            <strong>Verified</strong>: The request has passed verification.
-                                            <strong>Processing</strong>: The request is being processed. Once processed, the
-                                            funds will be sent to your account.
+                                        <p>Your amount withdraw request has been sent successfuly and is under processing.
+                                            Your amount will be send to your account after approval.
                                         </p>
                                     </blockquote>
                                 </div>
@@ -57,20 +55,23 @@
                                                         withdraw</span> </div>
                                                 @if (!empty($withdraw))
                                                     <input type="number" min='5'
-                                                        max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}" step="any"
-                                                        id="txamount" name="amount" class="form-control"
-                                                        placeholder="0.00" required="" oninput="amount_to_receive(this.value)">
+                                                        max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}"
+                                                        step="any" id="txamount" name="amount" class="form-control"
+                                                        placeholder="0.00" required=""
+                                                        oninput="amount_to_receive(this.value)">
                                                 @else
                                                     <input type="number" min='5'
                                                         max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}"
                                                         step="any" id="txamount" name="amount" class="form-control"
-                                                        placeholder="0.00" required="" oninput="amount_to_receive(this.value)">
+                                                        placeholder="0.00" required=""
+                                                        oninput="amount_to_receive(this.value)">
                                                 @endif
                                             </div>
                                             <div class="float-right">
-                                                <p class="badge badge-info">Ammount to receive: $<span id="amount_to_receive">0.00</span></p>
+                                                <p class="badge badge-info">Amount to receive: $<span
+                                                        id="amount_to_receive">0.00</span></p>
                                                 <br>
-                                                <p class="badge badge-info"> Withdrawal Fee: $0.00</p>
+                                                <p class="badge badge-info"> Withdraw Fee: $0.00</p>
 
                                             </div>
                                         </div>
@@ -86,9 +87,8 @@
                         </div>
                         <div class="card-footer bg-whitesmoke">
                             <div class="row">
-                                <div class="col-sm-12 text-small text-danger"> You are allowed to submit a withdrawal
-                                    request once a time! The system will simply ignore the request if it is do not meets the
-                                    requirements. </div>
+                                <div class="col-sm-12 text-small text-danger"> The system will simply ignore the amount
+                                    withdraw request if it doesn't meet our requirements. </div>
                             </div>
                         </div>
                         <div class="clearfix"></div>

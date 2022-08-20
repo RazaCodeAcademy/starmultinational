@@ -105,24 +105,7 @@ Register
                                 @enderror
                             </div>
                         </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <label>{{ __('Placement') }} <span class="text-danger">*</span></label>
-                                <select name="placement" class="form-control">
-                                    <option selected="selected" disabled="disabled" value="">
-                                        {{ __('Select Placement') }}</option>
-                                    <option value='1' {{ old('placement') == '1' ? 'selected' : '' }}>Left</option>
-                                    <option value='2' {{ old('placement') == '2' ? 'selected' : '' }}>Right</option>
-                                </select>
-                                @error('placement')
-                                <span class="invalid-feedback" role="alert">
-                                    {{ $message }}
-                                </span>
-                                @enderror
-                            </div>
-                        </div>
-
-
+                        
                         <div class="col-6">
                             <div class="form-group">
                                 <label>{{ __('City') }} <span class="text-danger">*</span></label>
@@ -196,13 +179,13 @@ Register
                                 <label>{{ __("Sponser I'd") }} <span class="text-danger">*</span></label>
                                 @if(current_route() == 'register')
 
-                                <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" />
+                                <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" value="Star786" readonly />
                                 
-                                <input type="hidden" class="form-control" placeholder="Enter Sponser I'd" name="sponser_user_id" value="1" />
+                                <input type="hidden" class="form-control" placeholder="Enter Sponser I'd" name="sponser_user_id" value="3" />
                                 @elseif(current_route() == 'user-profile')
                                 <input type="text" class="form-control" placeholder="Enter Sponser I'd" name="sponser_id" value="{{ $username }}" readonly />
                                 <input type="hidden" class="form-control" placeholder="Enter Sponser I'd" name=
-                                "sponser_user_id" value="{{ request()->route('id') }}"  />
+                                "sponser_user_id" value="{{ request()->route('id') ?? 'Star786' }}"  />
                     
                                 @endif
                                 @error('sponser_id')

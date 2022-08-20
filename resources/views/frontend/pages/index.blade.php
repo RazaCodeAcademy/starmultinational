@@ -11,9 +11,9 @@
             <div class="content-body">
                 <!-- eCommerce statistic -->
                 <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-3 col-lg-6 col-12">
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-6 col-lg-6 col-12">
                         <div class="card pull-up">
                             <div class="card-content">
                                 <div class="card-body">
@@ -29,179 +29,120 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-3 col-lg-6 col-12">
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
-                        <div class="card pull-up">
+                    <div class="col-xl-6 col-lg-6 col-12">
+                        <div class="card crypto-card-3 pull-up">
                             <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media d-flex">
-                                        <div class="media-body text-left">
-
+                                <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <h1><img src="{{ asset('public/icons/earning.jpeg') }}" alt=""
+                                                    width="50px" height="50px"></h1>
+                                        </div>
+                                        <div class="col-7 pl-3">
+                                            <h5>Current Balance</h5>
+                                            <h6 class="text-muted">Total Earning</h6>
+                                        </div>
+                                        <div class="col-3 text-right">
                                             <h4>
                                                 @if ($withdraw_amount > 0)
                                                     <span
                                                         class=" text-danger">${{ $total_earning ? $total_earning - $withdraw_amount : 0 }}</span>
+                                                @else
+                                                    <span class=" text-danger">${{ $total_earning ?? 0 }}</span>
+                                                @endif
                                             </h4>
-                                        @else
-                                            <span class=" text-danger">${{ $total_earning ?? 0 }}</span> </h4>
-                                            @endif
-
-                                            <h6>Current Balance</h6>
-                                        </div>
-                                        <div>
-                                            <i class="icon font-large-2 float-right"></i>
+                                            <h6 class="success darken-4">${{ $total_earning ?? 0 }}</i></h6>
                                         </div>
                                     </div>
-                                    <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                        <div class="progress-bar bg-gradient-x-danger" role="progressbar" style="width: 85%"
-                                            aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                {{-- <div class="row">
-                <div class="col-xl-4 col-lg-6 col-12">
-                </div>
-                <div class="col-xl-4 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-                                        <h3 class="info">$ {{ $direct_earning  ? $direct_earning->amount : 0 }}</h3>
-                                        <h6>Earnings</h6>
-                                    </div>
-                                    <div>
-                                        <i class="icon-cash info font-large-2 float-right"></i>
-                                    </div>
-                                </div>
-                                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                    <div class="progress-bar bg-gradient-x-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-          
-                </div>
-            <div class="row">
-                <div class="col-xl-4 col-lg-6 col-12">
-                </div>
-                <div class="col-xl-4 col-lg-6 col-12">
-                    <div class="card pull-up">
-                        <div class="card-content">
-                            <div class="card-body">
-                                <div class="media d-flex">
-                                    <div class="media-body text-left">
-
-
-                                        <h3 class="warning">${{ $indirect_earning  ? $indirect_earning->amount : 0 }}</h3>
-
-                                        <h6>Bonus</h6>
-                                    </div>
-                                    <div>
-                                        <i class="icon-money warning font-large-2 float-right"></i>
-                                    </div>
-                                </div>
-                                <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                    <div class="progress-bar bg-gradient-x-warning" role="progressbar" style="width: 65%" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
                 <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
+                    <div class="col-xl-3 col-lg-6 col-12">
                     </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
-                        <div class="card pull-up">
+                    <div class="col-xl-6 col-lg-6 col-12">
+                        <div class="card crypto-card-3 pull-up">
                             <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media d-flex">
-                                        <div class="media-body text-left">
+                                <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <h1><img src="{{ asset('public/icons/hits.jpeg') }}" alt=""
+                                                    width="50px" height="50px"></h1>
+                                        </div>
+                                        <div class="col-7 pl-3">
+                                            <h5>Hits</h5>
+                                            <h6 class="text-muted">Bonus</h6>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <h4 class="danger darken-4">{{ $hits ?? 0 }}</h4>
+                                            <h6 class="success darken-4">${{ $hit_bonus ?? 0 }}</i></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-12">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-12">
+                        <div class="card crypto-card-3 pull-up">
+                            <div class="card-content">
+                                <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <h1><img src="{{ asset('public/icons/points.jpeg') }}" alt=""
+                                                    width="50px" height="50px"></h1>
+                                        </div>
+                                        <div class="col-7 pl-3">
+                                            <h5>Recent Points</h5>
+                                            <h6 class="text-muted">Total Points</h6>
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            <h4 class="danger darken-4">
+                                                {{ $today_earn_points ? $today_earn_points->number : 0 }}</h4>
+                                            <h6 class="success darken-4">{{ $earn_points ?? 0 }} </i></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xl-3 col-lg-6 col-12">
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-12">
+                        <div class="card crypto-card-3 pull-up">
+                            <div class="card-content">
+                                <div class="card-body pb-0">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <h1><img src="{{ asset('public/icons/wallets.jpeg') }}" alt=""
+                                                    width="50px" height="50px"></h1>
+                                        </div>
+                                        <div class="col-7 pl-3 py-2">
+                                            <h5>Wallet</h5>
+                                        </div>
+                                        <div class="col-3 text-right py-1">
                                             <h4>
-                                                <span class=" text-info">${{ $total_earning ?? 0 }}</span>
-                                            </h4>
-
-
-
-                                            <h6>Total Earnings</h6>
-                                        </div>
-                                        <div>
-                                            <i class="icon font-large-2 float-right"></i>
-                                        </div>
-                                    </div>
-                                    <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                        <div class="progress-bar bg-gradient-x-info" role="progressbar" style="width: 85%"
-                                            aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
-                        <div class="card pull-up">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media d-flex">
-                                        <div class="media-body text-left">
-                                            <h4>
-                                                <span class=" text-info">{{ $earn_points ?? 0 }} Points</span>
-                                            </h4>
-                                            <h6>Points</h6>
-                                        </div>
-                                        <div>
-                                            <i class="icon font-large-2 float-right"></i>
-                                        </div>
-                                    </div>
-                                    <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                        <div class="progress-bar bg-gradient-x-waarning" role="progressbar"
-                                            style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-4 col-lg-6 col-12">
-                    </div>
-                    <div class="col-xl-4 col-lg-6 col-12">
-                        <div class="card pull-up">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <div class="media d-flex">
-
-                                        <div class="media-body text-left">
-                                            @if (!empty($transaction))
-                                                @if ($transaction->status == 1)
+                                                @if (!empty($transaction))
+                                                    @if ($transaction->status == 1)
+                                                        <h3 class="success">
+                                                            ${{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}
+                                                        </h3>
+                                                    @endif
+                                                @else
                                                     <h3 class="success">
                                                         ${{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}
                                                     </h3>
                                                 @endif
-                                            @else
-                                                <h3 class="success">
-                                                    ${{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}
-                                                </h3>
-                                            @endif
-                                            <h6>Wallet Amount </h6>
-                                        </div>
-                                        <div>
-                                            <i class="icon font-large-2 float-right"></i>
-                                        </div>
-                                    </div>
-                                    <div class="progress progress-sm mt-1 mb-0 box-shadow-2">
-                                        <div class="progress-bar bg-gradient-x-success" role="progressbar"
-                                            style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
+                                            </h4>
                                         </div>
                                     </div>
                                 </div>

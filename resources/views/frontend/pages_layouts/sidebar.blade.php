@@ -19,6 +19,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="{{ route('earning.history.index') }}">
+              <i class="la la-tag"></i>
+              <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Earning History') }}</span>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="{{ route('withdraw.index') }}">
               <i class="la la-tag"></i>
               <span class="menu-title" data-i18n="nav.page_layouts.main">{{ __('Withdraw') }}</span>

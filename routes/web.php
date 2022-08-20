@@ -30,8 +30,8 @@ Route::post('forget-password', [ForgotPasswordController::class, 'ForgetPassword
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'ResetPassword'])->name('ResetPasswordGet');
 Route::post('reset-password', [ForgotPasswordController::class, 'ResetPasswordStore'])->name('ResetPasswordPost');
 
+Route::get('/search-sponser', 'Frontend\IndexController@index')->name('welcome');
 Route::middleware(['frontend'])->group(function () {
-    Route::get('/welcome', 'Frontend\IndexController@index')->name('welcome');
     
     Route::resource('transaction', 'Frontend\TransactionController');
     Route::resource('feedback', 'Frontend\FeedbackController');
@@ -40,6 +40,7 @@ Route::middleware(['frontend'])->group(function () {
     Route::resource('wallet', 'Frontend\WalletController');
     Route::resource('membership', 'Frontend\MembershipController');
     Route::resource('search', 'Frontend\SearchController');
+    Route::get('earning-history', 'Frontend\EarningController@index')->name('earning.history.index');
     Route::get('user_search', 'Frontend\SearchController@search')->name('search_sponser');
     Route::get('/account_update', 'Frontend\MembershipController@account_type')->name('userAccountupdate');
     // Route::get('/', function(){

@@ -16,6 +16,8 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Models\ModelHasRole;
 use App\Models\Role;
+use App\Models\Hit;
+use App\Models\HitBonus;
 use App\Models\Point;
 use App\Models\PaymentMethod;
 use App\Models\AccountType;
@@ -225,21 +227,7 @@ class UserController extends Controller
         
         // direct and indirect earnings
         $this->direct_earning($sponser->id, $amount);
-        $user_in_sponser =  UserSponser::where('user_id', $user->id)->first();
-        if($user_in_sponser){
-            $phase_pairing = PhasePairing::where('user_id', $sponser->id)->where('phase_no', $user_in_sponser->phase_no)->first();
-            if($phase_pairing){
-                $phase_pairing->upgrade_counts += 1;
-                $phase_pairing->save();
-                
-                $phase_pairing = PhasePairing::where('user_id', $sponser->id)->where('phase_no', $user_in_sponser->phase_no)->first();
-                if($phase_pairing->upgrade_counts % 2 == 0){
-                    $this->indirect_earning($sponser->id);
-                }
-            }
-            
-        }
-        
+    
         return response()->json([
             'success' => true,
             'message' => "Account updated successfuly!",
@@ -251,7 +239,7 @@ class UserController extends Controller
     {
         $direct_earning = DirectEarning::where('user_id', $sponser_id )->whereDate('created_at', Carbon::today())->first();
         if($direct_earning){
-            $direct_earning->amount = $amount;
+            $direct_earning->amount += $amount;
             $direct_earning->save();
         }else{
             $direct_earning = DirectEarning::create([
@@ -292,6 +280,7 @@ class UserController extends Controller
         }
 
         $this->earn_points($sponser_id, $total_earning->amount);
+        $this->earn_hits($sponser_id, $total_earning->amount);
     }
 
     public function earn_points($sponser_id, $amount)
@@ -305,9 +294,43 @@ class UserController extends Controller
             $point->number += $points;
             $point->save();
         }else{
-            Point::create([
+            $point = Point::create([
                 'user_id' => $sponser_id,
                 'number' => $points,
+            ]);
+        }
+    }
+
+    public function earn_hits($sponser_id, $amount)
+    {
+        $hit = Hit::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
+        $hits = Hit::where('user_id', $sponser_id)->sum('number');
+        $remain_amount = $amount - (20*$hits);
+        $mod_amount = ($remain_amount % 20);
+        $hits = (($remain_amount - $mod_amount)/20);
+        if($hit){
+            $hit->number += $hits;
+            $hit->save();
+        }else{
+            $hit = Hit::create([
+                'user_id' => $sponser_id,
+                'number' => $hits,
+            ]);
+        }
+
+        $this->earn_hit_bonus($sponser_id, $hit->number);
+    }
+
+    public function earn_hit_bonus($sponser_id, $hits)
+    {
+        $hitbonus = HitBonus::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
+        if($hitbonus){
+            $hitbonus->amount = $hits*2;
+            $hitbonus->save();
+        }else{
+            HitBonus::create([
+                'user_id' => $sponser_id,
+                'amount' => $hits*2,
             ]);
         }
     }
