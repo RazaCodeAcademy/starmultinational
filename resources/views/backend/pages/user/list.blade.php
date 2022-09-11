@@ -86,7 +86,7 @@
 											{{ $user->cnic }}
 										</td>
 										<td>
-											{{ $user->sponser_id }}
+											{{ $user->get_sponser ? $user->get_sponser->username : 'N/A' }}
 										</td>
 										<td>
 											<select class="form-select" style="width: 100%; margin:0 auto;" aria-label="Default select example" name="account_type" onchange="changeStatus('{{ $user->id }}', this.value)" >

@@ -4,13 +4,22 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Backend\UserController;
 use Illuminate\Http\Request;
+// use facades
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+
+// use mails
+use App\Mail\AccountUpgrade;
+
+// use models
 use App\Models\Membership;
 use App\Models\User; 
 use App\Models\Transaction; 
 use App\Models\AccountType;
 use App\Models\DirectEarning;
+
 
 class MembershipController extends Controller
 {
@@ -58,72 +67,61 @@ class MembershipController extends Controller
         return redirect()->back()->with($notification);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-
     public function account_type(Request $request)
     {
-        
+        $userController = new UserController();
         $request['account_type'] = $request->account_type;
-        $user = User::where('id',Auth::user()->id)->first();
+        $user = Auth::user();
+        $sponser = User::find($user->sponser_id);
+        $account = AccountType::find($request->account_type);
+        
+        $transaction = new Transaction();
+        $transaction->amount = $user->account_bal ? $account->price - $user->account_bal->price : 0;
+        $transaction->sender_id = $user->id ? $user->id : 1;
+        $transaction->save();
+
+        if($account->price <= $sponser->account_bal->price){
+            if($account->name == 'Member Enrollment account'){
+                $amount= 5;
+            }elseif($account->name == 'Pre member Enrollment account'){
+                $amount= 3;
+                
+            }elseif($account->name == 'Supervisor enrollment Account'){
+                $amount= 8;
+                
+            }elseif($account->name == 'Manager Enrollment Account'){
+                $amount= 10;
+            }
+            $userController->direct_earning($user->sponser_id, $amount);
+        }else{
+            if($sponser->account_bal->name == 'Member Enrollment account'){
+                $amount= 5;
+            }elseif($sponser->account_bal->name == 'Pre member Enrollment account'){
+                $amount= 3;
+                
+            }elseif($sponser->account_bal->name == 'Supervisor enrollment Account'){
+                $amount= 8;
+                
+            }elseif($sponser->account_bal->name == 'Manager Enrollment Account'){
+                $amount= 10;
+            }
+            $userController->direct_earning($user->sponser_id, $amount);
+        }
 
         $user->update($request->toArray());
-
-        $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
-        $user = User::where('id',Auth::user()->id)->first();
-        $transaction->amount = $user->account_bal ? $user->account_bal->price : 0;
-        $transaction->update();
                 
-        $sponser = User::where('username', $user->sponser_id)->first();
-        if(empty($sponser)){
+        if(!empty($transaction)){
+            Mail::to($user->email)->send(new AccountUpgrade($user->username));
             return response()->json([
                 'success' => true,
                 'message' => "Account Upgraded Successfully",
             ]);
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => "Account Not Upgraded Successfully",
+        ]);
         
         
     }

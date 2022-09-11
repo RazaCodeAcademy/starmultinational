@@ -8,9 +8,13 @@ use Illuminate\Http\Request;
 // use facades
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
+
+// use mails
+use App\Mail\AccountUpgrade;
 
 // use models
 use App\Models\User;
@@ -203,7 +207,7 @@ class UserController extends Controller
 
         $user->update($request->toArray());
         
-        $sponser = User::where('username', $user->sponser_id)->first();
+        $sponser = User::find($user->sponser_id);
         if(empty($sponser)){
             return response()->json([
                 'success' => true,
@@ -213,20 +217,37 @@ class UserController extends Controller
         
         $amount = 0;
        
-        if($user->account_bal->name == 'Member Enrollment account'){
-            $amount= 5;
-        }elseif($user->account_bal->name == 'Pre member Enrollment account'){
-            $amount= 3;
-            
-        }elseif($user->account_bal->name == 'Supervisor enrollment Account'){
-            $amount= 8;
-            
-        }elseif($user->account_bal->name == 'Manager Enrollment Account'){
-            $amount= 10;
+        Mail::to($user->email)->send(new AccountUpgrade($user->username, $user->account_bal->name));
+
+        $account = AccountType::find($request->account_type);
+
+        if($account->price <= $sponser->account_bal->price){
+            if($account->name == 'Member Enrollment account'){
+                $amount= 5;
+            }elseif($account->name == 'Pre member Enrollment account'){
+                $amount= 3;
+                
+            }elseif($account->name == 'Supervisor enrollment Account'){
+                $amount= 8;
+                
+            }elseif($account->name == 'Manager Enrollment Account'){
+                $amount= 10;
+            }
+            $this->direct_earning($user->sponser_id, $amount);
+        }else{
+            if($sponser->account_bal->name == 'Member Enrollment account'){
+                $amount= 5;
+            }elseif($sponser->account_bal->name == 'Pre member Enrollment account'){
+                $amount= 3;
+                
+            }elseif($sponser->account_bal->name == 'Supervisor enrollment Account'){
+                $amount= 8;
+                
+            }elseif($sponser->account_bal->name == 'Manager Enrollment Account'){
+                $amount= 10;
+            }
+            $this->direct_earning($user->sponser_id, $amount);
         }
-        
-        // direct and indirect earnings
-        $this->direct_earning($sponser->id, $amount);
     
         return response()->json([
             'success' => true,

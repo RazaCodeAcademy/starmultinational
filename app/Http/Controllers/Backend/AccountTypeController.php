@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\frontend;
+namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\User;
-use App\Models\Transaction;
-use Auth;
+// use models
+use App\Models\AccountType;
 
-class ReferalController extends Controller
+class AccountTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,10 +17,8 @@ class ReferalController extends Controller
      */
     public function index()
     {
-        $users = User::where('sponser_id', Auth::user()->id)->get();
-        
-        return view('frontend.pages.referals.index',compact('users'));
-        
+        $account_types = AccountType::orderBy('id', 'desc')->get();
+        return view('backend.pages.account-types.index', compact('account_types'));
     }
 
     /**
@@ -30,12 +27,8 @@ class ReferalController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {   
-         $users = User::with('transaction')->whereHas('transaction', function($q){
-            return $q->where('sponser_id', Auth::user()->id);
-        })->get();
-
-        return view('frontend.pages.referals.rfnt',compact('users'));
+    {
+        return view('backend.pages.account-types.create');
     }
 
     /**
@@ -46,7 +39,13 @@ class ReferalController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->merge(['created_by' => user()->id]);
+        $request->merge(['updated_by' => user()->id]);
+        $account_type = AccountType::create($request->toArray());
+        if($account_type){
+            return redirect()->route('manage-account-types.index')->with('success', 'Account type created successfuly!');;
+        }
+        return redirect()->back();
     }
 
     /**
@@ -68,7 +67,8 @@ class ReferalController extends Controller
      */
     public function edit($id)
     {
-        //
+        $account_type = AccountType::find($id);
+        return view('backend.pages.account-types.edit', compact('account_type'));
     }
 
     /**
@@ -80,7 +80,12 @@ class ReferalController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $account_type = AccountType::find($id);
+        if($account_type){
+            $request->merge(['updated_by' => user()->id]);
+            $account_type = $account_type->update($request->toArray());
+        }
+        return redirect()->route('manage-account-types.index')->with('success', 'Account type updated successfuly!');;
     }
 
     /**
@@ -91,6 +96,12 @@ class ReferalController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $account_type = AccountType::find($id);
+        if($account_type){
+            $account_type->delete();
+            return response()->json([
+                'status' => 1
+            ]);
+        }
     }
 }

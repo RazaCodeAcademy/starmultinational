@@ -164,7 +164,7 @@
                     <a href="{{ route('membership.index') }}"><u>Click Here To Upgrade your Account</u></a>
 
                 </div>
-            @elseif (!empty($transaction))
+            @elseif (!empty($transaction) && Auth::user()->account_bal->name != "Manager Enrollment Account")
                 <div class="alert alert-success" role="alert" id="succMsg">
                     <button type="button" class="close " data-dismiss="alert" aria-label="Close">
 
@@ -175,7 +175,7 @@
                                 upgradation</u></a> </p>
 
                 </div>
-            @else
+            @elseif(!empty(Auth::user()->account_bal) && empty($transaction))
                 <div class="alert alert-warning" role="alert" id="succMsg">
                     <button type="button" class="close " data-dismiss="alert" aria-label="Close">
 

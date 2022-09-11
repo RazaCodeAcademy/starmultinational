@@ -42,8 +42,8 @@
                                 <tr>
                                     <th>{{ __('ID') }}</th>
                                     <th>{{ __('UserName') }}</th>
-                                    <th>{{ __('Description') }}</th
-                                    <th>{{ __('Account Type') }}</th
+                                    <th>{{ __('Description') }}</th>
+                                    <th>{{ __('Account Type') }}</th>
                                     <th>{{ __('Actions') }}</th>
                                 </tr>
                             </thead>

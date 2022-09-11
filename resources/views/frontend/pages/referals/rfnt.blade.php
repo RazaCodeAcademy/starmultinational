@@ -21,7 +21,7 @@ Referals Network
                                 <h3 class="card-label">{{ __('Network') }}
                                     <span class="d-block text-muted pt-2 font-size-sm"></span>
                                 </h3>
-                                 <div class="row p-2">
+                                 {{-- <div class="row p-2">
                                     <div class="col-md-4 ">
                                     
                                         <h3>Total Left:{{ $left->count() ?? 0 }}</h3>
@@ -31,55 +31,32 @@ Referals Network
                                     <div class="col-md-4">
                                         <h3>Total Right:{{ $right->count() ?? 0 }}</h3>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                             
                         </div>
                         <div class="card-body">
-                            <table class="table table-striped table-bordered dynamic-height">
+                            <table class="table table-striped table-bordered zero-configuration">
                                 <thead>
                                     <tr>
                                         <th>{{ __('ID') }}</th>
                                         <th>{{ __('User Name') }}</th>
                                         <th>{{ __('Email') }}</th>
-                                        <th>{{ __('Placement') }}</th>
+                                        <th>{{ __('Phone') }}</th>
                                         <th>{{ __('Date') }}</th>
                                         
                                     </tr>
                                 </thead>
-                                
                                 <tbody>
-                                   
-                                   
-                                    @if(!empty($users))
-                                    
                                     @foreach ($users as $user)
-                                    
-                                    
-                                   
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->email }}</td>
-                                                @if($user->placement == 1)
-                                                <td>Left</td>
-                                                @elseif($user->placement == 2)
-                                                <td>Right</td>
-                                                @else
-                                                <td>N/A</td>
-                                                @endif
-                                            
+                                            <td>{{ $user->phone_number }}</td>
                                             <td>{{ $user->created_at }}</td>
-                                            
                                         </tr>
-                                     
-                                    
                                     @endforeach
-                                    @endif
-                                    
-                                   
-                                
-                                   
                                 </tbody>
                             </table>
                         </div>

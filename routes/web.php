@@ -30,7 +30,7 @@ Route::post('forget-password', [ForgotPasswordController::class, 'ForgetPassword
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'ResetPassword'])->name('ResetPasswordGet');
 Route::post('reset-password', [ForgotPasswordController::class, 'ResetPasswordStore'])->name('ResetPasswordPost');
 
-Route::get('/search-sponser', 'Frontend\IndexController@index')->name('welcome');
+Route::get('/search-sponser', 'Frontend\IndexController@index')->name('sponser_search');
 Route::middleware(['frontend'])->group(function () {
     
     Route::resource('transaction', 'Frontend\TransactionController');

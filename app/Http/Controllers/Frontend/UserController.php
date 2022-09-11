@@ -4,12 +4,20 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+// use facades
 use beinmedia\payment\Parameters\Redirect;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Photos\Facades\Image;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Console\Input\Input;
+
+// use mails
+use App\Mail\UserRegistration;
+
+// use models
 use App\Models\User;
 use App\Models\UserSponser;
 use App\Models\IndirectEarning;
@@ -18,7 +26,6 @@ use App\Models\PhasePairing;
 use App\Models\Role;
 use Carbon\Carbon;
 use App\Models\PaymentMethod;
-use Photos\Facades\Image;
 
 class UserController extends Controller
 {
@@ -80,10 +87,10 @@ class UserController extends Controller
             return redirect()->back()->with($notification);
         }
         else{
-            $sponser = User::find($request->sponser_user_id);
-            if(empty($sponser->account_bal)){
+            $sponser = User::where('username' ,$request->sponser_id)->first();
+            if(empty($sponser->account_bal) && $request->sponser_id != $request->username){
                 $notification = array(
-                'error' => "The sponser ID isn't Valid  please contact your sponser or use your username as sponser id", 
+                'error' => "The sponser ID isn't Valid", 
                 );
                 return redirect()->back()->with($notification);
             }
@@ -107,6 +114,7 @@ class UserController extends Controller
     }
 public function register($request)
 {
+    $sponser = User::where('username', $request->sponser_id)->first(); 
     $data =[
         'first_name' => $request->first_name,
         'last_name' => $request->last_name,
@@ -123,13 +131,18 @@ public function register($request)
         'phone_number' => $request->phone_number,
         'cnic' => $request->cnic,
         'payment_process' => $request->payment_process,
-        'sponser_id' => $request->sponser_id,
+        'sponser_id' => $request->sponser_id == $request->username ? "-" : $sponser->id,
         'mother_name' => $request->mother_name,
         'favourite_pet' => $request->favourite_pet,
         'password' => bcrypt($request->password),
     ];
     $user= User::create($data);
     if($user){
+        if($request->sponser_id == $request->username){
+            $user->sponser_id = $user->id;
+            $user->update();
+        }
+        Mail::to($user->email)->send(new UserRegistration($user->username));
         if($request->hasfile('image')){
             $path = $request->file('image')->store('user', 'public');
             upload_image($path, $user->id, User::class);

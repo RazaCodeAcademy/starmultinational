@@ -4,11 +4,11 @@
 <span style="color: #320777; font-size:23px; align:center">
 
 
-### Hi {{ $user->username }}
+### Hi {{ $username }}
 
 ### Congratulations from Star Multinational Services
    
-### Your account has been updated to Member on Star Multinational.com .We are so glad to have you.
+### Your account has been updated to {{ $account }} on Star Multinational.com .We are so glad to have you.
 
 
 ### Keep working hard with Star Multinational

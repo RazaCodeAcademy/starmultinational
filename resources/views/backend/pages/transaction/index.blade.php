@@ -24,7 +24,7 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $type->id }}</td>
                                     <td>{{ $type->created_at }}</td>
-                                    <td>{{ $type->user->username }}</td>
+                                    <td>{{ $type->user ? $type->user->username : 'N/A' }}</td>
                                     <td>{{ $type->amount }}</td>
                                     
                                 </tr>

@@ -7,19 +7,19 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Otp extends Mailable
+class UserRegistration extends Mailable
 {
     use Queueable, SerializesModels;
-    protected $otp;
+    protected $username;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($otp)
+    public function __construct($username)
     {
-        $this->otp = $otp;
+        $this->username = $username;
     }
 
     /**
@@ -29,9 +29,9 @@ class Otp extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.otp')
+        return $this->markdown('emails.customer_register')
         ->with([
-            'otp' => $this->otp,
+            'username' => $this->username,
         ]);
     }
 }

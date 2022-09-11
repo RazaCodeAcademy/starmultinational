@@ -1,5 +1,19 @@
 @extends('frontend.pages_layouts.master')
 @section('title') Earning History @endsection
+
+<style>
+    .dataTables_wrapper table {
+        display: block;
+        width: 100%;
+        min-height: .01%;
+        overflow-x: inherit;
+    }
+
+    .dataTables_scrollHead {
+        width: 100% !important;
+    }
+</style>
+
 @section('content')
 <div class="app-content content">
     <div class="content-wrapper">
@@ -32,7 +46,7 @@
                                             <div class="card-content collapse show">
                                                 <div class="card-body card-dashboard">
 
-                                                    <table style="width: 100%;" class="table table-striped table-bordered dynamic-height">
+                                                    <table style="width: 100%;" class="table table-striped table-bordered zero-configuration">
                                                         <thead>
                                                             <tr>
                                                                 <th>{{ __('ID') }}</th>
@@ -43,16 +57,13 @@
                                                         </thead>
                                                         <tbody>
                                                             @foreach ($earning_history as $history)
-                                                            <tr>
-                                                                <td>{{ $loop->iteration }}</td>
-                                                                <td>{{ $history->id }}</td>
-                                                                <td>{{ $history->created_at }}</td>
-                                                                <td>{{ $history->amount }}</td>
-
-                                                            </tr>
+                                                                <tr>
+                                                                    <td>{{ $loop->iteration }}</td>
+                                                                    <td>{{ $history->id }}</td>
+                                                                    <td>{{ $history->created_at }}</td>
+                                                                    <td>{{ $history->amount }}</td>
+                                                                </tr>
                                                             @endforeach
-
-
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -61,12 +72,10 @@
                                     </div>
                                 </div>
                             </section>
-
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
     @endsection

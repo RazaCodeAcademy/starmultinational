@@ -15,17 +15,17 @@
 		<link href="{{asset('public/toast/toastr1.css')}}" rel="stylesheet">
     	<link href="{{asset('public/toast/toastr2.css')}}" rel="styleshee">
     	<title>Reset Password</title>
-		 <link rel="shortcut icon" href="{{ asset('/public/frontend/img/logo-color.png') }}">
+		 <link rel="shortcut icon" href="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png">
 	</head>
 	<body>
 		<section class="welcome">
 			<a href="#" class="welcome-logo">
-				<img src="{{ asset('/public/frontend/img/logo-white.png') }}" alt="main-logo" />
+				<img src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png" width="75px" alt="main-logo" />
 			</a>
 
 			<main class="main">
 				<div class="main-header">
-					<img src="{{ asset('/public/frontend/img/logo-color.png') }}" alt="" />
+					<img src="https://starmultinational.com/wp-content/uploads/2022/05/site-logo.png" width="75px" alt="" />
 				</div>
 				<div class="main-content">
 					

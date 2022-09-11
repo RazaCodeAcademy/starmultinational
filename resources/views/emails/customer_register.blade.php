@@ -5,7 +5,7 @@
 
 ####  Account successfully registered on Star Multinational Services
 
-### Hi {{ $user->username }}
+### Hi {{ $username }}
 
 ### Congratulations from Star Multinational Services
    
