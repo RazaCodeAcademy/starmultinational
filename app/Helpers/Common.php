@@ -132,3 +132,24 @@ if(!function_exists("upload_image"))
         $photo->save();
     }
 }
+
+if(!function_exists("prev_earn"))
+{
+    function prev_earn($account_type)
+    {
+        if($account_type){
+            if($account_type == 'Member Enrollment account'){
+                return 5;
+            }elseif($account_type == 'Pre member Enrollment account'){
+                return 3;
+                
+            }elseif($account_type == 'Supervisor enrollment Account'){
+                return 8;
+                
+            }elseif($account_type == 'Manager Enrollment Account'){
+                return 10;
+            }
+        }
+        return 0;
+    }
+}

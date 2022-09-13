@@ -205,8 +205,6 @@ class UserController extends Controller
         $request['account_type'] = $request->account_type;
         $user = User::find($id);
 
-        $user->update($request->toArray());
-        
         $sponser = User::find($user->sponser_id);
         if(empty($sponser)){
             return response()->json([
@@ -216,38 +214,38 @@ class UserController extends Controller
         }
         
         $amount = 0;
-       
-        Mail::to($user->email)->send(new AccountUpgrade($user->username, $user->account_bal->name));
 
         $account = AccountType::find($request->account_type);
-
+        
+        $prev_ern = prev_earn($user->account_bal ? $user->account_bal->name : "");
         if($account->price <= $sponser->account_bal->price){
-            if($account->name == 'Member Enrollment account'){
-                $amount= 5;
-            }elseif($account->name == 'Pre member Enrollment account'){
-                $amount= 3;
-                
+            if($account->name == 'Pre member Enrollment account'){
+                $amount= 3 - $prev_ern;
+            }elseif($account->name == 'Member Enrollment account'){
+                $amount= 5 - $prev_ern;
             }elseif($account->name == 'Supervisor enrollment Account'){
-                $amount= 8;
+                $amount= 8 - $prev_ern;
                 
             }elseif($account->name == 'Manager Enrollment Account'){
-                $amount= 10;
+                $amount= 10 - $prev_ern;
             }
             $this->direct_earning($user->sponser_id, $amount);
         }else{
-            if($sponser->account_bal->name == 'Member Enrollment account'){
-                $amount= 5;
-            }elseif($sponser->account_bal->name == 'Pre member Enrollment account'){
-                $amount= 3;
-                
+            if($sponser->account_bal->name == 'Pre member Enrollment account'){
+                $amount= $prev_ern <= 3 ? 3 - $prev_ern : 0;
+            }elseif($sponser->account_bal->name == 'Member Enrollment account'){
+                $amount= $prev_ern <= 5 ? 5 - $prev_ern : 0;
             }elseif($sponser->account_bal->name == 'Supervisor enrollment Account'){
-                $amount= 8;
-                
+                $amount= $prev_ern <= 8 ? 8 - $prev_ern : 0;
             }elseif($sponser->account_bal->name == 'Manager Enrollment Account'){
-                $amount= 10;
+                $amount= $prev_ern <= 10 ? 10 - $prev_ern : 0;
             }
             $this->direct_earning($user->sponser_id, $amount);
         }
+
+        $user->update($request->toArray());
+
+        Mail::to($user->email)->send(new AccountUpgrade($user->username, $user->account_bal->name));
     
         return response()->json([
             'success' => true,

@@ -17,8 +17,10 @@ use App\Mail\AccountUpgrade;
 use App\Models\Membership;
 use App\Models\User; 
 use App\Models\Transaction; 
+use App\Models\Withdraw; 
 use App\Models\AccountType;
 use App\Models\DirectEarning;
+use App\Models\TotalEarning;
 
 
 class MembershipController extends Controller
@@ -74,88 +76,67 @@ class MembershipController extends Controller
         $user = Auth::user();
         $sponser = User::find($user->sponser_id);
         $account = AccountType::find($request->account_type);
+        $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
+        $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
+
+        $current_balance = $total_earning ? ($total_earning ? $total_earning->amount : 0) - ($withdraw_amount ? $withdraw_amount : 0) : 0;
+        $extra_amount = $user->account_bal ? $account->price - $user->account_bal->price : 0;
+        if($current_balance >= $extra_amount){
+            $transaction = new Transaction();
+            $transaction->amount = $extra_amount;
+            $transaction->sender_id = $user->id ? $user->id : 1;
+            $transaction->save();
+            
+            $data =[
+                'payment_method' => $request->account_type,
+                'amount' => $extra_amount,
+                'user_id' => Auth::user()->id,
+
+            ];
+            $withdraw = Withdraw::create($data);
+            $prev_ern = prev_earn($user->account_bal->name);
+            if($account->price <= $sponser->account_bal->price){
+                if($account->name == 'Pre member Enrollment account'){
+                    $amount= 3 - $prev_ern;
+                }elseif($account->name == 'Member Enrollment account'){
+                    $amount= 5 - $prev_ern;
+                }elseif($account->name == 'Supervisor enrollment Account'){
+                    $amount= 8 - $prev_ern;
+                    
+                }elseif($account->name == 'Manager Enrollment Account'){
+                    $amount= 10 - $prev_ern;
+                }
+                $userController->direct_earning($user->sponser_id, $amount);
+            }else{
+                if($sponser->account_bal->name == 'Pre member Enrollment account'){
+                    $amount= $prev_ern <= 3 ? 3 - $prev_ern : 0;
+                }elseif($sponser->account_bal->name == 'Member Enrollment account'){
+                    $amount= $prev_ern <= 5 ? 5 - $prev_ern : 0;
+                }elseif($sponser->account_bal->name == 'Supervisor enrollment Account'){
+                    $amount= $prev_ern <= 8 ? 8 - $prev_ern : 0;
+                }elseif($sponser->account_bal->name == 'Manager Enrollment Account'){
+                    $amount= $prev_ern <= 10 ? 10 - $prev_ern : 0;
+                }
+                $userController->direct_earning($user->sponser_id, $amount);
+            }
+    
+            $user->update($request->toArray());
+                    
+            if(!empty($transaction)){
+                Mail::to($user->email)->send(new AccountUpgrade($user->username, $user->account_bal->name));
+                return response()->json([
+                    'success' => true,
+                    'message' => "Account Upgraded Successfully",
+                ]);
+            }
+        }
         
-        $transaction = new Transaction();
-        $transaction->amount = $user->account_bal ? $account->price - $user->account_bal->price : 0;
-        $transaction->sender_id = $user->id ? $user->id : 1;
-        $transaction->save();
-
-        if($account->price <= $sponser->account_bal->price){
-            if($account->name == 'Member Enrollment account'){
-                $amount= 5;
-            }elseif($account->name == 'Pre member Enrollment account'){
-                $amount= 3;
-                
-            }elseif($account->name == 'Supervisor enrollment Account'){
-                $amount= 8;
-                
-            }elseif($account->name == 'Manager Enrollment Account'){
-                $amount= 10;
-            }
-            $userController->direct_earning($user->sponser_id, $amount);
-        }else{
-            if($sponser->account_bal->name == 'Member Enrollment account'){
-                $amount= 5;
-            }elseif($sponser->account_bal->name == 'Pre member Enrollment account'){
-                $amount= 3;
-                
-            }elseif($sponser->account_bal->name == 'Supervisor enrollment Account'){
-                $amount= 8;
-                
-            }elseif($sponser->account_bal->name == 'Manager Enrollment Account'){
-                $amount= 10;
-            }
-            $userController->direct_earning($user->sponser_id, $amount);
-        }
-
-        $user->update($request->toArray());
-                
-        if(!empty($transaction)){
-            Mail::to($user->email)->send(new AccountUpgrade($user->username));
-            return response()->json([
-                'success' => true,
-                'message' => "Account Upgraded Successfully",
-            ]);
-        }
 
         return response()->json([
-            'success' => true,
-            'message' => "Account Not Upgraded Successfully",
+            'success' => false,
+            'message' => "Account Not Upgraded Due To Insuficient Balance",
         ]);
         
         
     }
 }
-
-
-// $amount = 0;
-       
-// if($user->account_bal->name == 'Member Enrollment account'){
-//     $amount= 5;
-// }elseif($user->account_bal->name == 'Pre member Enrollment account'){
-//     $amount= 3;
-    
-// }elseif($user->account_bal->name == 'Supervisor enrollment Account'){
-//     $amount= 8;
-    
-// }elseif($user->account_bal->name == 'Manager Enrollment Account'){
-//     $amount= 10;
-    
-// }
-// $direct_earning = DirectEarning::where('user_id', $sponser->id )->first();
-// if($direct_earning){
-
-//     $direct_earning->amount = $amount;
-//     $direct_earning->save();
-   
-// }else{
-//     DirectEarning::create([
-//         'user_id' => $sponser->id,
-//         'amount' => $amount,
-//     ]);
-// }
-
-// return response()->json([
-//     'success' => true,
-//     'message' => "Account updated successfuly!",
-// ]);

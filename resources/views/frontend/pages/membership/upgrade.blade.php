@@ -87,7 +87,7 @@
                             toastr.success(response.message);
                             window.location = "{{ route('membership.create') }}"
                         } else
-                            alert(response.message);
+                            toastr.error(response.message);
                     }
                 })
             }
