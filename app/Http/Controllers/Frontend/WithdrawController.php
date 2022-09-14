@@ -10,6 +10,9 @@ use App\Models\IndirectEarning;
 use App\Models\TotalEarning;
 use App\Models\DirectEarning;
 use App\Models\Withdraw;
+use App\Models\Hit;
+use App\Models\HitBonus;
+use App\Models\CurrentEarning;
 use Auth;
 
 class WithdrawController extends Controller
@@ -24,10 +27,13 @@ class WithdrawController extends Controller
     {
         $user = Auth::user();
         $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
-        $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
+        $current = CurrentEarning::where('user_id', Auth::user()->id)->first();
+        $current_balance = $current ? $current->amount : 0;
+        $bonus = HitBonus::where('user_id', Auth::user()->id)->first();
+        $bonus_balance = $bonus ? $bonus->amount : 0;
         $direct_earning = DirectEarning::where('user_id', Auth::user()->id)->first();
         $payment_methods = PaymentMethod::all();
-        return view('frontend.pages.withdraw.index',compact('withdraw_amount','payment_methods','user','total_earning'));
+        return view('frontend.pages.withdraw.index',compact('withdraw_amount','payment_methods','user','current_balance', 'bonus_balance'));
     }
 
     /**
@@ -48,6 +54,16 @@ class WithdrawController extends Controller
      */
     public function store(Request $request)
     {
+        $current = CurrentEarning::where('user_id', Auth::user()->id)->first();
+        $bonus = HitBonus::where('user_id', Auth::user()->id)->first();
+        $current_balance = $current ? $current->amount : 0;
+        $bonus_balance = $bonus ? $bonus->amount : 0;
+        $current_bonus_balance = $current_balance + $bonus_balance;
+        
+        if($current_bonus_balance < $request->amount){
+            return redirect()->back()->with("error", "You do not have sufficient balance for this transaction");
+        }
+        
         $data =[
             'payment_method' => $request->payment_method,
             'amount' => $request->amount,
@@ -55,8 +71,24 @@ class WithdrawController extends Controller
 
         ];
         $withdraw = Withdraw::create($data);
+       
+        if($request->amount > $current_balance){
+            $extra_amount = $request->amount - $current_balance;
+            $current->amount -= $request->amount - $extra_amount;
+            $current->save();
+            
+            $bonus_amount = $request->amount - $current_balance;
+            $bonus->amount -= $bonus_amount;
+            $bonus->save();
+        
+            $hit = Hit::where('user_id', Auth::user()->id)->first();
+            $hit->number -= $bonus_amount/2;
+            $hit->save();
+        }else{
+            $current->amount -= $request->amount;
+            $current->save();
+        }
         if($withdraw){
-           
             return redirect()->route('dashboard')->with('success', 'Your Request has Sended Successfully!');
         }
     }

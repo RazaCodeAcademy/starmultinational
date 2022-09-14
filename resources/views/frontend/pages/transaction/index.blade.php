@@ -24,11 +24,10 @@ Account upgrade
                             <p class="card-text"></p>
                             <div class="d-flex justify-content-end ">
                                 {{--  @dd($membership)  --}}
-                                @if(!empty($transaction))
+                                @if(empty($transaction))
                                     @if($transaction->status == 1 )
-                                        
-                                    <button type="button" class=" btn btn-dark" disabled >Sended </button>
-                                 @endif
+                                        <button type="button" class=" btn btn-dark" disabled >Sended </button>
+                                    @endif
                                 @else
                                 <button type="button" class=" btn btn-dark" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"><i class='fa fa-plus-circle'></i>Send Amount </button>
 
@@ -54,7 +53,7 @@ Account upgrade
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Send Amount For Upgradation </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Please Confirm for account upgradation. </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -67,7 +66,8 @@ Account upgrade
                             <div class="col md-4">
                                 <div class="form-group">
                                     <label for="recipient-name" class="col-form-label">Amount:</label>
-                                    <input name="amount" type="number" class="form-control" value="{{ Auth::user()->account_bal->price ?? 0 }}" required placeholder="Enter Amount" readonly>
+                                    <input name="" type="text" class="form-control" value="{{ Auth::user()->account_bal->price ?? 0 }}$" required placeholder="Enter Amount" readonly>
+                                    <input name="amount" type="hidden" class="form-control" value="{{ Auth::user()->account_bal->price ?? 0 }}" required placeholder="Enter Amount" readonly>
                                     <small class="text-danger">Amount must be Equivalent to wallet amount </small>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ Account upgrade
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Transfer</button>
+                            <button type="submit" class="btn btn-primary">Confirm Now!</button>
                         </div>
                     </form>
                 </div>

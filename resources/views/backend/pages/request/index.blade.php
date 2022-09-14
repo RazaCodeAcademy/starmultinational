@@ -135,7 +135,7 @@
 						toastr.success(response.message);
 						window.location = "{{ route('manage-request.index') }}"
 					} else
-						alert(response.message);
+						toastr.error(response.message);
 				}
 			})
 		}

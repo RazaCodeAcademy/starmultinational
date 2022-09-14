@@ -48,12 +48,12 @@
                                             <h4>
                                                 @if ($withdraw_amount > 0)
                                                     <span
-                                                        class=" text-danger">${{ $total_earning ? $total_earning - $withdraw_amount : 0 }}</span>
+                                                        class=" text-danger">${{ $current_earning ?? 0 }}</span>
                                                 @else
-                                                    <span class=" text-danger">${{ $total_earning ?? 0 }}</span>
+                                                    <span class=" text-danger">${{ $current_earning ?? 0 }}</span>
                                                 @endif
                                             </h4>
-                                            <h6 class="success darken-4">${{ $total_earning ?? 0 }}</i></h6>
+                                            <h6 class="success darken-4">${{ ($total_earning) ?? 0 }}</i></h6>
                                         </div>
                                     </div>
                                 </div>
@@ -164,7 +164,7 @@
                     <a href="{{ route('membership.index') }}"><u>Click Here To Upgrade your Account</u></a>
 
                 </div>
-            @elseif (!empty($transaction) && Auth::user()->account_bal->name != "Manager Enrollment Account")
+            @elseif (!empty($transaction) && Auth::user()->account_bal->name != 'Manager Enrollment Account')
                 <div class="alert alert-success" role="alert" id="succMsg">
                     <button type="button" class="close " data-dismiss="alert" aria-label="Close">
 
@@ -181,12 +181,10 @@
 
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <p>Congratulations your balance for
-                        <b>{{ Auth::user()->account_bal ? Auth::user()->account_bal->name : 'n/a' }}</b> has been sended
-                        please transfer {{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}$ in wallet
-                        to upgrade your account!
+                    <p>Congratulations your activation balance for
+                        <b>({{ Auth::user()->account_bal ? Auth::user()->account_bal->name : 'n/a' }})</b> enrollment amount {{ Auth::user()->account_bal ? Auth::user()->account_bal->price : 0 }}$ has been transferred in your account wallet.
                     </p>
-                    <a href="{{ route('transaction.create') }}"><u>Transfer Amount ??</u></a>
+                    <a href="{{ route('transaction.create') }}"><u>Click here to upgrade your account.</u></a>
 
                 </div>
             @endif
@@ -408,7 +406,7 @@
                 animationEnabled: true,
                 theme: "light2",
                 title: {
-                    text: "Referal & Earnings"
+                    text: "Referrals & Earnings"
                 },
                 axisX: {
                     unit: "day",
@@ -418,7 +416,7 @@
                     },
                 },
                 axisY: {
-                    title: "Refferals",
+                    title: "Referrals",
                     includeZero: true,
                     crosshair: {
                         enabled: true
@@ -437,7 +435,7 @@
                 data: [{
                         type: "line",
                         showInLegend: true,
-                        name: "Refferals",
+                        name: "Referrals",
                         markerType: "square",
                         color: "#F08080",
                         xValueFormatString: "DD MMM, YYYY",

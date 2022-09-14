@@ -16,8 +16,19 @@
                     <div class="card card-primary">
                         <div class="card-header">
                             <h4>
-                                Balance <span
-                                    class=" text-info">{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}$</span>
+                                Current Balance
+                                <span
+                                    class=" text-info">{{ $current_balance ?? 0 }}$</span>
+                            </h4>
+                            <h4>
+                                Hit Bonus
+                                <span class=" text-info">{{ $bonus_balance }}$</span>
+
+                            </h4>
+                            <h4>
+                                Total Balance
+                                <span
+                                    class=" text-info">{{ $current_balance + $bonus_balance }}$</span>
                             </h4>
                         </div>
                         <div class="card-body">
@@ -55,21 +66,21 @@
                                                         withdraw</span> </div>
                                                 @if (!empty($withdraw))
                                                     <input type="number" min='5'
-                                                        max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}"
+                                                        max="{{ $current_balance + $bonus_balance }}"
                                                         step="any" id="txamount" name="amount" class="form-control"
                                                         placeholder="0.00" required=""
                                                         oninput="amount_to_receive(this.value)">
                                                 @else
                                                     <input type="number" min='5'
-                                                        max="{{ $total_earning ? $total_earning->amount - $withdraw_amount : 0 }}"
+                                                        max="{{ $current_balance + $bonus_balance }}"
                                                         step="any" id="txamount" name="amount" class="form-control"
                                                         placeholder="0.00" required=""
                                                         oninput="amount_to_receive(this.value)">
                                                 @endif
                                             </div>
                                             <div class="float-right">
-                                                <p class="badge badge-info">Amount to receive: $<span
-                                                        id="amount_to_receive">0.00</span></p>
+                                                <p class="badge badge-info">Amount to receive: $<span id="amount_to_receive"
+                                                        style="bottom: 0px !important;">0.00</span></p>
                                                 <br>
                                                 <p class="badge badge-info"> Withdraw Fee: $0.00</p>
 

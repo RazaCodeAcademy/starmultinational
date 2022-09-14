@@ -43,7 +43,7 @@
 						<button>Log in</button>
 						<div class="d-flex">
 							<input type="checkbox" name="remember" value="1" style="width: 20px; margin-top: 3px;">
-							<span style="width: 150px;">Remember me?</span>
+							<span style="width: 116px;">Remember me?</span>
 						</div>
 						<div class="main-bottom">
 							<a href="{{ route('ForgetPasswordGet') }}">{{ __('Forgot Your Password?') }}</a>

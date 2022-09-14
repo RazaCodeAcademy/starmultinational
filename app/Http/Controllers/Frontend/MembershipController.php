@@ -76,6 +76,15 @@ class MembershipController extends Controller
         $user = Auth::user();
         $sponser = User::find($user->sponser_id);
         $account = AccountType::find($request->account_type);
+
+        $isValidUpgradation = $user->account_bal ? $account->price <= $user->account_bal->price : true;
+        if($isValidUpgradation){
+            return response()->json([
+                'success' => false,
+                'message' => "Your can not upgrade this account anymore!",
+            ]);
+        }
+
         $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
         $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
 

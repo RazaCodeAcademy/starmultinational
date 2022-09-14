@@ -30,6 +30,7 @@ use App\Models\IndirectEarning;
 use App\Models\DirectEarning;
 use App\Models\TotalEarning;
 use App\Models\UserSponser;
+use App\Models\CurrentEarning;
 use App\Models\Withdraw;
 
 class DashboardController extends Controller
@@ -39,6 +40,7 @@ class DashboardController extends Controller
         $transaction = Transaction::where('sender_id', Auth::user()->id)->first();
         $withdraw_amount = Withdraw::where('user_id', Auth::user()->id)->sum('amount');
         $total_earning = TotalEarning::where('user_id', Auth::user()->id)->first();
+        $current_earning = CurrentEarning::where('user_id', Auth::user()->id)->sum('amount');
         $earn_points = Point::where('user_id', Auth::user()->id)->sum('number');
         $list_points = Point::orderBy('created_at', 'desc')->where('user_id', Auth::user()->id)->take(5)->get();
         $today_earn_points = Point::where('user_id', Auth::user()->id)->whereDate('created_at', Carbon::today())->first();
@@ -85,7 +87,8 @@ class DashboardController extends Controller
             'hit_bonus',
             'today_earn_points',
             'refferal_analytics',
-            'total_earning_analytics'
+            'total_earning_analytics',
+            'current_earning'
         ));
     }
 
@@ -112,10 +115,6 @@ class DashboardController extends Controller
                 'last_name'         => $data['last_name'],
                 'phone_number'         => $data['phone_number'],
                 'email'      => $data['email'], 
-                'state'          => $data['state'], 
-                'address'    => $data['address'],
-                'country'    => $data['country'],
-               
             ];
 
              $user = User::find(user()->id)->update($user_data);

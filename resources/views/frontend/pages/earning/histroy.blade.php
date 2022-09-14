@@ -61,7 +61,7 @@
                                                                     <td>{{ $loop->iteration }}</td>
                                                                     <td>{{ $history->id }}</td>
                                                                     <td>{{ $history->created_at }}</td>
-                                                                    <td>{{ $history->amount }}</td>
+                                                                    <td>{{ $history->amount }}$</td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>

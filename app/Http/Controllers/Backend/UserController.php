@@ -30,6 +30,7 @@ use App\Models\PhasePairing;
 use App\Models\DirectEarning;
 use App\Models\TotalEarning;
 use App\Models\IndirectEarning;
+use App\Models\CurrentEarning;
 
 class UserController extends Controller
 {
@@ -216,9 +217,18 @@ class UserController extends Controller
         $amount = 0;
 
         $account = AccountType::find($request->account_type);
-        
+
+        $isValidUpgradation = $user->account_bal ? $account->price <= $user->account_bal->price : false;
+        if($isValidUpgradation){
+            return response()->json([
+                'success' => false,
+                'message' => "Your can not upgrade this account anymore!",
+            ]);
+        }
+
+        $sponser_account_price = $sponser->account_bal ? $sponser->account_bal->price : 0;
         $prev_ern = prev_earn($user->account_bal ? $user->account_bal->name : "");
-        if($account->price <= $sponser->account_bal->price){
+        if($account->price <= $sponser_account_price || $sponser_account_price == 0){
             if($account->name == 'Pre member Enrollment account'){
                 $amount= 3 - $prev_ern;
             }elseif($account->name == 'Member Enrollment account'){
@@ -245,6 +255,7 @@ class UserController extends Controller
 
         $user->update($request->toArray());
 
+        $user = User::find($id);
         Mail::to($user->email)->send(new AccountUpgrade($user->username, $user->account_bal->name));
     
         return response()->json([
@@ -267,6 +278,7 @@ class UserController extends Controller
             ]);
         }
         $this->total_earning($sponser_id, $amount);
+        $this->earn_current($sponser_id, $amount);
     }
     
     public function indirect_earning($sponser_id)
@@ -322,11 +334,14 @@ class UserController extends Controller
 
     public function earn_hits($sponser_id, $amount)
     {
-        $hit = Hit::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
+        $hit = Hit::where('user_id', $sponser_id)->first();
         $hits = Hit::where('user_id', $sponser_id)->sum('number');
         $remain_amount = $amount - (20*$hits);
         $mod_amount = ($remain_amount % 20);
         $hits = (($remain_amount - $mod_amount)/20);
+        $total_earning = TotalEarning::where('user_id', $sponser_id)->first();
+        $total_earning->amount += $hits*2;
+        $total_earning->save();
         if($hit){
             $hit->number += $hits;
             $hit->save();
@@ -342,7 +357,7 @@ class UserController extends Controller
 
     public function earn_hit_bonus($sponser_id, $hits)
     {
-        $hitbonus = HitBonus::where('user_id', $sponser_id)->whereDate('created_at', Carbon::today())->first();
+        $hitbonus = HitBonus::where('user_id', $sponser_id)->first();
         if($hitbonus){
             $hitbonus->amount = $hits*2;
             $hitbonus->save();
@@ -350,6 +365,19 @@ class UserController extends Controller
             HitBonus::create([
                 'user_id' => $sponser_id,
                 'amount' => $hits*2,
+            ]);
+        }
+    }
+    public function earn_current($sponser_id, $amount)
+    {
+        $current = CurrentEarning::where('user_id', $sponser_id)->first();
+        if($current){
+            $current->amount += $amount;
+            $current->save();
+        }else{
+            CurrentEarning::create([
+                'user_id' => $sponser_id,
+                'amount' => $amount,
             ]);
         }
     }
