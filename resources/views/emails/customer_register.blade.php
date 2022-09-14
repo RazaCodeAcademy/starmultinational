@@ -16,7 +16,7 @@
 ### We look forward to providing you with the ultimate learning and Earning experience of Digital working
 
 ### With best wishes,
-### www.starmultinational55@gmail.com
+### Info@starmultinational.com
 ### www.Starmultinational.com
 
 

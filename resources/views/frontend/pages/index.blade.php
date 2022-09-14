@@ -256,7 +256,7 @@
                 <div class="col-lg-8 col-md-12 col-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Performance</h4>
+                            <h4 class="card-title">Referrals & Earnings Performance</h4>
                             <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                             <div class="heading-elements">
                                 <ul class="list-inline mb-0">
@@ -405,9 +405,9 @@
             var chart = new CanvasJS.Chart("chartContainer", {
                 animationEnabled: true,
                 theme: "light2",
-                title: {
-                    text: "Referrals & Earnings"
-                },
+                // title: {
+                //     text: "Referrals & Earnings"
+                // },
                 axisX: {
                     unit: "day",
                     crosshair: {

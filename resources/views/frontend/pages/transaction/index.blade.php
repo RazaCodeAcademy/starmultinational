@@ -24,19 +24,19 @@ Account upgrade
                             <p class="card-text"></p>
                             <div class="d-flex justify-content-end ">
                                 {{--  @dd($membership)  --}}
-                                @if(empty($transaction))
+                                @if(!empty($transaction))
                                     @if($transaction->status == 1 )
-                                        <button type="button" class=" btn btn-dark" disabled >Sended </button>
+                                        <button type="button" class=" btn btn-success" disabled >Sended </button>
                                     @endif
                                 @else
-                                <button type="button" class=" btn btn-dark" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"><i class='fa fa-plus-circle'></i>Send Amount </button>
+                                <button type="button" class=" btn btn-success" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"><i class='fa fa-plus-circle'></i>Confirm </button>
 
                                 @endif
                                         
                                    
                                 
                                 &nbsp; &nbsp;
-                                <a href="#" class="btn btn-success">Active</a>
+                                <a href="#" class="btn btn-dark">Close</a>
                             </div>
                         </div>
 
